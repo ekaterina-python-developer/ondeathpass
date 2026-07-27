@@ -1,0 +1,25 @@
+backend:
+  name: github
+  repo: ekaterina-python-developer/ondeathpass
+  branch: main
+
+media_folder: "images/news"
+public_folder: "images/news"
+
+collections:
+  - name: "news"
+    label: "Новости"
+    files:
+      - name: "news_list"
+        label: "Список новостей"
+        file: "news.json"
+        fields:
+          - label: "Новости"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.date}} — {{fields.title}}"
+            fields:
+              - { label: "Дата", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+              - { label: "Заголовок", name: "title", widget: "string" }
+              - { label: "Текст", name: "body", widget: "text", required: false }
+              - { label: "Картинка", name: "image", widget: "image", required: false }

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ON DEATH PASS — стелс-хоррор про агентов в мире после катастрофы</title>
+<meta name="description" content="ON DEATH PASS — стелс-экшн с элементами хоррора. Агенты Роз и Нефелим должны проникнуть на защищённый объект. Скачайте демо-версию.">
+<link rel="stylesheet" href="style.css">
+
+<!-- GoatCounter analytics: без cookies, без сбора личных данных -->
+<script data-goatcounter="https://deathpass.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ЛЕВОЕ МЕНЮ -->
+  <aside class="sidebar">
+    <div class="sidebar__bar">
+      <span class="sidebar__logo">ON DEATH PASS</span>
+      <button class="burger" id="burger" aria-expanded="false" aria-controls="mobile-nav" aria-label="Открыть меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="sidebar__panel" id="mobile-nav">
+      <nav class="nav">
+        <a href="#main" class="nav__item">Главная</a>
+        <a href="#about" class="nav__item">О игре</a>
+        <a href="#plans" class="nav__item">Планы</a>
+        <a href="#contacts" class="nav__item">Контакты</a>
+      </nav>
+      <div class="social">
+        <a href="#" class="social__icon" data-goatcounter-click data-goatcounter-title="social_boosty" aria-label="Boosty">B</a>
+        <a href="#" class="social__icon" data-goatcounter-click data-goatcounter-title="social_telegram" aria-label="Telegram">T</a>
+        <a href="mailto:contact@example.com" class="social__icon" data-goatcounter-click data-goatcounter-title="social_mail" aria-label="Почта">M</a>
+        <a href="#" class="social__icon" data-goatcounter-click data-goatcounter-title="social_youtube" aria-label="YouTube">Y</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ОСНОВНОЙ КОНТЕНТ -->
+  <main class="content" id="main">
+
+    <!-- ХЕДЕР / ХИРО -->
+    <section class="hero">
+      <div class="hero__art" aria-hidden="true">
+        <!-- сюда вставляется финальный арт из PSD (герой на фоне затопленного города) -->
+        <img src="images/hero-placeholder.png" alt="" class="hero__img">
+      </div>
+      <div class="hero__text">
+        <p>Пытаясь скрыть свои цели, ИИ почти удалось уничтожить всех нас.</p>
+        <p>Для выживания придётся преодолеть смертельный переход.</p>
+        <p class="hero__accent">Возможно, ценой жизни.</p>
+      </div>
+    </section>
+
+    <!-- CTA: СКАЧАТЬ ДЕМО -->
+    <a href="downloads/death-pass-demo.zip"
+       class="cta cta--download"
+       data-goatcounter-click
+       data-goatcounter-title="download_demo">
+      Скачать демо версию игры
+    </a>
+
+    <!-- CTA: ПОДДЕРЖАТЬ -->
+    <a href="https://boosty.to/your-page"
+       class="cta cta--support"
+       data-goatcounter-click
+       data-goatcounter-title="support_dev">
+      Поддержать разработку
+    </a>
+
+    <!-- ГАЛЕРЕЯ -->
+    <section class="gallery" id="about">
+      <div class="gallery__main">
+        <img src="images/gallery/screen-main.png" alt="Скриншот геймплея" id="gallery-main-img">
+      </div>
+      <div class="gallery__thumbs" id="gallery-thumbs">
+        <!-- миниатюры генерируются скриптом из массива GALLERY в script.js -->
+      </div>
+    </section>
+
+    <!-- ОПИСАНИЕ ИГРЫ -->
+    <section class="description">
+      <h2 class="section-title">Краткое описание игры</h2>
+      <div class="description__block">
+        <p><strong>Жанры:</strong> стелс-экшн, научная фантастика, хоррор.</p>
+        <p><strong>Продолжительность:</strong> 30–45 минут.</p>
+      </div>
+      <div class="description__block">
+        <p><strong>Синопсис:</strong> агенты Роз и Нефелим наняты одной из крупных корпораций для выполнения миссии по проникновению на защищённый объект конкурента.</p>
+      </div>
+      <div class="description__block">
+        <p>Игроку предстоит в лице встроенного ИИ способствовать выполнению миссии и решать возникшие трудности, в том числе принимая решения, от которых зависят жизни как отдельных людей, так и всей их цивилизации.</p>
+      </div>
+    </section>
+
+    <!-- НОВОСТИ -->
+    <section class="news" id="plans">
+      <h2 class="section-title">Новости</h2>
+      <div class="news__layout">
+        <div class="news__main" id="news-main">
+          <!-- рендерится скриптом: последняя новость крупным блоком -->
+        </div>
+        <div class="news__list" id="news-list">
+          <!-- рендерится скриптом: остальные новости мелкими карточками -->
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer" id="contacts">
+      <p>© <span id="year"></span> On Death Pass. Демо-версия в разработке.</p>
+    </footer>
+
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
