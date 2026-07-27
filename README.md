@@ -25,11 +25,15 @@
    - Зарегистрируйтесь на goatcounter.com, получите код сайта.
    - В `index.html` замените `deathpass.goatcounter.com` на ваш реальный поддомен.
 
-4. **Decap CMS (админка новостей).**
-   - В `admin/config.yml` уже указан репозиторий `ekaterina-python-developer/ondeathpass`.
-   - Настройте авторизацию (Netlify Identity / OAuth-прокси или Cloudflare Worker).
-   - После этого `/admin` на сайте станет рабочей панелью редактирования новостей.
+4. **Хостинг: Netlify** (нужен для админки).
+   1. Зайти на https://app.netlify.com → Sign up with GitHub.
+   2. Add new site → Import an existing project → `ondeathpass`.
+   3. Build settings: Publish directory = `.` (или подтянется из `netlify.toml`).
+   4. Deploy.
 
-5. **Хостинг.**
-   - Запушьте всё в GitHub.
-   - Подключите GitHub Pages, Cloudflare Pages или Netlify — любой бесплатный вариант из обсуждения.
+5. **Админка Decap + Netlify Identity.**
+   1. Site configuration → Identity → Enable Identity.
+   2. Registration: Invite only.
+   3. Services → Git Gateway → Enable.
+   4. Identity → Invite users → пригласить email редактора.
+   5. Открыть `https://ВАШ-САЙТ.netlify.app/admin/` → принять инвайт → войти.

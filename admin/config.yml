@@ -1,6 +1,6 @@
 backend:
-  name: github
-  repo: ekaterina-python-developer/ondeathpass
+  # Через Netlify Identity + Git Gateway (удобно для не-разработчика)
+  name: git-gateway
   branch: main
 
 media_folder: "images/news"
