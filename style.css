@@ -69,6 +69,11 @@ a { color: inherit; text-decoration: none; }
   background: var(--red-dark);
 }
 
+.nav__item--active {
+  background: var(--red-dark);
+  box-shadow: inset 4px 0 0 #fff;
+}
+
 .social {
   display: flex;
   gap: 8px;
@@ -215,6 +220,124 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.6;
   color: var(--text-dim);
 }
+
+.home-about-link { margin: 32px 0 0; }
+.home-about-link .cta { margin: 0; }
+
+/* --- About page --- */
+.about-hero__title {
+  margin: 0 0 16px;
+  color: var(--red);
+  font-size: clamp(28px, 5vw, 42px);
+  letter-spacing: 0.08em;
+}
+
+.about-hero__meta {
+  margin: 0 0 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.about-hero__text {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-dim);
+  margin-bottom: 32px;
+}
+
+.about-hero__text p { margin: 0 0 12px; }
+
+/* --- Accordion (выдвижные блоки) --- */
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.accordion__item {
+  border: 2px solid var(--red);
+  background: var(--card);
+}
+
+.accordion__summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 16px 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.accordion__summary::-webkit-details-marker { display: none; }
+
+.accordion__summary::after {
+  content: "+";
+  color: var(--red);
+  font-size: 22px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.accordion__item[open] .accordion__summary {
+  border-bottom: 1px solid var(--red);
+}
+
+.accordion__item[open] .accordion__summary::after {
+  content: "−";
+}
+
+.accordion__body {
+  padding: 16px 20px 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.accordion__body p { margin: 0 0 12px; }
+
+.accordion__body img {
+  width: 100%;
+  display: block;
+  margin-top: 10px;
+  border: 1px solid var(--red);
+}
+
+.accordion__block {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.accordion__block:last-child { margin-bottom: 0; }
+
+.accordion__num {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--red);
+  color: #fff;
+  font-weight: bold;
+}
+
+.accordion__list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.accordion__list li { margin-bottom: 8px; }
+
+.about-back { margin-top: 40px; }
+.about-back .cta { margin: 0; }
 
 /* --- News --- */
 .news__layout {

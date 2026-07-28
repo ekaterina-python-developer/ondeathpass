@@ -121,7 +121,24 @@ function initNav() {
   }
 }
 
-document.getElementById("year").textContent = new Date().getFullYear();
+// --- Аккордеон: одновременно открыт только один блок ---
+function initAccordion() {
+  const root = document.querySelector("[data-accordion]");
+  if (!root) return;
+
+  root.querySelectorAll("details.accordion__item").forEach((item) => {
+    item.addEventListener("toggle", () => {
+      if (!item.open) return;
+      root.querySelectorAll("details.accordion__item").forEach((other) => {
+        if (other !== item) other.open = false;
+      });
+    });
+  });
+}
+
+const yearEl = document.getElementById("year");
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 initNav();
+initAccordion();
 renderGallery();
 renderNews();

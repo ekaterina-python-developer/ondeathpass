@@ -7,6 +7,9 @@
 <meta name="description" content="ON DEATH PASS — стелс-экшн с элементами хоррора. Агенты Роз и Нефелим должны проникнуть на защищённый объект. Скачайте демо-версию.">
 <link rel="stylesheet" href="style.css">
 
+<!-- Netlify Identity: нужен на главной, чтобы принять invite из письма -->
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
 <!-- GoatCounter analytics: без cookies, без сбора личных данных -->
 <script data-goatcounter="https://deathpass.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
@@ -25,9 +28,9 @@
     </div>
     <div class="sidebar__panel" id="mobile-nav">
       <nav class="nav">
-        <a href="#main" class="nav__item">Главная</a>
-        <a href="#about" class="nav__item">О игре</a>
-        <a href="#plans" class="nav__item">Планы</a>
+        <a href="index.html" class="nav__item nav__item--active" aria-current="page">Главная</a>
+        <a href="about.html" class="nav__item">О игре</a>
+        <a href="#plans" class="nav__item">Новости</a>
         <a href="#contacts" class="nav__item">Контакты</a>
       </nav>
       <div class="social">
@@ -72,7 +75,7 @@
     </a>
 
     <!-- ГАЛЕРЕЯ -->
-    <section class="gallery" id="about">
+    <section class="gallery">
       <div class="gallery__main">
         <img src="images/gallery/screen-main.png" alt="Скриншот геймплея" id="gallery-main-img">
       </div>
@@ -81,20 +84,9 @@
       </div>
     </section>
 
-    <!-- ОПИСАНИЕ ИГРЫ -->
-    <section class="description">
-      <h2 class="section-title">Краткое описание игры</h2>
-      <div class="description__block">
-        <p><strong>Жанры:</strong> стелс-экшн, научная фантастика, хоррор.</p>
-        <p><strong>Продолжительность:</strong> 30–45 минут.</p>
-      </div>
-      <div class="description__block">
-        <p><strong>Синопсис:</strong> агенты Роз и Нефелим наняты одной из крупных корпораций для выполнения миссии по проникновению на защищённый объект конкурента.</p>
-      </div>
-      <div class="description__block">
-        <p>Игроку предстоит в лице встроенного ИИ способствовать выполнению миссии и решать возникшие трудности, в том числе принимая решения, от которых зависят жизни как отдельных людей, так и всей их цивилизации.</p>
-      </div>
-    </section>
+    <p class="home-about-link">
+      <a href="about.html" class="cta cta--support">Подробнее об игре →</a>
+    </p>
 
     <!-- НОВОСТИ -->
     <section class="news" id="plans">
@@ -117,5 +109,16 @@
 </div>
 
 <script src="script.js"></script>
+<script>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", (user) => {
+      if (!user) {
+        window.netlifyIdentity.on("login", () => {
+          document.location.href = "/admin/";
+        });
+      }
+    });
+  }
+</script>
 </body>
 </html>
