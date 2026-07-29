@@ -108,7 +108,7 @@
 
 })();
 
-// Фоновая музыка: только по кнопке SOUND в сайдбаре, без автозапуска.
+// Фоновая музыка: только по кнопке SOUND; при смене страниц продолжаем с той же позиции.
 (() => {
   const music = document.querySelector('#background-music');
   const soundButton = document.querySelector('#sound-toggle');
@@ -116,9 +116,11 @@
 
   const soundValue = soundButton.querySelector('.sound-toggle__value');
   const soundStatus = soundButton.querySelector('.sound-toggle__status');
+  const STORAGE_KEY = 'death-pass-sound';
+  const POSITION_KEY = 'death-pass-sound-time';
   const targetVolume = 0.16;
   let fadeTimer = null;
-  let soundEnabled = localStorage.getItem('death-pass-sound') === 'on';
+  let soundEnabled = localStorage.getItem(STORAGE_KEY) === 'on';
 
   music.volume = 0;
 
@@ -151,15 +153,36 @@
     }, duration / steps);
   };
 
-  const enableSound = async () => {
+  // Запоминаем, на какой секунде трек был — как закладка в книге.
+  const persistPosition = () => {
+    if (!soundEnabled) return;
+    sessionStorage.setItem(POSITION_KEY, String(music.currentTime || 0));
+  };
+
+  const restorePosition = () => {
+    const saved = Number.parseFloat(sessionStorage.getItem(POSITION_KEY) || '');
+    if (!Number.isFinite(saved) || saved <= 0) return;
+
+    const apply = () => {
+      if (Number.isFinite(music.duration) && saved < music.duration) {
+        music.currentTime = saved;
+      }
+    };
+
+    if (music.readyState >= 1) apply();
+    else music.addEventListener('loadedmetadata', apply, { once: true });
+  };
+
+  const enableSound = async ({ restore = true } = {}) => {
+    if (restore) restorePosition();
+
     try {
       await music.play();
       soundEnabled = true;
-      localStorage.setItem('death-pass-sound', 'on');
+      localStorage.setItem(STORAGE_KEY, 'on');
       updateButton(true);
       fadeTo(targetVolume);
     } catch (error) {
-      soundEnabled = false;
       updateButton(false);
       console.warn('Браузер заблокировал воспроизведение:', error);
     }
@@ -167,7 +190,8 @@
 
   const disableSound = () => {
     soundEnabled = false;
-    localStorage.setItem('death-pass-sound', 'off');
+    localStorage.setItem(STORAGE_KEY, 'off');
+    sessionStorage.removeItem(POSITION_KEY);
     updateButton(false);
     fadeTo(0, 400, () => {
       music.pause();
@@ -182,24 +206,36 @@
     }
   });
 
+  // Перед уходом на другую страницу сохраняем позицию трека.
+  window.addEventListener('pagehide', persistPosition);
+  window.setInterval(persistPosition, 2000);
+
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden && !music.paused) {
-      music.pause();
-    } else if (!document.hidden && soundEnabled) {
-      music.play()
-        .then(() => {
-          updateButton(true);
-          if (music.volume < targetVolume) fadeTo(targetVolume);
-        })
-        .catch(() => {
-          updateButton(false);
-        });
+    if (document.hidden) {
+      persistPosition();
+      if (!music.paused) music.pause();
+      return;
     }
+
+    if (!soundEnabled) return;
+
+    music.play()
+      .then(() => {
+        updateButton(true);
+        if (music.volume < targetVolume) fadeTo(targetVolume);
+      })
+      .catch(() => {
+        updateButton(false);
+      });
   });
 
-  // Выбор помним, но на новой загрузке страницы звук сам не стартует —
-  // нужен клик именно по SOUND.
-  updateButton(false);
+  // Если SOUND уже был включён — пробуем продолжить на новой странице.
+  // Часто браузер разрешает это после первого ручного включения на сайте.
+  if (soundEnabled) {
+    enableSound({ restore: true });
+  } else {
+    updateButton(false);
+  }
 })();
 
 // ---------------------------------------------------------------------------
