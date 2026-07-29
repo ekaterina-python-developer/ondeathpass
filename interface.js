@@ -126,6 +126,7 @@
   const sceneCode = brief?.querySelector('[data-scene-code]');
   const sceneTitle = brief?.querySelector('[data-scene-title]');
   const sceneCopy = brief?.querySelector('[data-scene-copy]');
+  const stamp = slider.querySelector('[data-hero-stamp]');
   const art = slider.querySelector('.hero__art');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const AUTOPLAY_DELAY = 8000;
@@ -178,6 +179,7 @@
       if (sceneCode) sceneCode.textContent = slide.dataset.sceneCode || '';
       if (sceneTitle) sceneTitle.textContent = slide.dataset.sceneTitle || '';
       if (sceneCopy) sceneCopy.textContent = slide.dataset.sceneCopy || '';
+      if (stamp) stamp.textContent = slide.dataset.stamp || '';
       brief?.classList.remove('is-changing');
     };
 

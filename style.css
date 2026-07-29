@@ -2252,8 +2252,9 @@ select {
 .hero-slide__stamp {
   position: absolute;
   z-index: 5;
-  left: 24px;
-  top: 24px;
+  left: 20px;
+  bottom: 18px;
+  top: auto;
   margin: 0;
   padding: 0;
   border: 0;
@@ -2263,6 +2264,7 @@ select {
   letter-spacing: 0.14em;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85);
   backdrop-filter: none;
+  pointer-events: none;
 }
 
 .hero[data-hero-slider] .hero__art::before {
@@ -2656,7 +2658,8 @@ select {
 
   .hero-slide__stamp {
     left: 16px;
-    top: 16px;
+    bottom: 78px;
+    top: auto;
   }
 
   .hero[data-hero-slider] .hero__title {
