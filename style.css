@@ -1461,9 +1461,10 @@ select {
 }
 
 .news__main h3 {
-  margin: 0 0 12px;
+  margin: 0 0 10px;
   font-family: var(--font-interface);
-  font-size: clamp(24px, 3vw, 38px);
+  font-size: clamp(18px, 2vw, 24px);
+  line-height: 1.2;
   text-transform: uppercase;
 }
 
