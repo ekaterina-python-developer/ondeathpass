@@ -33,14 +33,21 @@
 html {
   color-scheme: dark;
   scroll-behavior: smooth;
-  scrollbar-color: var(--red) var(--bg);
-  scrollbar-width: thin;
+  /* Скрываем системный скроллбар — позиция видна по индикатору у сайдбара */
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 body {
   min-width: 320px;
   margin: 0;
   overflow-x: hidden;
+  scrollbar-width: none;
   background:
     radial-gradient(circle at 72% 18%, rgba(85, 246, 255, 0.055), transparent 30rem),
     radial-gradient(circle at 88% 72%, rgba(255, 59, 48, 0.07), transparent 34rem),
@@ -48,6 +55,12 @@ body {
   color: var(--text);
   font-family: var(--font-mono);
   letter-spacing: 0.015em;
+}
+
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 body::selection {
@@ -226,27 +239,36 @@ select {
   backdrop-filter: blur(18px);
 }
 
-/* Тонкий индикатор прокрутки страницы (вместо статичных жирных сегментов) */
+/* Тонкий индикатор прокрутки: цвет бегунка красный → бирюзовый */
 .sidebar__rail {
   position: absolute;
   right: -1px;
   top: 8%;
   bottom: 8%;
   width: 1px;
-  background: rgba(255, 59, 48, 0.28);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 59, 48, 0.5) 0%,
+    rgba(85, 246, 255, 0.4) 100%
+  );
   pointer-events: none;
   overflow: hidden;
 }
 
 .sidebar__rail-thumb {
+  --rail-thumb: color-mix(
+    in srgb,
+    var(--cyan) calc(var(--sidebar-scroll, 0) * 100%),
+    var(--red)
+  );
   position: absolute;
   left: 0;
   top: calc(var(--sidebar-scroll, 0) * (100% - 56px));
   width: 1px;
   height: 56px;
-  background: var(--cyan);
-  box-shadow: 0 0 6px rgba(85, 246, 255, 0.45);
-  transition: top 0.12s linear, opacity 0.3s ease;
+  background: var(--rail-thumb);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--rail-thumb) 65%, transparent);
+  transition: top 0.12s linear, opacity 0.3s ease, background 0.12s linear, box-shadow 0.12s linear;
 }
 
 .sidebar__rail.is-idle .sidebar__rail-thumb {
@@ -254,8 +276,18 @@ select {
 }
 
 @keyframes sidebar-rail-scan {
-  0%, 100% { top: 0; opacity: 0.55; }
-  50% { top: calc(100% - 56px); opacity: 1; }
+  0%, 100% {
+    top: 0;
+    opacity: 0.55;
+    background: var(--red);
+    box-shadow: 0 0 8px rgba(255, 59, 48, 0.55);
+  }
+  50% {
+    top: calc(100% - 56px);
+    opacity: 1;
+    background: var(--cyan);
+    box-shadow: 0 0 8px rgba(85, 246, 255, 0.55);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
