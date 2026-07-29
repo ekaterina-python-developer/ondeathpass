@@ -231,7 +231,7 @@ select {
   z-index: 30;
   width: var(--sidebar);
   height: 100vh;
-  border-right: 1px solid var(--danger-line);
+  border-right: none;
   background:
     linear-gradient(180deg, rgba(255, 59, 48, 0.055), transparent 20%),
     rgba(4, 7, 8, 0.92);
@@ -239,17 +239,17 @@ select {
   backdrop-filter: blur(18px);
 }
 
-/* Тонкий индикатор прокрутки: цвет бегунка красный → бирюзовый */
+/* Одна линия одинаковой толщины на всю высоту */
 .sidebar__rail {
   position: absolute;
-  right: -1px;
-  top: 8%;
-  bottom: 8%;
+  right: 0;
+  top: 0;
+  bottom: 0;
   width: 1px;
   background: linear-gradient(
     180deg,
-    rgba(255, 59, 48, 0.5) 0%,
-    rgba(85, 246, 255, 0.4) 100%
+    rgba(255, 59, 48, 0.55) 0%,
+    rgba(85, 246, 255, 0.45) 100%
   );
   pointer-events: none;
   overflow: hidden;
@@ -263,12 +263,14 @@ select {
   );
   position: absolute;
   left: 0;
-  top: calc(var(--sidebar-scroll, 0) * (100% - 56px));
+  top: calc(var(--sidebar-scroll, 0) * (100% - 72px));
   width: 1px;
-  height: 56px;
+  height: 72px;
   background: var(--rail-thumb);
-  box-shadow: 0 0 8px color-mix(in srgb, var(--rail-thumb) 65%, transparent);
-  transition: top 0.12s linear, opacity 0.3s ease, background 0.12s linear, box-shadow 0.12s linear;
+  opacity: 1;
+  /* без box-shadow — он визуально утолщал кусок линии */
+  box-shadow: none;
+  transition: top 0.12s linear, background 0.12s linear;
 }
 
 .sidebar__rail.is-idle .sidebar__rail-thumb {
@@ -278,15 +280,13 @@ select {
 @keyframes sidebar-rail-scan {
   0%, 100% {
     top: 0;
-    opacity: 0.55;
     background: var(--red);
-    box-shadow: 0 0 8px rgba(255, 59, 48, 0.55);
+    opacity: 0.7;
   }
   50% {
-    top: calc(100% - 56px);
-    opacity: 1;
+    top: calc(100% - 72px);
     background: var(--cyan);
-    box-shadow: 0 0 8px rgba(85, 246, 255, 0.55);
+    opacity: 1;
   }
 }
 
