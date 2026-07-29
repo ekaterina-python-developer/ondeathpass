@@ -92,10 +92,12 @@
   const next = slider.querySelector('[data-hero-next]');
   const pause = slider.querySelector('[data-hero-pause]');
   const counter = slider.querySelector('[data-hero-counter]');
+  // Ищем текст только внутри .hero__brief — иначе querySelector цепляет
+  // сами слайды (у них тоже есть data-scene-*), и текст справа не обновляется.
   const brief = slider.querySelector('.hero__brief');
-  const sceneCode = slider.querySelector('[data-scene-code]');
-  const sceneTitle = slider.querySelector('[data-scene-title]');
-  const sceneCopy = slider.querySelector('[data-scene-copy]');
+  const sceneCode = brief?.querySelector('[data-scene-code]');
+  const sceneTitle = brief?.querySelector('[data-scene-title]');
+  const sceneCopy = brief?.querySelector('[data-scene-copy]');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const AUTOPLAY_DELAY = 8000;
 
