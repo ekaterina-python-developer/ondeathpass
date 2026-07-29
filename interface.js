@@ -10,19 +10,20 @@
     }, { once: true });
   }
 
-  // Interface clock.
+  // Interface clock (внутренние страницы с #system-clock; на главной часов нет).
   const clock = document.getElementById('system-clock');
-  const updateClock = () => {
-    if (!clock) return;
-    clock.textContent = new Intl.DateTimeFormat('ru-RU', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false
-    }).format(new Date());
-  };
-  updateClock();
-  window.setInterval(updateClock, 1000);
+  if (clock) {
+    const updateClock = () => {
+      clock.textContent = new Intl.DateTimeFormat('ru-RU', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      }).format(new Date());
+    };
+    updateClock();
+    window.setInterval(updateClock, 1000);
+  }
 
   // Scroll reveals; content remains visible when motion is reduced.
   const revealItems = document.querySelectorAll('.reveal');
