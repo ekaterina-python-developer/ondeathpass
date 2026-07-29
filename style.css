@@ -2253,7 +2253,7 @@ select {
   position: absolute;
   z-index: 5;
   left: 24px;
-  top: 48px;
+  top: 24px;
   margin: 0;
   padding: 0;
   border: 0;
@@ -2263,49 +2263,6 @@ select {
   letter-spacing: 0.14em;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85);
   backdrop-filter: none;
-}
-
-/* Системный статус поверх hero (вместо отдельной .topline на главной) */
-.hero__status {
-  position: absolute;
-  z-index: 7;
-  left: 24px;
-  right: 24px;
-  top: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  pointer-events: none;
-  color: rgba(223, 245, 246, 0.78);
-  font-size: 8px;
-  letter-spacing: 0.14em;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85);
-}
-
-.hero__status-online {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.hero__status-online i {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--cyan);
-  box-shadow: 0 0 10px var(--cyan);
-  animation: pulse-dot 2s ease-in-out infinite;
-}
-
-.hero__status-sector {
-  color: rgba(223, 245, 246, 0.62);
-  text-align: right;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .hero[data-hero-slider] .hero__art::before {
@@ -2699,17 +2656,7 @@ select {
 
   .hero-slide__stamp {
     left: 16px;
-    top: 42px;
-  }
-
-  .hero__status {
-    left: 16px;
-    right: 16px;
-    top: 14px;
-  }
-
-  .hero__status-sector {
-    display: none;
+    top: 16px;
   }
 
   .hero[data-hero-slider] .hero__title {
