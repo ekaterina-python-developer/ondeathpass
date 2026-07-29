@@ -108,7 +108,8 @@
 
 })();
 
-// Фоновая музыка: только по кнопке SOUND; при смене страниц продолжаем с той же позиции.
+// Фоновая музыка: только по кнопке SOUND; трек берётся из audio/track.json
+// или из файла с привычным именем (bgm.mp3 / ambient.mp3 и т.п.).
 (() => {
   const music = document.querySelector('#background-music');
   const soundButton = document.querySelector('#sound-toggle');
@@ -118,11 +119,101 @@
   const soundStatus = soundButton.querySelector('.sound-toggle__status');
   const STORAGE_KEY = 'death-pass-sound';
   const POSITION_KEY = 'death-pass-sound-time';
+  const TRACK_KEY = 'death-pass-sound-track';
   const targetVolume = 0.16;
   let fadeTimer = null;
   let soundEnabled = localStorage.getItem(STORAGE_KEY) === 'on';
+  let toggling = false;
+  let trackReady = null; // Promise: какой файл сейчас назначен плееру
 
   music.volume = 0;
+  music.loop = true;
+  music.preload = 'auto';
+
+  // Проверка: «файл на месте?» (как постучать в дверь и узнать, дома ли кто).
+  const fileExists = async (url) => {
+    try {
+      const head = await fetch(url, { method: 'HEAD', cache: 'no-cache' });
+      if (head.ok) return true;
+    } catch {
+      // Некоторые хостинги не любят HEAD — тогда пробуем кусочек файла.
+    }
+
+    try {
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: { Range: 'bytes=0-1' },
+        cache: 'no-cache'
+      });
+      return res.ok || res.status === 206;
+    } catch {
+      return false;
+    }
+  };
+
+  const normalizeAudioPath = (value) => {
+    if (!value || typeof value !== 'string') return null;
+    const cleaned = value.trim().replace(/^\/+/, '');
+    if (!cleaned || cleaned.includes('..')) return null;
+    return cleaned.startsWith('audio/') ? cleaned : `audio/${cleaned}`;
+  };
+
+  // 1) читаем audio/track.json  2) иначе ищем файлы с обычными именами
+  const resolveTrackSrc = async () => {
+    try {
+      const res = await fetch('audio/track.json', { cache: 'no-cache' });
+      if (res.ok) {
+        const data = await res.json();
+        const fromConfig = normalizeAudioPath(data.file || data.src || data.track);
+        if (fromConfig && await fileExists(fromConfig)) return fromConfig;
+      }
+    } catch {
+      // Конфига нет — не страшно, пойдём по запасным именам.
+    }
+
+    const fallbacks = [
+      'audio/bgm.mp3',
+      'audio/bgm.ogg',
+      'audio/ambient.mp3',
+      'audio/ambient.ogg',
+      'audio/music.mp3',
+      'audio/death-pass-ambient.mp3'
+    ];
+
+    for (const src of fallbacks) {
+      if (await fileExists(src)) return src;
+    }
+
+    return null;
+  };
+
+  const ensureTrackLoaded = () => {
+    if (!trackReady) {
+      trackReady = (async () => {
+        const src = await resolveTrackSrc();
+        if (!src) {
+          throw new Error(
+            'Трек не найден. Положи файл в audio/ и укажи имя в audio/track.json, либо назови файл bgm.mp3'
+          );
+        }
+
+        // Если сменился трек — старую «закладку» по времени выбрасываем.
+        const previous = sessionStorage.getItem(TRACK_KEY);
+        if (previous && previous !== src) {
+          sessionStorage.removeItem(POSITION_KEY);
+        }
+        sessionStorage.setItem(TRACK_KEY, src);
+
+        if (music.getAttribute('src') !== src) {
+          music.setAttribute('src', src);
+          music.load();
+        }
+
+        return src;
+      })();
+    }
+    return trackReady;
+  };
 
   const updateButton = (isPlaying) => {
     soundButton.setAttribute('aria-pressed', String(isPlaying));
@@ -155,40 +246,78 @@
 
   // Запоминаем, на какой секунде трек был — как закладка в книге.
   const persistPosition = () => {
-    if (!soundEnabled) return;
-    sessionStorage.setItem(POSITION_KEY, String(music.currentTime || 0));
+    if (!soundEnabled || !Number.isFinite(music.currentTime)) return;
+    sessionStorage.setItem(POSITION_KEY, String(music.currentTime));
   };
 
   const restorePosition = () => {
     const saved = Number.parseFloat(sessionStorage.getItem(POSITION_KEY) || '');
     if (!Number.isFinite(saved) || saved <= 0) return;
 
-    const apply = () => {
+    try {
       if (Number.isFinite(music.duration) && saved < music.duration) {
         music.currentTime = saved;
       }
-    };
-
-    if (music.readyState >= 1) apply();
-    else music.addEventListener('loadedmetadata', apply, { once: true });
+    } catch {
+      // Браузер ещё не готов перемотать — просто начнём сначала.
+    }
   };
 
+  const waitForCanPlay = () =>
+    new Promise((resolve, reject) => {
+      if (music.error) {
+        reject(music.error);
+        return;
+      }
+      if (music.readyState >= 2) {
+        resolve();
+        return;
+      }
+
+      const onReady = () => {
+        cleanup();
+        resolve();
+      };
+      const onError = () => {
+        cleanup();
+        reject(music.error || new Error('Не удалось загрузить трек'));
+      };
+      const cleanup = () => {
+        music.removeEventListener('canplay', onReady);
+        music.removeEventListener('error', onError);
+      };
+
+      music.addEventListener('canplay', onReady, { once: true });
+      music.addEventListener('error', onError, { once: true });
+    });
+
   const enableSound = async ({ restore = true } = {}) => {
-    if (restore) restorePosition();
+    if (toggling) return;
+    toggling = true;
 
     try {
+      await ensureTrackLoaded();
+      await waitForCanPlay();
       await music.play();
+      if (restore) restorePosition();
+
       soundEnabled = true;
       localStorage.setItem(STORAGE_KEY, 'on');
       updateButton(true);
       fadeTo(targetVolume);
     } catch (error) {
+      soundEnabled = false;
+      localStorage.setItem(STORAGE_KEY, 'off');
       updateButton(false);
-      console.warn('Браузер заблокировал воспроизведение:', error);
+      trackReady = null;
+      console.warn('Не удалось включить музыку:', error);
+    } finally {
+      toggling = false;
     }
   };
 
   const disableSound = () => {
+    if (toggling) return;
     soundEnabled = false;
     localStorage.setItem(STORAGE_KEY, 'off');
     sessionStorage.removeItem(POSITION_KEY);
@@ -199,11 +328,12 @@
   };
 
   soundButton.addEventListener('click', () => {
-    if (music.paused) {
-      enableSound();
-    } else {
+    // Включено и реально играет — выключаем. Иначе пробуем включить.
+    if (soundEnabled && !music.paused) {
       disableSound();
+      return;
     }
+    enableSound();
   });
 
   // Перед уходом на другую страницу сохраняем позицию трека.
@@ -219,7 +349,8 @@
 
     if (!soundEnabled) return;
 
-    music.play()
+    ensureTrackLoaded()
+      .then(() => music.play())
       .then(() => {
         updateButton(true);
         if (music.volume < targetVolume) fadeTo(targetVolume);
@@ -230,7 +361,6 @@
   });
 
   // Если SOUND уже был включён — пробуем продолжить на новой странице.
-  // Часто браузер разрешает это после первого ручного включения на сайте.
   if (soundEnabled) {
     enableSound({ restore: true });
   } else {
