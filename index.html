@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050708">
 <title>ON DEATH PASS — стелс-хоррор про агентов в мире после катастрофы</title>
 <meta name="description" content="ON DEATH PASS — стелс-экшн с элементами хоррора. Агенты Роз и Нефелим должны проникнуть на защищённый объект. Скачайте демо-версию.">
+<script>document.documentElement.classList.add('js');</script>
 <link rel="stylesheet" href="style.css">
 
 <!-- Netlify Identity: нужен на главной, чтобы принять invite из письма -->
@@ -16,6 +18,21 @@
 </head>
 <body>
 
+<div class="boot-screen" aria-hidden="true">
+  <div class="boot-screen__panel">
+    <span class="boot-screen__code">ODP // SYSTEM BOOT</span>
+    <span class="boot-screen__line"></span>
+    <span class="boot-screen__status">NEURAL LINK ESTABLISHED</span>
+  </div>
+</div>
+
+<div class="ambient" aria-hidden="true">
+  <span class="ambient__grid"></span>
+  <span class="ambient__glow ambient__glow--red"></span>
+  <span class="ambient__glow ambient__glow--cyan"></span>
+  <span class="ambient__scan"></span>
+</div>
+
 <div class="page">
 
   <!-- ЛЕВОЕ МЕНЮ -->
@@ -26,18 +43,40 @@
         <span></span><span></span><span></span>
       </button>
     </div>
+
     <div class="sidebar__panel" id="mobile-nav">
-      <nav class="nav">
-        <a href="index.html" class="nav__item nav__item--active" aria-current="page">Главная</a>
-        <a href="about.html" class="nav__item">О игре</a>
-        <a href="plans.html" class="nav__item">Планы</a>
-        <a href="contacts.html" class="nav__item">Контакты</a>
+      <div class="sidebar__head">
+        <a class="brand" href="index.html" aria-label="On Death Pass — главная">
+          <span class="brand__eyebrow">DEATH PASS PROTOCOL</span>
+          <span class="brand__name" data-glitch="ON DEATH PASS">ON DEATH PASS</span>
+          <span class="brand__version">BUILD // 00.4.17</span>
+        </a>
+
+        <div class="system-state" aria-label="Статус проекта">
+          <span class="system-state__dot"></span>
+          <span>DEMO IN DEVELOPMENT</span>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Основная навигация">
+        <a href="index.html" class="nav__item nav__item--active" aria-current="page"><span>01</span>Главная</a>
+        <a href="about.html" class="nav__item"><span>02</span>О игре</a>
+        <a href="plans.html" class="nav__item"><span>03</span>Планы</a>
+        <a href="contacts.html" class="nav__item"><span>04</span>Контакты</a>
       </nav>
-      <div class="social">
-        <a href="https://boosty.to/goondeathpass" class="social__icon" data-goatcounter-click data-goatcounter-title="social_boosty" aria-label="Boosty"><img src="images/social/boosty.png" alt="" width="18" height="18"></a>
-        <a href="https://t.me/markizanime" class="social__icon" data-goatcounter-click data-goatcounter-title="social_telegram" aria-label="Telegram"><img src="images/social/telegram.png" alt="" width="18" height="18"></a>
-        <a href="https://www.youtube.com/@markizanime" class="social__icon" data-goatcounter-click data-goatcounter-title="social_youtube" aria-label="YouTube"><img src="images/social/youtube.png" alt="" width="18" height="18"></a>
-        <a href="mailto:rospwnza@gmail.com" class="social__icon" data-goatcounter-click data-goatcounter-title="social_mail" aria-label="Почта"><img src="images/social/mail.png" alt="" width="18" height="18"></a>
+
+      <div class="sidebar__foot">
+        <div class="signal" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <p class="sidebar__microcopy">ENCRYPTED CHANNEL<br>NODE: ODP-09</p>
+
+        <div class="social">
+          <a href="https://boosty.to/goondeathpass" class="social__icon" data-goatcounter-click data-goatcounter-title="social_boosty" aria-label="Boosty"><img src="images/social/boosty.png" alt="" width="18" height="18"></a>
+          <a href="https://t.me/markizanime" class="social__icon" data-goatcounter-click data-goatcounter-title="social_telegram" aria-label="Telegram"><img src="images/social/telegram.png" alt="" width="18" height="18"></a>
+          <a href="https://www.youtube.com/@markizanime" class="social__icon" data-goatcounter-click data-goatcounter-title="social_youtube" aria-label="YouTube"><img src="images/social/youtube.png" alt="" width="18" height="18"></a>
+          <a href="mailto:rospwnza@gmail.com" class="social__icon" data-goatcounter-click data-goatcounter-title="social_mail" aria-label="Почта"><img src="images/social/mail.png" alt="" width="18" height="18"></a>
+        </div>
       </div>
     </div>
   </aside>
@@ -45,63 +84,138 @@
   <!-- ОСНОВНОЙ КОНТЕНТ -->
   <main class="content" id="main">
 
+    <header class="topline" aria-label="Системный статус">
+      <span><i></i> SYSTEM ONLINE</span>
+      <span class="topline__center">SECTOR 09 // UNKNOWN TERRITORY</span>
+      <span id="system-clock">00:00:00</span>
+    </header>
+
     <!-- ХЕДЕР / ХИРО -->
-    <section class="hero">
+    <section class="hero reveal" data-parallax-root>
       <div class="hero__art" aria-hidden="true">
-        <!-- сюда вставляется финальный арт из PSD (герой на фоне затопленного города) -->
-        <img src="images/hero-placeholder.png" alt="" class="hero__img">
+        <img src="images/hero-placeholder.png" alt="" class="hero__img" data-parallax-layer="12" onerror="this.hidden=true">
+        <div class="hero__fog hero__fog--one"></div>
+        <div class="hero__fog hero__fog--two"></div>
+        <div class="hero__target" data-parallax-layer="24">
+          <span></span><span></span>
+        </div>
+        <div class="hero__telemetry">
+          <span>ENTITY // ROZ</span>
+          <span>LINK // 83%</span>
+          <span>THREAT // CRITICAL</span>
+        </div>
+        <div class="hud-corner hud-corner--tl"></div>
+        <div class="hud-corner hud-corner--tr"></div>
+        <div class="hud-corner hud-corner--bl"></div>
+        <div class="hud-corner hud-corner--br"></div>
       </div>
-      <div class="hero__text">
-        <p>Пытаясь скрыть свои цели, ИИ почти удалось уничтожить всех нас.</p>
-        <p>Для выживания придётся преодолеть смертельный переход.</p>
-        <p class="hero__accent">Возможно, ценой жизни.</p>
+
+      <div class="hero__interface">
+        <p class="interface-label"><span>MISSION FILE</span> / 0001</p>
+        <h1 class="hero__title" data-text="СМЕРТЕЛЬНЫЙ ПЕРЕХОД">СМЕРТЕЛЬНЫЙ<br>ПЕРЕХОД</h1>
+        <div class="hero__text">
+          <p>Пытаясь скрыть свои цели, ИИ почти удалось уничтожить всех нас.</p>
+          <p>Для выживания придётся преодолеть смертельный переход.</p>
+          <p class="hero__accent">Возможно, ценой жизни.</p>
+        </div>
+        <div class="hero__actions">
+          <a href="downloads/death-pass-demo.zip"
+             class="cta cta--download"
+             data-goatcounter-click
+             data-goatcounter-title="download_demo">
+            <span class="cta__index">[01]</span>
+            <span class="cta__label">Скачать демо</span>
+            <span class="cta__arrow">↗</span>
+          </a>
+          <a href="https://boosty.to/goondeathpass"
+             class="cta cta--support"
+             data-goatcounter-click
+             data-goatcounter-title="support_dev">
+            <span class="cta__index">[02]</span>
+            <span class="cta__label">Поддержать разработку</span>
+            <span class="cta__arrow">+</span>
+          </a>
+        </div>
       </div>
     </section>
 
-    <!-- CTA: СКАЧАТЬ ДЕМО -->
-    <a href="downloads/death-pass-demo.zip"
-       class="cta cta--download"
-       data-goatcounter-click
-       data-goatcounter-title="download_demo">
-      Скачать демо версию игры
-    </a>
-
-    <!-- CTA: ПОДДЕРЖАТЬ -->
-    <a href="https://boosty.to/goondeathpass"
-       class="cta cta--support"
-       data-goatcounter-click
-       data-goatcounter-title="support_dev">
-      Поддержать разработку
-    </a>
+    <section class="spec-strip reveal" aria-label="Основные характеристики игры">
+      <article class="spec-strip__item"><span>GENRE</span><strong>STEALTH / HORROR</strong></article>
+      <article class="spec-strip__item"><span>SESSION</span><strong>30—45 MIN</strong></article>
+      <article class="spec-strip__item"><span>MODE</span><strong>SINGLE PLAYER</strong></article>
+      <article class="spec-strip__item spec-strip__item--alert"><span>STATUS</span><strong>DEMO BUILD</strong></article>
+    </section>
 
     <!-- ГАЛЕРЕЯ -->
-    <section class="gallery">
-      <div class="gallery__main">
-        <img src="images/gallery/screen-main.png" alt="Скриншот геймплея" id="gallery-main-img">
+    <section class="gallery reveal">
+      <div class="section-heading">
+        <div>
+          <p class="interface-label"><span>VISUAL LOG</span> / CAPTURED DATA</p>
+          <h2 class="section-title">Материалы миссии</h2>
+        </div>
+        <span class="section-heading__code">ARCHIVE // 04</span>
       </div>
-      <div class="gallery__thumbs" id="gallery-thumbs">
-        <!-- миниатюры генерируются скриптом из массива GALLERY в script.js -->
+
+      <div class="gallery__frame">
+        <div class="gallery__main">
+          <img src="images/gallery/screen-main.png" alt="Скриншот геймплея" id="gallery-main-img" onerror="this.hidden=true">
+          <span class="gallery__fallback">NO VISUAL SIGNAL</span>
+          <span class="gallery__status">REC ●</span>
+          <span class="gallery__coords">X: 44.092 / Y: 18.773</span>
+        </div>
+        <div class="gallery__thumbs" id="gallery-thumbs">
+          <!-- миниатюры генерируются скриптом из массива GALLERY в script.js -->
+        </div>
       </div>
     </section>
 
     <!-- ОПИСАНИЕ ИГРЫ -->
-    <section class="description">
-      <h2 class="section-title">Краткое описание игры</h2>
-      <div class="description__block">
-        <p><strong>Жанры:</strong> стелс-экшн, научная фантастика, хоррор.</p>
-        <p><strong>Продолжительность:</strong> 30–45 минут.</p>
+    <section class="description reveal">
+      <div class="section-heading">
+        <div>
+          <p class="interface-label"><span>DATABASE</span> / DECRYPTED</p>
+          <h2 class="section-title">Данные операции</h2>
+        </div>
+        <span class="section-heading__code">ACCESS // GRANTED</span>
       </div>
-      <div class="description__block">
-        <p><strong>Синопсис:</strong> агенты Роз и Нефелим наняты одной из крупных корпораций для выполнения миссии по проникновению на защищённый объект конкурента.</p>
-      </div>
-      <div class="description__block">
-        <p>Игроку предстоит в лице встроенного ИИ способствовать выполнению миссии и решать возникшие трудности, в том числе принимая решения, от которых зависят жизни как отдельных людей, так и всей их цивилизации.</p>
+
+      <div class="description__grid">
+        <article class="data-card data-card--wide">
+          <span class="data-card__num">01</span>
+          <p class="data-card__label">СИНОПСИС</p>
+          <p>Агенты Роз и Нефелим наняты одной из крупных корпораций для выполнения миссии по проникновению на защищённый объект конкурента.</p>
+        </article>
+
+        <article class="data-card">
+          <span class="data-card__num">02</span>
+          <p class="data-card__label">ЖАНРЫ</p>
+          <p>Стелс-экшн<br>Научная фантастика<br>Хоррор</p>
+        </article>
+
+        <article class="data-card">
+          <span class="data-card__num">03</span>
+          <p class="data-card__label">РОЛЬ ИГРОКА</p>
+          <p>Встроенный ИИ, который направляет агентов и принимает решения с необратимыми последствиями.</p>
+        </article>
+
+        <article class="data-card data-card--alert">
+          <span class="data-card__num">04</span>
+          <p class="data-card__label">ГЛАВНЫЙ РИСК</p>
+          <p>От ваших решений зависят жизни отдельных людей — и всей цивилизации.</p>
+        </article>
       </div>
     </section>
 
     <!-- НОВОСТИ -->
-    <section class="news" id="news">
-      <h2 class="section-title">Новости</h2>
+    <section class="news reveal" id="news">
+      <div class="section-heading">
+        <div>
+          <p class="interface-label"><span>TRANSMISSIONS</span> / LIVE FEED</p>
+          <h2 class="section-title">Новости разработки</h2>
+        </div>
+        <span class="section-heading__code"><i></i> CHANNEL OPEN</span>
+      </div>
+
       <div class="news__layout">
         <div class="news__main" id="news-main">
           <!-- рендерится скриптом: последняя новость крупным блоком -->
@@ -113,13 +227,16 @@
     </section>
 
     <footer class="footer">
-      <p>© <span id="year"></span> On Death Pass. Демо-версия в разработке.</p>
+      <div class="footer__line"></div>
+      <p>© <span id="year"></span> ON DEATH PASS // DEMO IN DEVELOPMENT</p>
+      <p class="footer__status"><i></i> CONNECTION STABLE</p>
     </footer>
 
   </main>
 </div>
 
 <script src="script.js"></script>
+<script src="interface.js"></script>
 <script>
   if (window.netlifyIdentity) {
     window.netlifyIdentity.on("init", (user) => {

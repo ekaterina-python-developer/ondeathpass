@@ -1,17 +1,19 @@
 # On Death Pass — сайт-визитка
 
+Cyber/HUD-дизайн: загрузочный экран, сетка, часы, анимации появления блоков.
+
 ## Структура
 - `index.html` — главная страница
 - `about.html` — страница «О игре» с аккордеоном
 - `plans.html` — страница «Планы» (состояние разработки, роадмап)
 - `contacts.html` — страница «Контакты»
-- `contacts-preview.html` — макет-превью страницы контактов (для сверки дизайна)
-- `style.css` — стили
+- `style.css` — cyber/HUD-стили (все страницы)
 - `script.js` — галерея, новости, меню, аккордеоны
+- `interface.js` — загрузочный экран, часы, reveal-анимации, параллакс, glitch
 - `news.json` — данные новостей (правит либо разработчик руками, либо CMS)
 - `admin/` — Decap CMS (админка для новостей без кода): откройте `/admin/`
 - `admin/config.yml` — настройки CMS (репозиторий уже указан)
-- `images/` — картинки сайта (`hero-placeholder.png`, `gallery/`, `news/`, `contacts/`)
+- `images/` — картинки сайта (`hero-placeholder.png`, `gallery/`, `news/`, `contacts/`, `social/`)
 - `netlify.toml` — настройки деплоя Netlify
 
 ## Что нужно доделать перед публикацией
@@ -28,7 +30,7 @@
 
 3. **GoatCounter.**
    - Зарегистрируйтесь на goatcounter.com, получите код сайта.
-   - В `index.html` замените `deathpass.goatcounter.com` на ваш реальный поддомен.
+   - В HTML-страницах замените `deathpass.goatcounter.com` на ваш реальный поддомен.
 
 4. **Хостинг: Netlify** (нужен для админки).
    1. Зайти на https://app.netlify.com → Sign up with GitHub.

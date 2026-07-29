@@ -3,19 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050708">
 <title>Планы — ON DEATH PASS</title>
 <meta name="description" content="Текущее состояние разработки ON DEATH PASS, чего ждать от игры, роадмап и возможный дополнительный контент.">
+<script>document.documentElement.classList.add('js');</script>
 <link rel="stylesheet" href="style.css">
 
-<!-- GoatCounter analytics: без cookies, без сбора личных данных -->
 <script data-goatcounter="https://deathpass.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 
+<div class="boot-screen" aria-hidden="true">
+  <div class="boot-screen__panel">
+    <span class="boot-screen__code">ODP // SYSTEM BOOT</span>
+    <span class="boot-screen__line"></span>
+    <span class="boot-screen__status">NEURAL LINK ESTABLISHED</span>
+  </div>
+</div>
+
+<div class="ambient" aria-hidden="true">
+  <span class="ambient__grid"></span>
+  <span class="ambient__glow ambient__glow--red"></span>
+  <span class="ambient__glow ambient__glow--cyan"></span>
+  <span class="ambient__scan"></span>
+</div>
+
 <div class="page">
 
-  <!-- ЛЕВОЕ МЕНЮ -->
   <aside class="sidebar">
     <div class="sidebar__bar">
       <span class="sidebar__logo">ON DEATH PASS</span>
@@ -23,30 +38,56 @@
         <span></span><span></span><span></span>
       </button>
     </div>
+
     <div class="sidebar__panel" id="mobile-nav">
-      <nav class="nav">
-        <a href="index.html" class="nav__item">Главная</a>
-        <a href="about.html" class="nav__item">О игре</a>
-        <a href="plans.html" class="nav__item nav__item--active" aria-current="page">Планы</a>
-        <a href="contacts.html" class="nav__item">Контакты</a>
+      <div class="sidebar__head">
+        <a class="brand" href="index.html" aria-label="On Death Pass — главная">
+          <span class="brand__eyebrow">DEATH PASS PROTOCOL</span>
+          <span class="brand__name" data-glitch="ON DEATH PASS">ON DEATH PASS</span>
+          <span class="brand__version">BUILD // 00.4.17</span>
+        </a>
+
+        <div class="system-state" aria-label="Статус проекта">
+          <span class="system-state__dot"></span>
+          <span>DEMO IN DEVELOPMENT</span>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Основная навигация">
+        <a href="index.html" class="nav__item"><span>01</span>Главная</a>
+        <a href="about.html" class="nav__item"><span>02</span>О игре</a>
+        <a href="plans.html" class="nav__item nav__item--active" aria-current="page"><span>03</span>Планы</a>
+        <a href="contacts.html" class="nav__item"><span>04</span>Контакты</a>
       </nav>
-      <div class="social">
-        <a href="https://boosty.to/goondeathpass" class="social__icon" data-goatcounter-click data-goatcounter-title="social_boosty" aria-label="Boosty"><img src="images/social/boosty.png" alt="" width="18" height="18"></a>
-        <a href="https://t.me/markizanime" class="social__icon" data-goatcounter-click data-goatcounter-title="social_telegram" aria-label="Telegram"><img src="images/social/telegram.png" alt="" width="18" height="18"></a>
-        <a href="https://www.youtube.com/@markizanime" class="social__icon" data-goatcounter-click data-goatcounter-title="social_youtube" aria-label="YouTube"><img src="images/social/youtube.png" alt="" width="18" height="18"></a>
-        <a href="mailto:rospwnza@gmail.com" class="social__icon" data-goatcounter-click data-goatcounter-title="social_mail" aria-label="Почта"><img src="images/social/mail.png" alt="" width="18" height="18"></a>
+
+      <div class="sidebar__foot">
+        <div class="signal" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <p class="sidebar__microcopy">ENCRYPTED CHANNEL<br>NODE: ODP-09</p>
+
+        <div class="social">
+          <a href="https://boosty.to/goondeathpass" class="social__icon" data-goatcounter-click data-goatcounter-title="social_boosty" aria-label="Boosty"><img src="images/social/boosty.png" alt="" width="18" height="18"></a>
+          <a href="https://t.me/markizanime" class="social__icon" data-goatcounter-click data-goatcounter-title="social_telegram" aria-label="Telegram"><img src="images/social/telegram.png" alt="" width="18" height="18"></a>
+          <a href="https://www.youtube.com/@markizanime" class="social__icon" data-goatcounter-click data-goatcounter-title="social_youtube" aria-label="YouTube"><img src="images/social/youtube.png" alt="" width="18" height="18"></a>
+          <a href="mailto:rospwnza@gmail.com" class="social__icon" data-goatcounter-click data-goatcounter-title="social_mail" aria-label="Почта"><img src="images/social/mail.png" alt="" width="18" height="18"></a>
+        </div>
       </div>
     </div>
   </aside>
 
-  <!-- ОСНОВНОЙ КОНТЕНТ -->
   <main class="content" id="main">
 
-    <h1 class="about-hero__title">ON DEATH PASS</h1>
+    <header class="topline" aria-label="Системный статус">
+      <span><i></i> SYSTEM ONLINE</span>
+      <span class="topline__center">SECTOR 09 // PLANS</span>
+      <span id="system-clock">00:00:00</span>
+    </header>
 
-    <div class="accordion" id="plans-accordion">
+    <h1 class="about-hero__title reveal">ON DEATH PASS</h1>
 
-      <!-- 1. Текущее состояние игры (открыт по умолчанию) -->
+    <div class="accordion reveal" id="plans-accordion">
+
       <div class="accordion-item is-open">
         <button class="accordion-header" aria-expanded="true">
           <span>Текущее состояние игры</span>
@@ -67,7 +108,6 @@
         </div>
       </div>
 
-      <!-- 2. Что ожидать от игры -->
       <div class="accordion-item">
         <button class="accordion-header" aria-expanded="false">
           <span>Что ожидать от игры</span>
@@ -78,7 +118,6 @@
         </div>
       </div>
 
-      <!-- 3. Роадмап -->
       <div class="accordion-item">
         <button class="accordion-header" aria-expanded="false">
           <span>Роадмап</span>
@@ -89,7 +128,6 @@
         </div>
       </div>
 
-      <!-- 4. Возможный доп контент -->
       <div class="accordion-item">
         <button class="accordion-header" aria-expanded="false">
           <span>Возможный доп контент</span>
@@ -103,12 +141,15 @@
     </div>
 
     <footer class="footer">
-      <p>© <span id="year"></span> On Death Pass. Демо-версия в разработке.</p>
+      <div class="footer__line"></div>
+      <p>© <span id="year"></span> ON DEATH PASS // DEMO IN DEVELOPMENT</p>
+      <p class="footer__status"><i></i> CONNECTION STABLE</p>
     </footer>
 
   </main>
 </div>
 
 <script src="script.js"></script>
+<script src="interface.js"></script>
 </body>
 </html>
