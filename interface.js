@@ -98,6 +98,7 @@
   const sceneCode = brief?.querySelector('[data-scene-code]');
   const sceneTitle = brief?.querySelector('[data-scene-title]');
   const sceneCopy = brief?.querySelector('[data-scene-copy]');
+  const art = slider.querySelector('.hero__art');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const AUTOPLAY_DELAY = 8000;
 
@@ -109,6 +110,10 @@
   let pointerPaused = false;
   let focusPaused = false;
   let touchStartX = null;
+  // Пока курсор уже лежит на hero при загрузке — не считаем это «наведением».
+  let hoverArmed = false;
+  // Клик мышью фокусирует кнопку; из-за этого не должны глушить автопрокрутку.
+  let pointerDrivenFocus = false;
 
   const format = (number) => String(number).padStart(2, '0');
 
@@ -159,7 +164,10 @@
 
   const setSlide = (requestedIndex, userInitiated = true) => {
     const nextIndex = (requestedIndex + slides.length) % slides.length;
-    if (nextIndex === index && userInitiated) {
+    if (nextIndex === index) {
+      // Тот же слайд (старт или повторный клик по вкладке) — только синхронизация.
+      updateBrief(slides[index]);
+      if (counter) counter.textContent = `${format(index + 1)} / ${format(slides.length)}`;
       scheduleNext();
       return;
     }
@@ -215,20 +223,43 @@
   pause?.addEventListener('click', () => {
     userPaused = !userPaused;
     updatePauseButton();
+    // После клика «▶» фокус остаётся на кнопке — не блокируем возобновление.
+    if (!userPaused) focusPaused = false;
     scheduleNext();
   });
 
-  slider.addEventListener('pointerenter', () => {
+  // Пауза только над картинкой/контролами, не над текстом справа.
+  const hoverRoot = art || slider;
+
+  hoverRoot.addEventListener('pointerenter', () => {
+    if (!hoverArmed) return;
     pointerPaused = true;
     stopTimer();
   });
 
-  slider.addEventListener('pointerleave', () => {
+  hoverRoot.addEventListener('pointerleave', () => {
+    hoverArmed = true;
     pointerPaused = false;
     scheduleNext();
   });
 
+  // Если курсор уже над art при загрузке — через мгновение разрешаем паузу по наведению,
+  // но автопрокрутку при этом не стопаем, пока пользователь не уйдёт и не вернётся.
+  window.setTimeout(() => {
+    hoverArmed = true;
+  }, 1200);
+
+  slider.addEventListener('pointerdown', (event) => {
+    pointerDrivenFocus = true;
+    if (event.pointerType === 'mouse') return;
+    touchStartX = event.clientX;
+  });
+
   slider.addEventListener('focusin', () => {
+    if (pointerDrivenFocus) {
+      pointerDrivenFocus = false;
+      return;
+    }
     focusPaused = true;
     stopTimer();
   });
@@ -248,11 +279,6 @@
       event.preventDefault();
       setSlide(index + 1);
     }
-  });
-
-  slider.addEventListener('pointerdown', (event) => {
-    if (event.pointerType === 'mouse') return;
-    touchStartX = event.clientX;
   });
 
   slider.addEventListener('pointerup', (event) => {

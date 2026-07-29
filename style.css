@@ -1204,6 +1204,18 @@ select {
   box-shadow: 0 0 12px rgba(255, 59, 48, 0.45);
 }
 
+.data-card--alert:hover {
+  border-color: rgba(255, 59, 48, 0.55);
+  background:
+    linear-gradient(135deg, rgba(255, 59, 48, 0.1), transparent 45%),
+    rgba(12, 18, 20, 0.92);
+  box-shadow: var(--shadow-red);
+}
+
+.data-card--alert:hover::before {
+  box-shadow: 0 0 18px rgba(255, 59, 48, 0.7);
+}
+
 .data-card__num {
   position: absolute;
   right: 22px;
