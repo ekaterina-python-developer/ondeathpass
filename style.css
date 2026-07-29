@@ -1271,51 +1271,74 @@ select {
 }
 
 /* -------------------- DATA CARDS -------------------- */
+/* Поведение как у новостей, цвета прежние: cyan / alert — red. */
 .description__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 14px;
 }
 
 .data-card,
 .description__block {
   position: relative;
+  isolation: isolate;
   min-height: 210px;
   padding: 28px;
   overflow: hidden;
   border: 1px solid var(--line);
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.025), transparent 45%),
+    linear-gradient(145deg, rgba(85, 246, 255, 0.04), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent 58%),
     var(--panel);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.012),
+    0 10px 28px rgba(0, 0, 0, 0.18);
   clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
-  transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+  transition:
+    transform 0.32s ease,
+    border-color 0.32s ease,
+    background 0.32s ease,
+    box-shadow 0.32s ease;
 }
 
 .data-card::before,
 .description__block::before {
   content: "";
   position: absolute;
-  left: 0;
+  z-index: 5;
   top: 0;
-  width: 2px;
-  height: 34%;
-  background: var(--cyan);
-  box-shadow: 0 0 12px rgba(85, 246, 255, 0.45);
-  transition: height 0.35s ease, background 0.35s ease;
+  left: 0;
+  width: 42%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyan), transparent);
+  box-shadow: 0 0 18px rgba(85, 246, 255, 0.55);
+  transform-origin: left;
+  transition: width 0.4s ease, opacity 0.4s ease;
+  pointer-events: none;
 }
 
 .data-card:hover,
-.description__block:hover {
+.data-card:focus-within,
+.description__block:hover,
+.description__block:focus-within {
   border-color: var(--line-strong);
-  transform: translateY(-4px);
   background:
-    linear-gradient(135deg, rgba(85, 246, 255, 0.045), transparent 45%),
+    linear-gradient(145deg, rgba(85, 246, 255, 0.08), transparent 38%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 58%),
     rgba(12, 18, 20, 0.92);
+  box-shadow:
+    inset 0 0 0 1px rgba(85, 246, 255, 0.06),
+    0 0 0 1px rgba(85, 246, 255, 0.06),
+    0 18px 40px rgba(0, 0, 0, 0.28),
+    0 0 28px rgba(85, 246, 255, 0.08);
+  transform: translateY(-4px);
 }
 
 .data-card:hover::before,
-.description__block:hover::before {
-  height: 100%;
+.data-card:focus-within::before,
+.description__block:hover::before,
+.description__block:focus-within::before {
+  width: 78%;
 }
 
 .data-card--wide {
@@ -1324,24 +1347,26 @@ select {
 }
 
 .data-card--alert::before {
-  background: var(--red);
-  box-shadow: 0 0 12px rgba(255, 59, 48, 0.45);
+  background: linear-gradient(90deg, var(--red), transparent);
+  box-shadow: 0 0 18px rgba(255, 59, 48, 0.55);
 }
 
-.data-card--alert:hover {
+.data-card--alert:hover,
+.data-card--alert:focus-within {
   border-color: rgba(255, 59, 48, 0.55);
   background:
-    linear-gradient(135deg, rgba(255, 59, 48, 0.1), transparent 45%),
+    linear-gradient(145deg, rgba(255, 59, 48, 0.1), transparent 38%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 58%),
     rgba(12, 18, 20, 0.92);
-  box-shadow: var(--shadow-red);
-}
-
-.data-card--alert:hover::before {
-  box-shadow: 0 0 18px rgba(255, 59, 48, 0.7);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 59, 48, 0.1),
+    0 18px 40px rgba(0, 0, 0, 0.28),
+    var(--shadow-red);
 }
 
 .data-card__num {
   position: absolute;
+  z-index: 1;
   right: 22px;
   top: 18px;
   color: rgba(255, 255, 255, 0.08);
@@ -1352,6 +1377,8 @@ select {
 }
 
 .data-card__label {
+  position: relative;
+  z-index: 2;
   margin: 0 0 34px;
   color: var(--cyan);
   font-size: 9px;
@@ -1365,7 +1392,7 @@ select {
 .data-card p:not(.data-card__label),
 .description__block p {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: 680px;
   margin: 0;
   color: var(--text-soft);
@@ -1380,6 +1407,22 @@ select {
 
 .description__block strong {
   color: var(--text);
+}
+
+@media (max-width: 700px) {
+  .data-card:hover,
+  .data-card:focus-within,
+  .description__block:hover,
+  .description__block:focus-within {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .data-card,
+  .description__block {
+    transition: none !important;
+  }
 }
 
 /* -------------------- NEWS -------------------- */
