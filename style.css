@@ -88,7 +88,18 @@ a { color: inherit; text-decoration: none; }
   justify-content: center;
   background: var(--red);
   border-radius: 4px;
-  font-weight: bold;
+  transition: background 0.15s;
+}
+.social__icon:hover,
+.social__icon:focus-visible {
+  background: var(--red-dark);
+}
+.social__icon img {
+  width: 18px;
+  height: 18px;
+  display: block;
+  /* иконки белые — хорошо читаются на красной кнопке и тёмном фоне */
+  object-fit: contain;
 }
 
 /* Burger button (hidden on desktop, shown <=900px) */
