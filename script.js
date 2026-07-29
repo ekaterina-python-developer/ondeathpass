@@ -47,7 +47,7 @@ async function renderNews() {
       mainEl.innerHTML = `
         ${latest.image ? `<img src="${latest.image}" alt="">` : ""}
         <span class="news-card__date">${formatDate(latest.date)}</span>
-        <strong>${latest.title}</strong>
+        <h3>${latest.title}</h3>
         <p>${latest.body || ""}</p>
       `;
     }
@@ -59,7 +59,7 @@ async function renderNews() {
           ${item.image ? `<img src="${item.image}" alt="">` : ""}
           <div>
             <span class="news-card__date">${formatDate(item.date)}</span>
-            ${item.title}
+            <h3>${item.title}</h3>
           </div>
         </div>`
       )
