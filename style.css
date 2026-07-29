@@ -2858,8 +2858,7 @@ select {
 }
 
 .news__layout {
-  gap: 14px;
-  align-items: stretch;
+  gap: 10px;
 }
 
 .news__main,
@@ -2882,12 +2881,11 @@ select {
 }
 
 .news__main {
-  min-height: 440px;
+  min-height: 420px;
   clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
 }
 
 .news-card {
-  min-height: 98px;
   clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
 }
 
@@ -2952,9 +2950,8 @@ select {
 .news__main img {
   position: relative;
   z-index: 1;
-  aspect-ratio: 16 / 8.7;
-  max-height: none;
-  margin-bottom: 22px;
+  max-height: 300px;
+  margin-bottom: 20px;
 }
 
 .news__main h3,
@@ -2989,6 +2986,10 @@ select {
 @media (max-width: 700px) {
   .news__main {
     min-height: 0;
+  }
+
+  .news__main img {
+    max-height: 220px;
   }
 
   .news__main:not(:empty)::after {
