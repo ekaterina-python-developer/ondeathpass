@@ -1270,8 +1270,8 @@ select {
   transform: translateX(-5px);
 }
 
-/* -------------------- DATA CARDS -------------------- */
-/* Поведение как у новостей, цвета прежние: cyan / alert — red. */
+/* -------------------- PANEL CARDS: DATABASE + NEWS -------------------- */
+/* Один общий каркас. Размеры у новостей задаются отдельно ниже. */
 .description__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1279,11 +1279,11 @@ select {
 }
 
 .data-card,
-.description__block {
+.description__block,
+.news__main,
+.news-card {
   position: relative;
   isolation: isolate;
-  min-height: 210px;
-  padding: 28px;
   overflow: hidden;
   border: 1px solid var(--line);
   background:
@@ -1301,8 +1301,16 @@ select {
     box-shadow 0.32s ease;
 }
 
+.data-card,
+.description__block {
+  min-height: 210px;
+  padding: 28px;
+}
+
 .data-card::before,
-.description__block::before {
+.description__block::before,
+.news__main:not(:empty)::before,
+.news-card::before {
   content: "";
   position: absolute;
   z-index: 5;
@@ -1320,7 +1328,11 @@ select {
 .data-card:hover,
 .data-card:focus-within,
 .description__block:hover,
-.description__block:focus-within {
+.description__block:focus-within,
+.news__main:hover,
+.news__main:focus-within,
+.news-card:hover,
+.news-card:focus-within {
   border-color: var(--line-strong);
   background:
     linear-gradient(145deg, rgba(85, 246, 255, 0.08), transparent 38%),
@@ -1337,7 +1349,11 @@ select {
 .data-card:hover::before,
 .data-card:focus-within::before,
 .description__block:hover::before,
-.description__block:focus-within::before {
+.description__block:focus-within::before,
+.news__main:hover::before,
+.news__main:focus-within::before,
+.news-card:hover::before,
+.news-card:focus-within::before {
   width: 78%;
 }
 
@@ -1413,19 +1429,25 @@ select {
   .data-card:hover,
   .data-card:focus-within,
   .description__block:hover,
-  .description__block:focus-within {
+  .description__block:focus-within,
+  .news__main:hover,
+  .news__main:focus-within,
+  .news-card:hover,
+  .news-card:focus-within {
     transform: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .data-card,
-  .description__block {
+  .description__block,
+  .news__main,
+  .news-card {
     transition: none !important;
   }
 }
 
-/* -------------------- NEWS -------------------- */
+/* -------------------- NEWS (раскладка и контент, без своего chrome) -------------------- */
 .news__layout {
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(260px, 0.65fr);
@@ -1435,22 +1457,45 @@ select {
 .news__main {
   min-height: 420px;
   padding: 22px;
-  border: 1px solid var(--line-strong);
-  background: var(--panel);
-  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
 }
 
 .news__main:empty::before {
   content: "AWAITING TRANSMISSION...";
   display: grid;
   place-items: center;
+  position: static;
+  width: auto;
+  height: auto;
   min-height: 374px;
+  background: none;
+  box-shadow: none;
   color: var(--text-dim);
   font-size: 9px;
   letter-spacing: 0.16em;
 }
 
+.news__main:not(:empty)::after {
+  content: "LATEST TRANSMISSION // PRIORITY";
+  position: absolute;
+  z-index: 6;
+  top: 34px;
+  left: 34px;
+  padding: 7px 9px 6px;
+  color: #fff;
+  background: rgba(164, 18, 15, 0.88);
+  border-left: 2px solid var(--red-bright);
+  box-shadow: 0 0 24px rgba(255, 59, 48, 0.2);
+  backdrop-filter: blur(8px);
+  font-size: 8px;
+  line-height: 1;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
 .news__main img {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 100%;
   max-height: 300px;
@@ -1461,6 +1506,9 @@ select {
 }
 
 .news__main h3 {
+  position: relative;
+  z-index: 2;
+  max-width: 92%;
   margin: 0 0 10px;
   font-family: var(--font-interface);
   font-size: clamp(18px, 2vw, 24px);
@@ -1469,6 +1517,9 @@ select {
 }
 
 .news__main p {
+  position: relative;
+  z-index: 2;
+  max-width: 66ch;
   color: var(--text-soft);
   font-size: 12px;
   line-height: 1.75;
@@ -1497,15 +1548,6 @@ select {
   grid-template-columns: 74px 1fr;
   gap: 13px;
   padding: 11px;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.018);
-  transition: border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
-}
-
-.news-card:hover {
-  border-color: var(--red);
-  background: rgba(255, 59, 48, 0.045);
-  transform: translateX(-4px);
 }
 
 .news-card img {
@@ -1518,13 +1560,15 @@ select {
 .news-card__date {
   display: block;
   margin-bottom: 6px;
-  color: var(--red-bright);
+  color: var(--cyan);
   font-size: 8px;
   letter-spacing: 0.1em;
 }
 
 .news-card h3,
 .news-card p {
+  position: relative;
+  z-index: 2;
   margin: 0;
 }
 
@@ -1532,6 +1576,43 @@ select {
   font-family: var(--font-interface);
   font-size: 15px;
   line-height: 1.15;
+}
+
+.news .section-heading__code {
+  opacity: 0.72;
+}
+
+.news .section-heading__code i {
+  box-shadow: 0 0 10px currentColor;
+  animation: news-channel-pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes news-channel-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.82); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 700px) {
+  .news__main {
+    min-height: 0;
+  }
+
+  .news__main img {
+    max-height: 220px;
+  }
+
+  .news__main:not(:empty)::after {
+    top: 24px;
+    left: 24px;
+    max-width: calc(100% - 48px);
+    font-size: 7px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .news .section-heading__code i {
+    animation: none !important;
+  }
 }
 
 /* -------------------- INNER PAGES / LEGACY COMPONENTS -------------------- */
@@ -2850,174 +2931,3 @@ select {
   }
 }
 
-/* ==========================================================
-   NEWS — единый стиль с DATABASE: линия сверху, cyan, подъём.
-   Размеры карточек/картинок/заголовков не трогаем.
-   ========================================================== */
-
-.news {
-  position: relative;
-}
-
-.news__layout {
-  gap: 10px;
-}
-
-.news__main,
-.news-card {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  background:
-    linear-gradient(145deg, rgba(85, 246, 255, 0.04), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent 58%),
-    var(--panel);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.012),
-    0 10px 28px rgba(0, 0, 0, 0.18);
-  transition:
-    transform 0.32s ease,
-    border-color 0.32s ease,
-    background 0.32s ease,
-    box-shadow 0.32s ease;
-}
-
-.news__main {
-  min-height: 420px;
-  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
-}
-
-.news-card {
-  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
-}
-
-/* Горизонтальная cyan-линия сверху — как у DATABASE. */
-.news__main:not(:empty)::before,
-.news-card::before {
-  content: "";
-  position: absolute;
-  z-index: 5;
-  top: 0;
-  left: 0;
-  width: 42%;
-  height: 2px;
-  background: linear-gradient(90deg, var(--cyan), transparent);
-  box-shadow: 0 0 18px rgba(85, 246, 255, 0.55);
-  transform-origin: left;
-  transition: width 0.4s ease, opacity 0.4s ease;
-  pointer-events: none;
-}
-
-/* Метка latest только на главной новости. */
-.news__main:not(:empty)::after {
-  content: "LATEST TRANSMISSION // PRIORITY";
-  position: absolute;
-  z-index: 6;
-  top: 34px;
-  left: 34px;
-  padding: 7px 9px 6px;
-  color: #fff;
-  background: rgba(164, 18, 15, 0.88);
-  border-left: 2px solid var(--red-bright);
-  box-shadow: 0 0 24px rgba(255, 59, 48, 0.2);
-  backdrop-filter: blur(8px);
-  font-size: 8px;
-  line-height: 1;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  pointer-events: none;
-}
-
-.news__main:hover,
-.news__main:focus-within,
-.news-card:hover,
-.news-card:focus-within {
-  border-color: var(--line-strong);
-  background:
-    linear-gradient(145deg, rgba(85, 246, 255, 0.08), transparent 38%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 58%),
-    rgba(12, 18, 20, 0.92);
-  box-shadow:
-    inset 0 0 0 1px rgba(85, 246, 255, 0.06),
-    0 0 0 1px rgba(85, 246, 255, 0.06),
-    0 18px 40px rgba(0, 0, 0, 0.28),
-    0 0 28px rgba(85, 246, 255, 0.08);
-  transform: translateY(-4px);
-}
-
-.news__main:hover::before,
-.news__main:focus-within::before,
-.news-card:hover::before,
-.news-card:focus-within::before {
-  width: 78%;
-}
-
-.news__main img {
-  position: relative;
-  z-index: 1;
-  max-height: 300px;
-  margin-bottom: 20px;
-}
-
-.news__main h3,
-.news-card h3,
-.news__main p {
-  position: relative;
-  z-index: 2;
-}
-
-.news__main h3 {
-  max-width: 92%;
-}
-
-.news__main p {
-  max-width: 66ch;
-}
-
-.news .section-heading__code {
-  opacity: 0.72;
-}
-
-.news .section-heading__code i {
-  box-shadow: 0 0 10px currentColor;
-  animation: news-channel-pulse 2.8s ease-in-out infinite;
-}
-
-@keyframes news-channel-pulse {
-  0%, 100% { opacity: 0.35; transform: scale(0.82); }
-  50% { opacity: 1; transform: scale(1); }
-}
-
-@media (max-width: 700px) {
-  .news__main {
-    min-height: 0;
-  }
-
-  .news__main img {
-    max-height: 220px;
-  }
-
-  .news__main:not(:empty)::after {
-    top: 24px;
-    left: 24px;
-    max-width: calc(100% - 48px);
-    font-size: 7px;
-  }
-
-  .news__main:hover,
-  .news__main:focus-within,
-  .news-card:hover,
-  .news-card:focus-within {
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .news__main,
-  .news-card,
-  .news .section-heading__code i {
-    animation: none !important;
-    transition: none !important;
-  }
-}
