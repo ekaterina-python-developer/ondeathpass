@@ -77,6 +77,33 @@
 
   // CSS can use this for fine progressive enhancement.
   root.classList.add('interface-ready');
+
+  // Тонкий индикатор скролла на правом краю сайдбара.
+  document.querySelectorAll('.sidebar').forEach((sidebar) => {
+    if (sidebar.querySelector('.sidebar__rail')) return;
+
+    const rail = document.createElement('span');
+    rail.className = 'sidebar__rail is-idle';
+    rail.setAttribute('aria-hidden', 'true');
+    rail.innerHTML = '<span class="sidebar__rail-thumb"></span>';
+    sidebar.appendChild(rail);
+
+    const updateRail = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (max <= 8) {
+        rail.classList.add('is-idle');
+        root.style.setProperty('--sidebar-scroll', '0');
+        return;
+      }
+      rail.classList.remove('is-idle');
+      const progress = Math.min(1, Math.max(0, window.scrollY / max));
+      root.style.setProperty('--sidebar-scroll', String(progress));
+    };
+
+    updateRail();
+    window.addEventListener('scroll', updateRail, { passive: true });
+    window.addEventListener('resize', updateRail);
+  });
 })();
 
 // ---------------------------------------------------------------------------
