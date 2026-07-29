@@ -106,101 +106,100 @@
     window.addEventListener('resize', updateRail);
   });
 
-  // Фоновая музыка: браузеры не дают включить звук без клика пользователя.
-  // Кнопка AUDIO в углу; выбор (вкл/выкл) запоминается в localStorage.
-  (() => {
-    const STORAGE_KEY = 'odp-audio-enabled';
-    const VOLUME = 0.32;
+})();
 
-    const audio = document.createElement('audio');
-    audio.src = 'audio/ambient.mp3';
-    audio.loop = true;
-    audio.preload = 'auto';
-    audio.volume = VOLUME;
-    audio.setAttribute('playsinline', '');
+// Фоновая музыка: только по кнопке SOUND в сайдбаре, без автозапуска.
+(() => {
+  const music = document.querySelector('#background-music');
+  const soundButton = document.querySelector('#sound-toggle');
+  if (!music || !soundButton) return;
 
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'audio-toggle';
-    button.setAttribute('aria-pressed', 'false');
-    button.innerHTML = '<span class="audio-toggle__code">AUDIO</span><span class="audio-toggle__state">OFF</span>';
-    document.body.appendChild(button);
+  const soundValue = soundButton.querySelector('.sound-toggle__value');
+  const soundStatus = soundButton.querySelector('.sound-toggle__status');
+  const targetVolume = 0.16;
+  let fadeTimer = null;
+  let soundEnabled = localStorage.getItem('death-pass-sound') === 'on';
 
-    let enabled = localStorage.getItem(STORAGE_KEY) === '1';
-    let unlockBound = false;
+  music.volume = 0;
 
-    const setUi = (on) => {
-      button.classList.toggle('is-on', on);
-      button.setAttribute('aria-pressed', on ? 'true' : 'false');
-      button.setAttribute('aria-label', on ? 'Выключить музыку' : 'Включить музыку');
-      button.querySelector('.audio-toggle__state').textContent = on ? 'ON' : 'OFF';
-    };
+  const updateButton = (isPlaying) => {
+    soundButton.setAttribute('aria-pressed', String(isPlaying));
+    soundButton.classList.toggle('is-playing', isPlaying);
+    soundValue.textContent = isPlaying ? 'SOUND // ON' : 'SOUND // OFF';
+    soundStatus.textContent = isPlaying ? 'AUDIO CHANNEL ACTIVE' : 'AUDIO CHANNEL';
+    soundButton.setAttribute(
+      'aria-label',
+      isPlaying ? 'Выключить фоновую музыку' : 'Включить фоновую музыку'
+    );
+  };
 
-    const tryPlay = async () => {
-      try {
-        await audio.play();
-        return true;
-      } catch {
-        return false;
+  const fadeTo = (target, duration = 600, onComplete) => {
+    window.clearInterval(fadeTimer);
+    const startVolume = music.volume;
+    const difference = target - startVolume;
+    const steps = 30;
+    let currentStep = 0;
+
+    fadeTimer = window.setInterval(() => {
+      currentStep += 1;
+      music.volume = Math.max(0, Math.min(1, startVolume + difference * (currentStep / steps)));
+      if (currentStep >= steps) {
+        window.clearInterval(fadeTimer);
+        music.volume = target;
+        onComplete?.();
       }
-    };
+    }, duration / steps);
+  };
 
-    const enable = async () => {
-      enabled = true;
-      localStorage.setItem(STORAGE_KEY, '1');
-      setUi(true);
-      const ok = await tryPlay();
-      if (!ok) bindUnlock();
-    };
-
-    const disable = () => {
-      enabled = false;
-      localStorage.setItem(STORAGE_KEY, '0');
-      audio.pause();
-      setUi(false);
-    };
-
-    const bindUnlock = () => {
-      if (unlockBound) return;
-      unlockBound = true;
-      const unlock = async () => {
-        if (!enabled) return;
-        const ok = await tryPlay();
-        if (ok) {
-          document.removeEventListener('pointerdown', unlock);
-          document.removeEventListener('keydown', unlock);
-          unlockBound = false;
-        }
-      };
-      document.addEventListener('pointerdown', unlock);
-      document.addEventListener('keydown', unlock);
-    };
-
-    button.addEventListener('click', () => {
-      if (enabled) {
-        disable();
-        return;
-      }
-      enable();
-    });
-
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        audio.pause();
-        return;
-      }
-      if (enabled) tryPlay();
-    });
-
-    setUi(enabled);
-    if (enabled) {
-      // Попытка автозапуска: сработает только если браузер разрешит
-      // (или после первого клика где угодно на странице).
-      tryPlay().then((ok) => {
-        if (!ok) bindUnlock();
-      });
+  const enableSound = async () => {
+    try {
+      await music.play();
+      soundEnabled = true;
+      localStorage.setItem('death-pass-sound', 'on');
+      updateButton(true);
+      fadeTo(targetVolume);
+    } catch (error) {
+      soundEnabled = false;
+      updateButton(false);
+      console.warn('Браузер заблокировал воспроизведение:', error);
     }
-  })();
+  };
+
+  const disableSound = () => {
+    soundEnabled = false;
+    localStorage.setItem('death-pass-sound', 'off');
+    updateButton(false);
+    fadeTo(0, 400, () => {
+      music.pause();
+    });
+  };
+
+  soundButton.addEventListener('click', () => {
+    if (music.paused) {
+      enableSound();
+    } else {
+      disableSound();
+    }
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && !music.paused) {
+      music.pause();
+    } else if (!document.hidden && soundEnabled) {
+      music.play()
+        .then(() => {
+          updateButton(true);
+          if (music.volume < targetVolume) fadeTo(targetVolume);
+        })
+        .catch(() => {
+          updateButton(false);
+        });
+    }
+  });
+
+  // Выбор помним, но на новой загрузке страницы звук сам не стартует —
+  // нужен клик именно по SOUND.
+  updateButton(false);
 })();
 
 // ---------------------------------------------------------------------------
