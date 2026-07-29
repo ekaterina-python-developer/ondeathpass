@@ -105,6 +105,102 @@
     window.addEventListener('scroll', updateRail, { passive: true });
     window.addEventListener('resize', updateRail);
   });
+
+  // Фоновая музыка: браузеры не дают включить звук без клика пользователя.
+  // Кнопка AUDIO в углу; выбор (вкл/выкл) запоминается в localStorage.
+  (() => {
+    const STORAGE_KEY = 'odp-audio-enabled';
+    const VOLUME = 0.32;
+
+    const audio = document.createElement('audio');
+    audio.src = 'audio/ambient.mp3';
+    audio.loop = true;
+    audio.preload = 'auto';
+    audio.volume = VOLUME;
+    audio.setAttribute('playsinline', '');
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'audio-toggle';
+    button.setAttribute('aria-pressed', 'false');
+    button.innerHTML = '<span class="audio-toggle__code">AUDIO</span><span class="audio-toggle__state">OFF</span>';
+    document.body.appendChild(button);
+
+    let enabled = localStorage.getItem(STORAGE_KEY) === '1';
+    let unlockBound = false;
+
+    const setUi = (on) => {
+      button.classList.toggle('is-on', on);
+      button.setAttribute('aria-pressed', on ? 'true' : 'false');
+      button.setAttribute('aria-label', on ? 'Выключить музыку' : 'Включить музыку');
+      button.querySelector('.audio-toggle__state').textContent = on ? 'ON' : 'OFF';
+    };
+
+    const tryPlay = async () => {
+      try {
+        await audio.play();
+        return true;
+      } catch {
+        return false;
+      }
+    };
+
+    const enable = async () => {
+      enabled = true;
+      localStorage.setItem(STORAGE_KEY, '1');
+      setUi(true);
+      const ok = await tryPlay();
+      if (!ok) bindUnlock();
+    };
+
+    const disable = () => {
+      enabled = false;
+      localStorage.setItem(STORAGE_KEY, '0');
+      audio.pause();
+      setUi(false);
+    };
+
+    const bindUnlock = () => {
+      if (unlockBound) return;
+      unlockBound = true;
+      const unlock = async () => {
+        if (!enabled) return;
+        const ok = await tryPlay();
+        if (ok) {
+          document.removeEventListener('pointerdown', unlock);
+          document.removeEventListener('keydown', unlock);
+          unlockBound = false;
+        }
+      };
+      document.addEventListener('pointerdown', unlock);
+      document.addEventListener('keydown', unlock);
+    };
+
+    button.addEventListener('click', () => {
+      if (enabled) {
+        disable();
+        return;
+      }
+      enable();
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        audio.pause();
+        return;
+      }
+      if (enabled) tryPlay();
+    });
+
+    setUi(enabled);
+    if (enabled) {
+      // Попытка автозапуска: сработает только если браузер разрешит
+      // (или после первого клика где угодно на странице).
+      tryPlay().then((ok) => {
+        if (!ok) bindUnlock();
+      });
+    }
+  })();
 })();
 
 // ---------------------------------------------------------------------------

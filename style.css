@@ -2726,4 +2726,90 @@ select {
   .hero[data-hero-slider] .hero__title.is-glitching {
     animation: none !important;
   }
+
+  .audio-toggle.is-on::after {
+    animation: none;
+  }
+}
+
+/* --- Фоновая музыка: кнопка AUDIO в правом нижнем углу --- */
+.audio-toggle {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 40;
+  display: inline-grid;
+  grid-auto-flow: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 118px;
+  margin: 0;
+  padding: 10px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  background: rgba(8, 12, 14, 0.88);
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.audio-toggle::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  box-shadow: 0 0 0 1px rgba(164, 199, 202, 0.25);
+}
+
+.audio-toggle__code {
+  color: var(--text-dim);
+}
+
+.audio-toggle__state {
+  color: var(--amber);
+}
+
+.audio-toggle:hover,
+.audio-toggle:focus-visible {
+  border-color: rgba(85, 246, 255, 0.55);
+  color: var(--text);
+  box-shadow: var(--shadow-cyan);
+  outline: none;
+}
+
+.audio-toggle.is-on {
+  border-color: rgba(255, 59, 48, 0.55);
+  box-shadow: var(--shadow-red);
+}
+
+.audio-toggle.is-on .audio-toggle__state {
+  color: var(--cyan);
+}
+
+.audio-toggle.is-on::after {
+  background: var(--red);
+  box-shadow: 0 0 10px rgba(255, 59, 48, 0.7);
+  animation: audio-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes audio-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(0.85); }
+}
+
+@media (max-width: 720px) {
+  .audio-toggle {
+    right: 12px;
+    bottom: 12px;
+    min-width: 0;
+    padding: 9px 12px;
+    font-size: 10px;
+  }
 }
