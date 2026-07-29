@@ -2850,8 +2850,7 @@ select {
 }
 
 /* ==========================================================
-   NEWS / EXPRESSIVE FEATURED TRANSMISSION
-   Один стиль для большой и маленьких: подъём, свечение, линия сверху.
+   NEWS — стиль старых data-card: cyan-полоска слева, подъём.
    ========================================================== */
 
 .news {
@@ -2868,32 +2867,31 @@ select {
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  border: 1px solid var(--line);
   background:
-    linear-gradient(145deg, rgba(255, 59, 48, 0.055), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent 58%);
+    linear-gradient(135deg, rgba(255, 255, 255, 0.025), transparent 45%),
+    var(--panel);
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.012),
     0 10px 28px rgba(0, 0, 0, 0.18);
   transition:
-    transform 0.32s ease,
-    border-color 0.32s ease,
-    background 0.32s ease,
-    box-shadow 0.32s ease;
+    border-color 0.3s ease,
+    transform 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .news__main {
   min-height: 440px;
-  background:
-    linear-gradient(145deg, rgba(255, 59, 48, 0.055), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent 58%),
-    var(--panel);
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
 }
 
 .news-card {
   min-height: 98px;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
 }
 
-/* Верхняя красная линия у обеих. */
+/* Вертикальная cyan-полоска, как у старых карточек DATABASE. */
 .news__main:not(:empty)::before,
 .news-card::before {
   content: "";
@@ -2901,12 +2899,11 @@ select {
   z-index: 5;
   top: 0;
   left: 0;
-  width: 42%;
-  height: 2px;
-  background: linear-gradient(90deg, var(--red-bright), transparent);
-  box-shadow: 0 0 18px rgba(255, 59, 48, 0.65);
-  transform-origin: left;
-  transition: width 0.4s ease, opacity 0.4s ease;
+  width: 2px;
+  height: 34%;
+  background: var(--cyan);
+  box-shadow: 0 0 12px rgba(85, 246, 255, 0.45);
+  transition: height 0.35s ease, background 0.35s ease;
   pointer-events: none;
 }
 
@@ -2934,31 +2931,22 @@ select {
 .news__main:focus-within,
 .news-card:hover,
 .news-card:focus-within {
-  border-color: var(--red-bright);
+  border-color: var(--line-strong);
   background:
-    linear-gradient(145deg, rgba(255, 59, 48, 0.095), transparent 38%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 58%);
+    linear-gradient(135deg, rgba(85, 246, 255, 0.045), transparent 45%),
+    rgba(12, 18, 20, 0.92);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 59, 48, 0.08),
-    0 0 0 1px rgba(255, 59, 48, 0.08),
-    0 18px 40px rgba(0, 0, 0, 0.28),
-    0 0 28px rgba(255, 59, 48, 0.095);
+    inset 0 0 0 1px rgba(85, 246, 255, 0.06),
+    0 18px 40px rgba(0, 0, 0, 0.24),
+    0 0 28px rgba(85, 246, 255, 0.08);
   transform: translateY(-4px);
-}
-
-.news__main:hover,
-.news__main:focus-within {
-  background:
-    linear-gradient(145deg, rgba(255, 59, 48, 0.095), transparent 38%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 58%),
-    var(--panel);
 }
 
 .news__main:hover::before,
 .news__main:focus-within::before,
 .news-card:hover::before,
 .news-card:focus-within::before {
-  width: 78%;
+  height: 100%;
 }
 
 .news__main img {
@@ -2967,44 +2955,20 @@ select {
   aspect-ratio: 16 / 8.7;
   max-height: none;
   margin-bottom: 22px;
-  filter: saturate(0.72) contrast(1.08) brightness(0.82);
-  transition: transform 0.55s ease, filter 0.4s ease;
-}
-
-.news-card img {
-  transition: transform 0.55s ease, filter 0.4s ease;
-}
-
-.news__main:hover img,
-.news__main:focus-within img,
-.news-card:hover img,
-.news-card:focus-within img {
-  filter: saturate(0.92) contrast(1.1) brightness(0.94);
-  transform: scale(1.018);
 }
 
 .news__main h3,
-.news-card h3 {
+.news-card h3,
+.news__main p {
   position: relative;
   z-index: 2;
-  transition: color 0.25s ease, text-shadow 0.25s ease;
 }
 
 .news__main h3 {
   max-width: 92%;
 }
 
-.news__main:hover h3,
-.news__main:focus-within h3,
-.news-card:hover h3,
-.news-card:focus-within h3 {
-  color: #fff;
-  text-shadow: 0 0 20px rgba(255, 59, 48, 0.14);
-}
-
 .news__main p {
-  position: relative;
-  z-index: 2;
   max-width: 66ch;
 }
 
@@ -3044,9 +3008,7 @@ select {
 
 @media (prefers-reduced-motion: reduce) {
   .news__main,
-  .news__main img,
   .news-card,
-  .news-card img,
   .news .section-heading__code i {
     animation: none !important;
     transition: none !important;
