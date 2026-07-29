@@ -90,34 +90,126 @@
       <span id="system-clock">00:00:00</span>
     </header>
 
-    <!-- ХЕДЕР / ХИРО -->
-    <section class="hero reveal" data-parallax-root>
-      <div class="hero__art" aria-hidden="true">
-        <img src="images/hero-placeholder.png" alt="" class="hero__img" data-parallax-layer="12" onerror="this.hidden=true">
-        <div class="hero__fog hero__fog--one"></div>
-        <div class="hero__fog hero__fog--two"></div>
-        <div class="hero__target" data-parallax-layer="24">
+    <!-- ХЕДЕР / ХИРО: CINEMATIC HUD SLIDER -->
+    <section class="hero reveal" data-hero-slider data-parallax-root
+             aria-roledescription="карусель" aria-label="Сцены игры ON DEATH PASS">
+
+      <div class="hero__art">
+        <div class="hero-slider__viewport">
+          <div class="hero-slider__track">
+
+            <article class="hero-slide is-active"
+                     role="group" aria-roledescription="слайд" aria-label="1 из 3"
+                     aria-hidden="false"
+                     data-scene-code="PROTOCOL / AFTERMATH"
+                     data-scene-title="Катастрофа уже произошла"
+                     data-scene-copy="ИИ почти уничтожил человечество. Затопленные районы превратились в закрытые территории, где каждый сигнал может оказаться ловушкой."
+                     data-target-x="63%" data-target-y="38%">
+              <img class="hero-slide__img"
+                   src="images/hero/hero-city.png"
+                   onerror="this.onerror=null;this.src='images/hero-placeholder.png'"
+                   alt="Затопленный город после катастрофы"
+                   loading="eager" fetchpriority="high">
+              <span class="hero-slide__stamp">SECTOR 09 // AFTERMATH</span>
+            </article>
+
+            <article class="hero-slide"
+                     role="group" aria-roledescription="слайд" aria-label="2 из 3"
+                     aria-hidden="true"
+                     data-scene-code="MISSION / INFILTRATION"
+                     data-scene-title="Проникнуть на объект"
+                     data-scene-copy="Агенты Роз и Нефелим должны незаметно пройти охраняемую территорию корпорации. Вы — встроенный ИИ, который ведёт их через систему безопасности."
+                     data-target-x="46%" data-target-y="48%">
+              <img class="hero-slide__img"
+                   src="images/hero/hero-agents.png"
+                   onerror="this.onerror=null;this.src='images/hero-placeholder.png'"
+                   alt="Агенты выполняют скрытное проникновение"
+                   loading="lazy">
+              <span class="hero-slide__stamp">OBJECT // RESTRICTED FACILITY</span>
+            </article>
+
+            <article class="hero-slide"
+                     role="group" aria-roledescription="слайд" aria-label="3 из 3"
+                     aria-hidden="true"
+                     data-scene-code="DECISION / CRITICAL"
+                     data-scene-title="Выбрать, кому выжить"
+                     data-scene-copy="Каждое решение меняет ход операции. Цена ошибки — жизнь агентов, отдельных людей и, возможно, всей оставшейся цивилизации."
+                     data-target-x="72%" data-target-y="61%">
+              <img class="hero-slide__img"
+                   src="images/hero/hero-choice.png"
+                   onerror="this.onerror=null;this.src='images/hero-placeholder.png'"
+                   alt="Критический выбор во время операции"
+                   loading="lazy">
+              <span class="hero-slide__stamp">THREAT LEVEL // CRITICAL</span>
+            </article>
+
+          </div>
+        </div>
+
+        <div class="hero__fog hero__fog--one" aria-hidden="true"></div>
+        <div class="hero__fog hero__fog--two" aria-hidden="true"></div>
+        <div class="hero__signal-flash" aria-hidden="true"></div>
+
+        <div class="hero__target" data-parallax-layer="18" aria-hidden="true">
           <span></span><span></span>
         </div>
-        <div class="hero__telemetry">
+
+        <div class="hero__telemetry" aria-hidden="true">
           <span>ENTITY // ROZ</span>
           <span>LINK // 83%</span>
           <span>THREAT // CRITICAL</span>
         </div>
-        <div class="hud-corner hud-corner--tl"></div>
-        <div class="hud-corner hud-corner--tr"></div>
-        <div class="hud-corner hud-corner--bl"></div>
-        <div class="hud-corner hud-corner--br"></div>
+
+        <div class="hud-corner hud-corner--tl" aria-hidden="true"></div>
+        <div class="hud-corner hud-corner--tr" aria-hidden="true"></div>
+        <div class="hud-corner hud-corner--bl" aria-hidden="true"></div>
+        <div class="hud-corner hud-corner--br" aria-hidden="true"></div>
+
+        <div class="hero-slider__controls" aria-label="Управление сценами">
+          <div class="hero-slider__progress" aria-hidden="true"><span></span></div>
+
+          <button class="hero-slider__arrow" type="button" data-hero-prev aria-label="Предыдущая сцена">←</button>
+
+          <div class="hero-slider__tabs" role="tablist" aria-label="Выбор сцены">
+            <button class="hero-slider__tab is-active" type="button" role="tab"
+                    aria-selected="true" tabindex="0" data-hero-to="0">
+              <span>01</span><em>Катастрофа</em>
+            </button>
+            <button class="hero-slider__tab" type="button" role="tab"
+                    aria-selected="false" tabindex="-1" data-hero-to="1">
+              <span>02</span><em>Миссия</em>
+            </button>
+            <button class="hero-slider__tab" type="button" role="tab"
+                    aria-selected="false" tabindex="-1" data-hero-to="2">
+              <span>03</span><em>Выбор</em>
+            </button>
+          </div>
+
+          <span class="hero-slider__counter" data-hero-counter aria-live="polite">01 / 03</span>
+
+          <button class="hero-slider__arrow" type="button" data-hero-next aria-label="Следующая сцена">→</button>
+          <button class="hero-slider__pause" type="button" data-hero-pause
+                  aria-label="Остановить автоматическую смену" aria-pressed="false">
+            <span aria-hidden="true">Ⅱ</span>
+          </button>
+        </div>
       </div>
 
       <div class="hero__interface">
         <p class="interface-label"><span>MISSION FILE</span> / 0001</p>
-        <h1 class="hero__title" data-text="СМЕРТЕЛЬНЫЙ ПЕРЕХОД">СМЕРТЕЛЬНЫЙ<br>ПЕРЕХОД</h1>
-        <div class="hero__text">
-          <p>Пытаясь скрыть свои цели, ИИ почти удалось уничтожить всех нас.</p>
-          <p>Для выживания придётся преодолеть смертельный переход.</p>
-          <p class="hero__accent">Возможно, ценой жизни.</p>
+
+        <h1 class="hero__title" data-text="ON DEATH PASS">
+          <span>ON DEATH</span>
+          <span>PASS</span>
+        </h1>
+        <p class="hero__subtitle">СМЕРТЕЛЬНЫЙ ПЕРЕХОД</p>
+
+        <div class="hero__brief" aria-live="polite" aria-atomic="true">
+          <p class="hero__scene-code" data-scene-code>PROTOCOL / AFTERMATH</p>
+          <h2 class="hero__scene-title" data-scene-title>Катастрофа уже произошла</h2>
+          <p class="hero__scene-copy" data-scene-copy>ИИ почти уничтожил человечество. Затопленные районы превратились в закрытые территории, где каждый сигнал может оказаться ловушкой.</p>
         </div>
+
         <div class="hero__actions">
           <a href="downloads/death-pass-demo.zip"
              class="cta cta--download"

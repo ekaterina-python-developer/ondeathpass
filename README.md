@@ -1,25 +1,28 @@
 # On Death Pass — сайт-визитка
 
-Cyber/HUD-дизайн: загрузочный экран, сетка, часы, анимации появления блоков.
+Cyber/HUD-дизайн: загрузочный экран, сетка, часы, анимации и кинематографический слайдер в шапке.
 
 ## Структура
-- `index.html` — главная страница
+- `index.html` — главная страница (hero-слайдер из 3 сцен)
 - `about.html` — страница «О игре» с аккордеоном
 - `plans.html` — страница «Планы» (состояние разработки, роадмап)
 - `contacts.html` — страница «Контакты»
-- `style.css` — cyber/HUD-стили (все страницы)
+- `style.css` — cyber/HUD-стили (все страницы + слайдер)
 - `script.js` — галерея, новости, меню, аккордеоны
-- `interface.js` — загрузочный экран, часы, reveal-анимации, параллакс, glitch
+- `interface.js` — boot-экран, часы, reveal, параллакс, glitch, hero-слайдер
 - `news.json` — данные новостей (правит либо разработчик руками, либо CMS)
 - `admin/` — Decap CMS (админка для новостей без кода): откройте `/admin/`
 - `admin/config.yml` — настройки CMS (репозиторий уже указан)
-- `images/` — картинки сайта (`hero-placeholder.png`, `gallery/`, `news/`, `contacts/`, `social/`)
+- `images/` — картинки сайта (`hero-placeholder.png`, `hero/`, `gallery/`, `news/`, `contacts/`, `social/`)
 - `netlify.toml` — настройки деплоя Netlify
 
 ## Что нужно доделать перед публикацией
 
 1. **Картинки.** Кладите в:
-   - `images/hero-placeholder.png` — арт в шапке
+   - `images/hero/hero-city.png` — слайд «Катастрофа»
+   - `images/hero/hero-agents.png` — слайд «Миссия»
+   - `images/hero/hero-choice.png` — слайд «Выбор»
+   - пока этих файлов нет, слайдер сам подставит `images/hero-placeholder.png`
    - `images/gallery/screen-1.png` … — скриншоты (список в `GALLERY` в `script.js`)
    - `images/news/` — картинки к новостям
    - `images/contacts/avatar-markiz.jpg` и `avatar-anskill.jpg` — аватарки YouTube на странице контактов
