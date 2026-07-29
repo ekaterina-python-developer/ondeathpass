@@ -121,7 +121,7 @@ function initNav() {
   }
 }
 
-// --- Аккордеон: одновременно открыт только один блок ---
+// --- Аккордеон «О игре»: одновременно открыт только один блок ---
 function initAccordion() {
   const root = document.querySelector("[data-accordion]");
   if (!root) return;
@@ -136,9 +136,35 @@ function initAccordion() {
   });
 }
 
+// --- Аккордеон «Планы»: кнопки открывают/закрывают блоки ---
+function initPlansAccordion() {
+  const root = document.getElementById("plans-accordion");
+  if (!root) return;
+
+  root.querySelectorAll(".accordion-header").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const item = btn.closest(".accordion-item");
+      if (!item) return;
+      const willOpen = !item.classList.contains("is-open");
+
+      root.querySelectorAll(".accordion-item").forEach((other) => {
+        other.classList.remove("is-open");
+        const header = other.querySelector(".accordion-header");
+        if (header) header.setAttribute("aria-expanded", "false");
+      });
+
+      if (willOpen) {
+        item.classList.add("is-open");
+        btn.setAttribute("aria-expanded", "true");
+      }
+    });
+  });
+}
+
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 initNav();
 initAccordion();
+initPlansAccordion();
 renderGallery();
 renderNews();

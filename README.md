@@ -3,12 +3,15 @@
 ## Структура
 - `index.html` — главная страница
 - `about.html` — страница «О игре» с аккордеоном
+- `plans.html` — страница «Планы» (состояние разработки, роадмап)
+- `contacts.html` — страница «Контакты»
+- `contacts-preview.html` — макет-превью страницы контактов (для сверки дизайна)
 - `style.css` — стили
-- `script.js` — галерея, новости, меню, аккордеон
+- `script.js` — галерея, новости, меню, аккордеоны
 - `news.json` — данные новостей (правит либо разработчик руками, либо CMS)
 - `admin/` — Decap CMS (админка для новостей без кода): откройте `/admin/`
 - `admin/config.yml` — настройки CMS (репозиторий уже указан)
-- `images/` — картинки сайта (`hero-placeholder.png`, `gallery/`, `news/`)
+- `images/` — картинки сайта (`hero-placeholder.png`, `gallery/`, `news/`, `contacts/`)
 - `netlify.toml` — настройки деплоя Netlify
 
 ## Что нужно доделать перед публикацией
@@ -17,11 +20,11 @@
    - `images/hero-placeholder.png` — арт в шапке
    - `images/gallery/screen-1.png` … — скриншоты (список в `GALLERY` в `script.js`)
    - `images/news/` — картинки к новостям
+   - `images/contacts/avatar-markiz.jpg` и `avatar-anskill.jpg` — аватарки YouTube на странице контактов
 
 2. **Ссылки.**
    - В `index.html` замените `downloads/death-pass-demo.zip` на реальную ссылку на демо (или загруженный файл).
-   - Замените `https://boosty.to/your-page` на реальную ссылку доната.
-   - Замените ссылки в `.social__icon` (Boosty/Telegram/почта/YouTube) на настоящие.
+   - Ссылки Boosty / Telegram / почта / YouTube уже проставлены на страницах; проверьте, что они актуальны.
 
 3. **GoatCounter.**
    - Зарегистрируйтесь на goatcounter.com, получите код сайта.
