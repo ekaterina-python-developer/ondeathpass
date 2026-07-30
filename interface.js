@@ -108,8 +108,9 @@
 
 })();
 
-// Фоновая музыка: только по кнопке SOUND; трек берётся из audio/track.json
-// или из файла с привычным именем (bgm.mp3 / ambient.mp3 и т.п.).
+// Фоновая музыка: пробуем autoplay при загрузке; если браузер
+// заблокировал звук — включаем после первого клика/клавиши.
+// Трек берётся из audio/track.json или из файла с привычным именем.
 (() => {
   const music = document.querySelector('#background-music');
   const soundButton = document.querySelector('#sound-toggle');
@@ -120,11 +121,14 @@
   const STORAGE_KEY = 'death-pass-sound';
   const POSITION_KEY = 'death-pass-sound-time';
   const TRACK_KEY = 'death-pass-sound-track';
-  const targetVolume = 0.16;
+  const targetVolume = 0.14;
   let fadeTimer = null;
   let soundEnabled = localStorage.getItem(STORAGE_KEY) === 'on';
+  // Пользователь сам выключил SOUND — не включаем автоматически.
+  const userMuted = localStorage.getItem(STORAGE_KEY) === 'off';
   let toggling = false;
   let trackReady = null; // Promise: какой файл сейчас назначен плееру
+  let unlockBound = false;
 
   music.volume = 0;
   music.loop = true;
@@ -291,8 +295,8 @@
       music.addEventListener('error', onError, { once: true });
     });
 
-  const enableSound = async ({ restore = true } = {}) => {
-    if (toggling) return;
+  const enableSound = async ({ restore = true, fadeMs = 1400 } = {}) => {
+    if (toggling) return false;
     toggling = true;
 
     try {
@@ -304,16 +308,41 @@
       soundEnabled = true;
       localStorage.setItem(STORAGE_KEY, 'on');
       updateButton(true);
-      fadeTo(targetVolume);
+      fadeTo(targetVolume, fadeMs);
+      return true;
     } catch (error) {
       soundEnabled = false;
-      localStorage.setItem(STORAGE_KEY, 'off');
       updateButton(false);
       trackReady = null;
       console.warn('Не удалось включить музыку:', error);
+      return false;
     } finally {
       toggling = false;
     }
+  };
+
+  const removeUnlockListeners = () => {
+    if (!unlockBound) return;
+    document.removeEventListener('pointerdown', unlockMusic);
+    document.removeEventListener('keydown', unlockMusic);
+    unlockBound = false;
+  };
+
+  // Браузер часто блокирует звук, пока посетитель сам не кликнет
+  // или не нажмёт клавишу (как «снять замок» с колонок).
+  const unlockMusic = async (event) => {
+    // Кнопку SOUND не трогаем — у неё свой обработчик.
+    if (event?.target?.closest?.('#sound-toggle')) return;
+
+    const started = await enableSound({ restore: soundEnabled });
+    if (started) removeUnlockListeners();
+  };
+
+  const bindUnlockListeners = () => {
+    if (unlockBound || userMuted) return;
+    document.addEventListener('pointerdown', unlockMusic);
+    document.addEventListener('keydown', unlockMusic);
+    unlockBound = true;
   };
 
   const disableSound = () => {
@@ -321,19 +350,24 @@
     soundEnabled = false;
     localStorage.setItem(STORAGE_KEY, 'off');
     sessionStorage.removeItem(POSITION_KEY);
+    removeUnlockListeners();
     updateButton(false);
-    fadeTo(0, 400, () => {
+    fadeTo(0, 500, () => {
       music.pause();
     });
   };
 
-  soundButton.addEventListener('click', () => {
+  soundButton.addEventListener('click', async (event) => {
+    event.stopPropagation();
+
     // Включено и реально играет — выключаем. Иначе пробуем включить.
     if (soundEnabled && !music.paused) {
       disableSound();
       return;
     }
-    enableSound();
+
+    const started = await enableSound();
+    if (started) removeUnlockListeners();
   });
 
   // Перед уходом на другую страницу сохраняем позицию трека.
@@ -360,12 +394,17 @@
       });
   });
 
-  // Если SOUND уже был включён — пробуем продолжить на новой странице.
-  if (soundEnabled) {
-    enableSound({ restore: true });
-  } else {
-    updateButton(false);
-  }
+  updateButton(false);
+
+  // Пользователь раньше выключил звук — ждём только кнопку SOUND.
+  if (userMuted) return;
+
+  // После загрузки страницы пробуем включить музыку сами.
+  // Если браузер запретил — ждём первое действие посетителя.
+  window.addEventListener('load', async () => {
+    const started = await enableSound({ restore: soundEnabled });
+    if (!started) bindUnlockListeners();
+  });
 })();
 
 // ---------------------------------------------------------------------------
