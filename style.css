@@ -2366,7 +2366,8 @@ select {
   --target-x: 63%;
   --target-y: 38%;
   grid-template-columns: minmax(0, 1.62fr) minmax(350px, 0.68fr);
-  min-height: clamp(610px, 72vh, 790px);
+  /* Оставляем место под spec-strip, чтобы первый экран не требовал прокрутки. */
+  min-height: clamp(540px, calc(100dvh - 130px), 650px);
 }
 
 .hero[data-hero-slider] .hero__art {

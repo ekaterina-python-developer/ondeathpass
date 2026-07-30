@@ -1,7 +1,11 @@
 backend:
-  # Через Netlify Identity + Git Gateway (удобно для не-разработчика)
-  name: git-gateway
+  # Вход через GitHub выполняет Cloudflare Worker Sveltia CMS Authenticator.
+  name: github
+  repo: ekaterina-python-developer/ondeathpass
   branch: main
+  # После публикации Worker замените адрес ниже на его URL, например:
+  # https://ondeathpass-cms-auth.<your-subdomain>.workers.dev
+  base_url: https://REPLACE_WITH_CLOUDFLARE_WORKER_URL.workers.dev
 
 media_folder: "images/news"
 public_folder: "images/news"

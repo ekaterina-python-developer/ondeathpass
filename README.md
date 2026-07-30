@@ -13,8 +13,8 @@ Cyber/HUD-дизайн: загрузочный экран, сетка, аним�
 - `news.json` — данные новостей (правит либо разработчик руками, либо CMS)
 - `audio/` — фоновая музыка сайта
 - `audio/track.json` — какое имя файла сейчас играет
-- `admin/` — Decap CMS (админка для новостей без кода): откройте `/admin/`
-- `admin/config.yml` — настройки CMS (репозиторий уже указан)
+- `admin/` — Sveltia CMS (админка новостей без кода): откройте `/admin/`
+- `admin/config.yml` — настройки CMS и адрес Cloudflare OAuth Worker
 - `images/` — картинки сайта (`hero-placeholder.png`, `hero/`, `gallery/`, `news/`, `contacts/`, `social/`)
 - `netlify.toml` — настройки деплоя Netlify
 
@@ -69,15 +69,17 @@ Cyber/HUD-дизайн: загрузочный экран, сетка, аним�
    - Зарегистрируйтесь на goatcounter.com, получите код сайта.
    - В HTML-страницах замените `deathpass.goatcounter.com` на ваш реальный поддомен.
 
-4. **Хостинг: Netlify** (нужен для админки).
-   1. Зайти на https://app.netlify.com → Sign up with GitHub.
-   2. Add new site → Import an existing project → `ondeathpass`.
-   3. Build settings: Publish directory = `.` (или подтянется из `netlify.toml`).
-   4. Deploy.
+4. **Хостинг: Cloudflare Pages.**
+   1. Зарегистрируйтесь на https://dash.cloudflare.com и откройте **Workers & Pages**.
+   2. Нажмите **Create application → Pages → Connect to Git** и выберите репозиторий `ondeathpass`.
+   3. Production branch: `main`; Build command оставьте пустым; Build output directory укажите `.`.
+   4. Нажмите **Save and Deploy**. После этого Cloudflare будет обновлять сайт после каждого изменения в `main`.
 
-5. **Админка Decap + Netlify Identity.**
-   1. Site configuration → Identity → Enable Identity.
-   2. Registration: Invite only.
-   3. Services → Git Gateway → Enable.
-   4. Identity → Invite users → пригласить email редактора.
-   5. Открыть `https://ВАШ-САЙТ.netlify.app/admin/` → принять инвайт → войти.
+5. **Админка Sveltia CMS + вход через GitHub.**
+   1. Разверните официальный Worker: https://github.com/sveltia/sveltia-cms-auth (кнопка **Deploy to Cloudflare Workers**).
+   2. Создайте GitHub OAuth App: https://github.com/settings/applications/new. В поле callback URL укажите `<URL_ВАШЕГО_WORKER>/callback`.
+   3. В Cloudflare Worker → **Settings → Variables and Secrets** добавьте зашифрованные переменные `GITHUB_CLIENT_ID` и `GITHUB_CLIENT_SECRET` из OAuth App.
+   4. В `admin/config.yml` замените `https://REPLACE_WITH_CLOUDFLARE_WORKER_URL.workers.dev` на URL Worker.
+   5. Откройте `https://ВАШ-САЙТ.pages.dev/admin/`, нажмите вход через GitHub и разрешите доступ к репозиторию.
+
+> Не публикуйте `GITHUB_CLIENT_SECRET` в GitHub, `config.yml` или в сообщениях. Он хранится только в Secrets Cloudflare Worker.
