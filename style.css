@@ -2390,22 +2390,18 @@ select {
 .hero-slide {
   opacity: 0;
   visibility: hidden;
-  transform: scale(1.035);
   transition:
     opacity 1s cubic-bezier(.22, 1, .36, 1),
-    visibility 1s step-end,
-    transform 1.2s cubic-bezier(.22, 1, .36, 1);
+    visibility 1s step-end;
 }
 
 .hero-slide.is-active {
   opacity: 1;
   visibility: visible;
   z-index: 1;
-  transform: scale(1);
   transition:
     opacity 1s cubic-bezier(.22, 1, .36, 1),
-    visibility 0s step-start,
-    transform 1.2s cubic-bezier(.22, 1, .36, 1);
+    visibility 0s step-start;
 }
 
 .hero-slide__img {
@@ -2419,6 +2415,9 @@ select {
   /*
    * Позицию можно настраивать отдельно для каждого слайда
    * через --image-x / --image-y.
+   *
+   * Стартовый scale сразу больше 1 — кадр всегда edge-to-edge,
+   * без чёрных полос по краям картинки.
    */
   object-position:
     var(--image-x, 50%)
@@ -2429,7 +2428,7 @@ select {
     contrast(1.15)
     saturate(0.78);
 
-  transform: scale(1.015);
+  transform: scale(1.08);
 
   transform-origin:
     var(--image-x, 50%)
@@ -2791,13 +2790,13 @@ select {
 }
 
 @keyframes hero-cinematic-drift {
-  from { transform: scale(1.015) translate3d(0, 0, 0); }
-  to { transform: scale(1.075) translate3d(-0.7%, -0.4%, 0); }
+  from { transform: scale(1.08) translate3d(0, 0, 0); }
+  to { transform: scale(1.14) translate3d(-0.7%, -0.4%, 0); }
 }
 
 @keyframes hero-choice-drift {
-  from { transform: scale(1.015) translate3d(0, 0, 0); }
-  to { transform: scale(1.075) translate3d(0, -0.35%, 0); }
+  from { transform: scale(1.08) translate3d(0, 0, 0); }
+  to { transform: scale(1.14) translate3d(0, -0.35%, 0); }
 }
 
 @keyframes hero-signal-flash {
