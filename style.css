@@ -2411,14 +2411,40 @@ select {
 .hero-slide__img {
   width: 100%;
   height: 100%;
+
+  display: block;
+
   object-fit: cover;
-  object-position: center;
-  filter: contrast(1.14) saturate(0.76) brightness(0.66);
+
+  /*
+   * Позицию можно настраивать отдельно для каждого слайда
+   * через --image-x / --image-y.
+   */
+  object-position:
+    var(--image-x, 50%)
+    var(--image-y, 50%);
+
+  filter:
+    brightness(0.68)
+    contrast(1.15)
+    saturate(0.78);
+
   transform: scale(1.015);
+
+  transform-origin:
+    var(--image-x, 50%)
+    var(--image-y, 50%);
+
+  transition: filter 0.8s ease;
 }
 
 .hero-slide.is-active .hero-slide__img {
   animation: hero-cinematic-drift 8.8s ease-out both;
+}
+
+/* У «Выбора» zoom без сдвига влево — лицо остаётся по центру */
+.hero-slide--choice.is-active .hero-slide__img {
+  animation: hero-choice-drift 8.8s ease-out both;
 }
 
 .hero-slide::before,
@@ -2769,6 +2795,11 @@ select {
   to { transform: scale(1.075) translate3d(-0.7%, -0.4%, 0); }
 }
 
+@keyframes hero-choice-drift {
+  from { transform: scale(1.015) translate3d(0, 0, 0); }
+  to { transform: scale(1.075) translate3d(0, -0.35%, 0); }
+}
+
 @keyframes hero-signal-flash {
   0% { opacity: 0; transform: translateX(-4%); }
   18% { opacity: 0.72; transform: translateX(2%); }
@@ -2993,7 +3024,9 @@ select {
     height: 100%;
 
     object-fit: cover;
-    object-position: center top;
+    object-position:
+      var(--image-x, 50%)
+      var(--image-y, top);
 
     filter:
       contrast(1.1)
@@ -3325,6 +3358,20 @@ select {
 
   .hero__mobile-summary {
     display: none;
+  }
+}
+
+.hero-slide--choice .hero-slide__img {
+  filter:
+    brightness(0.76)
+    contrast(1.08)
+    saturate(0.88);
+}
+
+@media (max-width: 680px) {
+  .hero-slide--choice {
+    --image-x: 42%;
+    --image-y: 40%;
   }
 }
 
