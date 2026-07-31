@@ -2024,11 +2024,15 @@ select {
   .sidebar {
     position: sticky;
     inset: 0 0 auto;
+    z-index: 40;
     width: 100%;
     height: auto;
     border-right: 0;
     border-bottom: 1px solid var(--danger-line);
-    backdrop-filter: blur(20px);
+    /* blur на sticky во время скролла очень тяжёлый на телефонах */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(5, 7, 8, 0.97);
   }
 
   .sidebar__rail {
@@ -2876,6 +2880,36 @@ select {
 
 @media (max-width: 900px) {
 
+  /* Нативный скролл телефона, без «дотягивания» smooth */
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    overflow-x: clip;
+  }
+
+  /* Тяжёлый анимированный фон выключаем — он ест FPS при скролле */
+  .ambient__grid {
+    inset: 0;
+    opacity: 0.1;
+    transform: none;
+    animation: none;
+    mask-image: none;
+  }
+
+  .ambient__glow,
+  .ambient__scan,
+  .ambient__scan::after {
+    display: none;
+  }
+
+  /* Меньше работы композитору при появлении блоков */
+  .js .reveal {
+    transform: translateY(16px);
+    transition-duration: 0.45s;
+  }
+
   /* Без боковых «чёрных полей» */
   .content {
     width: 100%;
@@ -3066,9 +3100,10 @@ select {
     width: 100%;
     min-height: 50px;
     margin: 0;
-    background: rgba(12, 18, 20, 0.9);
+    background: rgba(12, 18, 20, 0.94);
     border-color: rgba(85, 246, 255, 0.55);
-    backdrop-filter: blur(10px);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   .hero[data-hero-slider] .cta--support {
@@ -3084,6 +3119,19 @@ select {
     grid-template-columns: 40px minmax(0, 1fr) 40px 40px;
     gap: 4px;
     min-height: 48px;
+  }
+
+  .hero-slider__controls::before {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(4, 8, 10, 0.92);
+  }
+
+  .hero__fog,
+  .hero__fog--one,
+  .hero__fog--two,
+  .hero[data-hero-slider] .hero__target {
+    animation: none !important;
   }
 
   .hero-slider__tabs {

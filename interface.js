@@ -41,9 +41,11 @@
   }
 
   // Subtle HUD parallax, not page movement.
+  // Только мышь: на тачскрине pointermove во время скролла дёргает кадр.
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
   document.querySelectorAll('[data-parallax-root]').forEach((area) => {
     const layers = area.querySelectorAll('[data-parallax-layer]');
-    if (!layers.length || reducedMotion) return;
+    if (!layers.length || reducedMotion || !canHover.matches) return;
 
     area.addEventListener('pointermove', (event) => {
       const rect = area.getBoundingClientRect();
@@ -80,6 +82,9 @@
   root.classList.add('interface-ready');
 
   // Тонкий индикатор скролла на правом краю сайдбара.
+  // На мобиле рельса скрыта — не вешаем scroll-listener зря.
+  const isCompactNav = window.matchMedia('(max-width: 900px)');
+
   document.querySelectorAll('.sidebar').forEach((sidebar) => {
     if (sidebar.querySelector('.sidebar__rail')) return;
 
@@ -89,7 +94,10 @@
     rail.innerHTML = '<span class="sidebar__rail-thumb"></span>';
     sidebar.appendChild(rail);
 
+    let ticking = false;
     const updateRail = () => {
+      if (isCompactNav.matches) return;
+
       const max = document.documentElement.scrollHeight - window.innerHeight;
       if (max <= 8) {
         rail.classList.add('is-idle');
@@ -101,8 +109,17 @@
       root.style.setProperty('--sidebar-scroll', String(progress));
     };
 
+    const onScroll = () => {
+      if (ticking || isCompactNav.matches) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        updateRail();
+        ticking = false;
+      });
+    };
+
     updateRail();
-    window.addEventListener('scroll', updateRail, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', updateRail);
   });
 
