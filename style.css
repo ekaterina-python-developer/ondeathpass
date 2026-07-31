@@ -3167,16 +3167,7 @@ select {
     text-wrap: balance;
   }
 
-  /*
-   * Подробное динамическое описание на мобильном скрываем.
-   * Его заменяет постоянное понятное описание жанра.
-   */
-
   .hero__scene-copy {
-    display: none;
-  }
-
-  .hero__mobile-summary {
     display: block;
 
     max-width: 360px;
@@ -3187,8 +3178,11 @@ select {
     font-size: 10px;
     line-height: 1.55;
     letter-spacing: 0.035em;
+  }
 
-    pointer-events: none;
+  /* Статичное описание жанра больше не нужно — есть текст слайда */
+  .hero__mobile-summary {
+    display: none;
   }
 
 
@@ -3325,7 +3319,7 @@ select {
     font-size: 27px;
   }
 
-  .hero__mobile-summary {
+  .hero__scene-copy {
     max-width: 310px;
     font-size: 9px;
   }
@@ -3355,7 +3349,7 @@ select {
     padding-top: 100px;
   }
 
-  .hero__mobile-summary {
+  .hero__scene-copy {
     display: none;
   }
 }
