@@ -2932,3 +2932,399 @@ select {
   }
 }
 
+/* Скрыта на десктопе */
+.hero__mobile-summary {
+  display: none;
+}
+
+
+/* =========================================================
+   MOBILE CINEMATIC HERO
+   ========================================================= */
+
+@media (max-width: 680px) {
+
+  /*
+   * Hero занимает почти весь первый экран.
+   * 64px — мобильная шапка.
+   * 20px — верхний отступ основного контента.
+   */
+  .content {
+    padding-top: 12px;
+  }
+
+  .hero[data-hero-slider] {
+    position: relative;
+    display: block;
+
+    width: 100%;
+    height: calc(100vh - 84px);
+    height: calc(100svh - 84px);
+
+    min-height: 560px;
+    max-height: 720px;
+
+    overflow: hidden;
+  }
+
+
+  /* Изображение становится основой всего hero */
+
+  .hero[data-hero-slider] .hero__art {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+
+    border: 0;
+  }
+
+  .hero-slider__viewport,
+  .hero-slider__track,
+  .hero-slide {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-slide__img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center top;
+
+    filter:
+      contrast(1.1)
+      saturate(0.75)
+      brightness(0.72);
+  }
+
+
+  /*
+   * Усиленное затемнение снизу.
+   * Оно делает текст читаемым поверх изображения.
+   */
+
+  .hero[data-hero-slider] .hero__art::before {
+    z-index: 5;
+
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(5, 7, 8, 0.03) 0%,
+        rgba(5, 7, 8, 0.04) 28%,
+        rgba(5, 7, 8, 0.34) 48%,
+        rgba(5, 7, 8, 0.82) 66%,
+        rgba(5, 7, 8, 0.98) 84%,
+        #050708 100%
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0 5px,
+        rgba(255, 255, 255, 0.012) 6px
+      );
+  }
+
+
+  /* Десктопная правая панель становится мобильным оверлеем */
+
+  .hero[data-hero-slider] .hero__interface {
+    position: absolute;
+    z-index: 10;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    padding:
+      160px
+      18px
+      88px;
+
+    background:
+      linear-gradient(
+        to bottom,
+        transparent 0%,
+        transparent 36%,
+        rgba(5, 7, 8, 0.15) 48%,
+        rgba(5, 7, 8, 0.82) 72%,
+        rgba(5, 7, 8, 0.96) 100%
+      );
+
+    pointer-events: none;
+  }
+
+  .hero[data-hero-slider] .hero__interface::before {
+    display: none;
+  }
+
+
+  /*
+   * Название игры уже есть в мобильной шапке,
+   * поэтому внутри hero его повторять не нужно.
+   */
+
+  .hero[data-hero-slider] .interface-label,
+  .hero[data-hero-slider] .hero__title,
+  .hero[data-hero-slider] .hero__subtitle {
+    display: none;
+  }
+
+
+  /* Сюжет текущего слайда */
+
+  .hero__brief {
+    width: 100%;
+    min-height: 0;
+    max-width: none;
+
+    margin: 0;
+    padding: 0;
+
+    border: 0;
+
+    pointer-events: none;
+  }
+
+  .hero__brief::before {
+    display: none;
+  }
+
+  .hero__scene-code {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin: 0 0 9px;
+
+    color: var(--cyan);
+
+    font-size: 8px;
+    line-height: 1;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .hero__scene-code::before {
+    content: "";
+
+    width: 22px;
+    height: 1px;
+
+    background: var(--red);
+    box-shadow: 0 0 8px rgba(255, 59, 48, 0.7);
+  }
+
+  .hero__scene-title {
+    max-width: 13ch;
+
+    margin: 0;
+
+    color: var(--text);
+
+    font-family: var(--font-interface);
+    font-size: clamp(28px, 8vw, 38px);
+    font-weight: 700;
+    line-height: 0.96;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+
+    text-wrap: balance;
+  }
+
+  /*
+   * Подробное динамическое описание на мобильном скрываем.
+   * Его заменяет постоянное понятное описание жанра.
+   */
+
+  .hero__scene-copy {
+    display: none;
+  }
+
+  .hero__mobile-summary {
+    display: block;
+
+    max-width: 360px;
+    margin: 13px 0 0;
+
+    color: rgba(232, 240, 241, 0.76);
+
+    font-size: 10px;
+    line-height: 1.55;
+    letter-spacing: 0.035em;
+
+    pointer-events: none;
+  }
+
+
+  /* Основная кнопка */
+
+  .hero[data-hero-slider] .hero__actions {
+    display: block;
+
+    width: 100%;
+    margin-top: 16px;
+
+    pointer-events: auto;
+  }
+
+  .hero[data-hero-slider] .cta--download {
+    width: 100%;
+    min-height: 52px;
+    margin: 0;
+
+    background: rgba(12, 18, 20, 0.9);
+    border-color: rgba(85, 246, 255, 0.55);
+
+    backdrop-filter: blur(10px);
+  }
+
+  .hero[data-hero-slider] .cta--download:hover,
+  .hero[data-hero-slider] .cta--download:focus-visible {
+    background: rgba(85, 246, 255, 0.1);
+  }
+
+  /*
+   * Второстепенную кнопку убираем из первого экрана.
+   * Её можно оставить отдельным блоком ниже hero.
+   */
+
+  .hero[data-hero-slider] .cta--support {
+    display: none;
+  }
+
+
+  /* Упрощённое управление: ← 02 / 03 → II */
+
+  .hero-slider__controls {
+    z-index: 12;
+
+    left: 14px;
+    right: 14px;
+    bottom: 12px;
+
+    display: grid;
+    grid-template-columns:
+      40px
+      minmax(0, 1fr)
+      40px
+      40px;
+
+    gap: 4px;
+    min-height: 50px;
+  }
+
+  .hero-slider__tabs {
+    display: none;
+  }
+
+  .hero-slider__counter {
+    display: grid;
+    place-items: center;
+
+    margin-top: 8px;
+    padding: 0;
+
+    color: var(--cyan);
+
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-align: center;
+  }
+
+  .hero-slider__arrow,
+  .hero-slider__pause {
+    min-width: 40px;
+    min-height: 42px;
+  }
+
+
+  /* Убираем лишние HUD-элементы */
+
+  .hero__system-status,
+  .hero-slide__stamp,
+  .hero[data-hero-slider] .hero__telemetry {
+    display: none;
+  }
+
+  .hud-corner--bl,
+  .hud-corner--br {
+    display: none;
+  }
+
+  .hud-corner--tl,
+  .hud-corner--tr {
+    width: 24px;
+    height: 24px;
+  }
+
+  .hero[data-hero-slider] .hero__target {
+    z-index: 6;
+
+    width: 66px;
+
+    opacity: 0.58;
+  }
+
+  .hero__fog {
+    opacity: 0.3;
+  }
+}
+
+
+/* Совсем узкие экраны */
+
+@media (max-width: 390px) {
+
+  .hero[data-hero-slider] {
+    min-height: 540px;
+  }
+
+  .hero[data-hero-slider] .hero__interface {
+    padding-right: 15px;
+    padding-bottom: 86px;
+    padding-left: 15px;
+  }
+
+  .hero__scene-title {
+    font-size: 27px;
+  }
+
+  .hero__mobile-summary {
+    max-width: 310px;
+    font-size: 9px;
+  }
+
+  .hero[data-hero-slider] .cta--download {
+    min-height: 49px;
+  }
+
+  .hero-slider__controls {
+    left: 10px;
+    right: 10px;
+    bottom: 9px;
+  }
+}
+
+
+/* Телефоны в горизонтальной ориентации */
+
+@media (max-width: 680px) and (max-height: 600px) {
+
+  .hero[data-hero-slider] {
+    height: 520px;
+    min-height: 520px;
+  }
+
+  .hero[data-hero-slider] .hero__interface {
+    padding-top: 100px;
+  }
+
+  .hero__mobile-summary {
+    display: none;
+  }
+}
+
