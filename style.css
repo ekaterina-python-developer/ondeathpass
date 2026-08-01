@@ -1028,6 +1028,80 @@ select {
   transform: rotate(45deg);
 }
 
+.cta--download {
+  border-color: #ff453d;
+  background:
+    linear-gradient(
+      100deg,
+      rgba(104, 12, 12, 0.96) 0%,
+      rgba(211, 31, 28, 0.92) 65%,
+      rgba(108, 10, 10, 0.96) 100%
+    );
+  color: #fff;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.035),
+    0 0 22px rgba(229, 45, 41, 0.12);
+}
+
+.cta--download::before {
+  background:
+    linear-gradient(
+      100deg,
+      rgba(140, 18, 18, 0.98) 0%,
+      rgba(255, 69, 61, 0.95) 55%,
+      rgba(140, 18, 18, 0.98) 100%
+    );
+}
+
+.cta--download .cta__index {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.cta--download .cta__label {
+  color: #fff;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.12);
+}
+
+.cta--download .cta__arrow {
+  color: rgba(255, 255, 255, 0.9);
+  display: grid;
+  place-items: center;
+  transform: none;
+}
+
+.cta--download .cta__arrow svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+.cta--download:hover,
+.cta--download:focus-visible {
+  border-color: #ff6a63;
+  filter: brightness(1.08);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 10px 30px rgba(229, 45, 41, 0.2),
+    0 0 20px rgba(229, 45, 41, 0.18);
+}
+
+.cta--download:hover .cta__index,
+.cta--download:focus-visible .cta__index,
+.cta--download:hover .cta__arrow,
+.cta--download:focus-visible .cta__arrow {
+  color: #fff;
+}
+
+.cta--download:hover .cta__arrow,
+.cta--download:focus-visible .cta__arrow {
+  transform: none;
+}
+
+.cta--download:hover .cta__arrow svg,
+.cta--download:focus-visible .cta__arrow svg {
+  animation: download-icon-move 0.7s ease;
+}
+
 .cta--support {
   border-color: rgba(85, 246, 255, 0.42);
 }
@@ -1039,6 +1113,21 @@ select {
 .cta--support:hover,
 .cta--support:focus-visible {
   border-color: var(--cyan);
+}
+
+@keyframes download-icon-move {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  45% {
+    transform: translateY(4px);
+  }
+
+  65% {
+    transform: translateY(-1px);
+  }
 }
 
 /* -------------------- SPECS -------------------- */
@@ -3098,12 +3187,15 @@ select {
 
   .hero[data-hero-slider] .cta--download {
     width: 100%;
-    min-height: 50px;
     margin: 0;
-    background: rgba(12, 18, 20, 0.94);
-    border-color: rgba(85, 246, 255, 0.55);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    background:
+      linear-gradient(
+        100deg,
+        rgba(104, 12, 12, 0.96) 0%,
+        rgba(211, 31, 28, 0.92) 65%,
+        rgba(108, 10, 10, 0.96) 100%
+      );
+    border-color: #ff453d;
   }
 
   .hero[data-hero-slider] .cta--support {
