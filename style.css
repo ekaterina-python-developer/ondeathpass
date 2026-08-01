@@ -3510,6 +3510,17 @@ body.is-news-modal-open {
   }
 }
 
+/* Узкие экраны: свой кадр у «Выбора», зум как у остальных */
+@media (max-width: 680px) {
+  .hero-slide--choice .hero-slide__img {
+    object-position: 72% 18%;
+  }
+
+  .hero-slide--choice.is-active .hero-slide__img {
+    animation: hero-cinematic-drift 8.8s ease-out both;
+  }
+}
+
 @media (max-width: 390px) {
   .hero[data-hero-slider] .hero__interface {
     padding: 88px 14px 80px;
@@ -3534,5 +3545,31 @@ body.is-news-modal-open {
   .hero__scene-copy {
     font-size: 9px;
     margin-top: 6px;
+  }
+}
+
+/* Узкие экраны: поднять кадр «Миссии» без сдвига текста/кнопок */
+@media (max-width: 680px) {
+  .hero-slide--mission {
+    overflow: hidden;
+  }
+
+  .hero-slide--mission .hero-slide__img {
+    position: absolute;
+    top: -10%;
+    left: 0;
+
+    width: 100%;
+    height: 110%;
+
+    object-fit: cover;
+    object-position: 58% center;
+
+    transform: scale(1.01) !important;
+    transform-origin: center top;
+  }
+
+  .hero-slide--mission.is-active .hero-slide__img {
+    transform: scale(1.02) !important;
   }
 }
