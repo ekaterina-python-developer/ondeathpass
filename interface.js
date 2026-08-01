@@ -239,8 +239,8 @@
   const updateButton = (isPlaying) => {
     soundButton.setAttribute('aria-pressed', String(isPlaying));
     soundButton.classList.toggle('is-playing', isPlaying);
-    soundValue.textContent = isPlaying ? 'SOUND // ON' : 'SOUND // OFF';
-    soundStatus.textContent = isPlaying ? 'AUDIO CHANNEL ACTIVE' : 'AUDIO CHANNEL';
+    soundValue.textContent = isPlaying ? 'ЗВУК // ВКЛ' : 'ЗВУК // ВЫКЛ';
+    soundStatus.textContent = isPlaying ? 'АУДИОКАНАЛ АКТИВЕН' : 'АУДИОКАНАЛ';
     soundButton.setAttribute(
       'aria-label',
       isPlaying ? 'Выключить фоновую музыку' : 'Включить фоновую музыку'
