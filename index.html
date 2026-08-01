@@ -7,7 +7,7 @@
 <title>ON DEATH PASS — стелс-хоррор про агентов в мире после катастрофы</title>
 <meta name="description" content="ON DEATH PASS — стелс-экшн с элементами хоррора. Агенты Роз и Нефелим должны проникнуть на защищённый объект. Скачайте демо-версию.">
 <script>document.documentElement.classList.add('js');</script>
-<link rel="stylesheet" href="style.css?v=20260801">
+<link rel="stylesheet" href="style.css?v=20260801f">
 
 <!-- Netlify Identity: нужен на главной, чтобы принять invite из письма -->
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
@@ -344,9 +344,18 @@
   </main>
 </div>
 
+<dialog class="news-modal" id="news-modal" aria-labelledby="news-modal-title">
+  <div class="news-modal__panel">
+    <button type="button" class="news-modal__close" data-news-close aria-label="Закрыть новость">
+      <span aria-hidden="true">×</span>
+    </button>
+    <div class="news-modal__content" id="news-modal-content"></div>
+  </div>
+</dialog>
+
 <audio id="background-music" loop preload="none"></audio>
 
-<script src="script.js"></script>
+<script src="script.js?v=20260801f"></script>
 <script src="interface.js?v=20260731b"></script>
 <script>
   if (window.netlifyIdentity) {

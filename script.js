@@ -27,6 +27,82 @@ function formatDate(iso) {
   return d.toLocaleDateString("ru-RU", { day: "2-digit", month: "2-digit", year: "numeric" });
 }
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function previewText(text, max = 140) {
+  const clean = String(text ?? "").trim();
+  if (clean.length <= max) return clean;
+  return `${clean.slice(0, max).trim()}…`;
+}
+
+function initNewsModal(items) {
+  const dialog = document.getElementById("news-modal");
+  const content = document.getElementById("news-modal-content");
+  if (!dialog || !content) return;
+
+  const closeModal = () => {
+    if (dialog.open) dialog.close();
+    document.body.classList.remove("is-news-modal-open");
+  };
+
+  const openModal = (index) => {
+    const item = items[index];
+    if (!item) return;
+
+    const isFresh = index === 0;
+    dialog.classList.toggle("news-modal--fresh", isFresh);
+
+    content.innerHTML = `
+      ${item.image ? `<img class="news-modal__image" src="${escapeHtml(item.image)}" alt="">` : ""}
+      <span class="news-modal__date">${escapeHtml(formatDate(item.date))}</span>
+      <h3 class="news-modal__title" id="news-modal-title">${escapeHtml(item.title)}</h3>
+      <p class="news-modal__body">${escapeHtml(item.body || "")}</p>
+    `;
+
+    if (typeof dialog.showModal === "function") {
+      dialog.showModal();
+    } else {
+      dialog.setAttribute("open", "");
+    }
+    document.body.classList.add("is-news-modal-open");
+  };
+
+  document.querySelectorAll("[data-news-index]").forEach((el) => {
+    el.addEventListener("click", () => {
+      const index = Number(el.dataset.newsIndex);
+      if (Number.isNaN(index)) return;
+      openModal(index);
+    });
+
+    el.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      const index = Number(el.dataset.newsIndex);
+      if (Number.isNaN(index)) return;
+      openModal(index);
+    });
+  });
+
+  dialog.querySelectorAll("[data-news-close]").forEach((btn) => {
+    btn.addEventListener("click", closeModal);
+  });
+
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) closeModal();
+  });
+
+  dialog.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    closeModal();
+  });
+}
+
 async function renderNews() {
   const mainEl = document.getElementById("news-main");
   const listEl = document.getElementById("news-list");
@@ -44,26 +120,40 @@ async function renderNews() {
     const [latest, ...rest] = items;
 
     if (latest) {
+      mainEl.classList.add("news__main--clickable");
+      mainEl.dataset.newsIndex = "0";
+      mainEl.setAttribute("role", "button");
+      mainEl.setAttribute("tabindex", "0");
+      mainEl.setAttribute("aria-label", `Открыть новость: ${latest.title}`);
       mainEl.innerHTML = `
-        ${latest.image ? `<img src="${latest.image}" alt="">` : ""}
-        <span class="news-card__date">${formatDate(latest.date)}</span>
-        <h3>${latest.title}</h3>
-        <p>${latest.body || ""}</p>
+        ${latest.image ? `<img src="${escapeHtml(latest.image)}" alt="">` : ""}
+        <span class="news-card__date">${escapeHtml(formatDate(latest.date))}</span>
+        <h3>${escapeHtml(latest.title)}</h3>
+        <p>${escapeHtml(previewText(latest.body || "", 160))}</p>
+        <span class="news__open-hint">Открыть передачу →</span>
       `;
     }
 
     listEl.innerHTML = rest
       .map(
-        (item) => `
-        <div class="news-card">
-          ${item.image ? `<img src="${item.image}" alt="">` : ""}
+        (item, i) => `
+        <div
+          class="news-card news-card--clickable"
+          data-news-index="${i + 1}"
+          role="button"
+          tabindex="0"
+          aria-label="Открыть новость: ${escapeHtml(item.title)}"
+        >
+          ${item.image ? `<img src="${escapeHtml(item.image)}" alt="">` : ""}
           <div>
-            <span class="news-card__date">${formatDate(item.date)}</span>
-            <h3>${item.title}</h3>
+            <span class="news-card__date">${escapeHtml(formatDate(item.date))}</span>
+            <h3>${escapeHtml(item.title)}</h3>
           </div>
         </div>`
       )
       .join("");
+
+    initNewsModal(items);
   } catch (err) {
     mainEl.innerHTML = "<p>Новости скоро появятся.</p>";
     console.error(err);
