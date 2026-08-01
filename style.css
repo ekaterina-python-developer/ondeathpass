@@ -1142,8 +1142,8 @@ select {
 
 .spec-strip__item {
   position: relative;
-  min-height: 68px;
-  padding: 12px 16px;
+  min-height: 72px;
+  padding: 14px 16px;
   border-right: 1px solid var(--line);
 }
 
@@ -2531,18 +2531,6 @@ body.is-news-modal-open {
     font-size: 11px;
   }
 
-  .spec-strip {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .spec-strip__item:nth-child(2) {
-    border-right: 0;
-  }
-
-  .spec-strip__item:nth-child(-n+2) {
-    border-bottom: 1px solid var(--line);
-  }
-
   .section-heading {
     align-items: flex-start;
     flex-direction: column;
@@ -2623,11 +2611,12 @@ body.is-news-modal-open {
   }
 
   .spec-strip__item {
-    padding: 15px;
+    min-height: 78px;
+    padding: 14px;
   }
 
   .spec-strip__item strong {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .gallery,
@@ -3251,10 +3240,81 @@ body.is-news-modal-open {
     max-width: none;
     margin-left: 0;
     padding: 0 0 48px;
+
+    /* Десктоп: панель сверху в HTML; на мобиле — переносим под hero */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .content > .hero {
+    order: 1;
+  }
+
+  .content > .spec-strip {
+    order: 2;
+  }
+
+  .content > .gallery {
+    order: 3;
+  }
+
+  .content > .description {
+    order: 4;
+  }
+
+  .content > .news {
+    order: 5;
+  }
+
+  .content > .footer {
+    order: 6;
   }
 
   .content > :not(.hero) {
     margin-inline: clamp(12px, 4vw, 24px);
+  }
+
+  /* Инфопанель 2×2 под hero (как на скрине) */
+  .spec-strip {
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 10px;
+    margin-bottom: 0;
+    border: 1px solid var(--line);
+    background: rgba(8, 12, 14, 0.84);
+  }
+
+  .spec-strip__item {
+    min-height: 86px;
+    padding: 15px 16px;
+    border-right: 1px solid var(--line);
+  }
+
+  .spec-strip__item:last-child {
+    border-right: 0;
+  }
+
+  .spec-strip__item:nth-child(2) {
+    border-right: 0;
+  }
+
+  .spec-strip__item:nth-child(-n+2) {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .spec-strip__item::after {
+    display: none;
+  }
+
+  .spec-strip__item span {
+    margin-bottom: 8px;
+    font-size: 8px;
+    letter-spacing: 0.16em;
+  }
+
+  .spec-strip__item strong {
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    line-height: 1.25;
   }
 
   .topline {
