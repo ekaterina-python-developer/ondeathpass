@@ -1996,7 +1996,6 @@ body.is-news-modal-open {
   font-size: 16px;
   font-weight: 700;
   scroll-margin-top: 24px;
-}
   letter-spacing: 0.07em;
   text-align: left;
   text-transform: uppercase;
@@ -2537,9 +2536,10 @@ body.is-news-modal-open {
   }
 
   .sidebar__panel.is-open {
-    max-height: 520px;
+    max-height: min(90svh, 720px);
     padding-block: 20px 24px;
     border-top-color: var(--line);
+    overflow-y: auto;
   }
 
   .sidebar__head {
@@ -4378,7 +4378,7 @@ body.is-news-modal-open {
       "status clock";
     gap: 11px 20px;
     min-height: 88px;
-    padding: 13px 6px;
+    padding: 13px 28px 13px 6px;
   }
 
   .topline__sector {
@@ -4392,7 +4392,9 @@ body.is-news-modal-open {
   }
 
   .topline__clock {
-    padding-right: 4px;
+    justify-self: end;
+    padding-right: 8px;
+    margin-right: 12px;
   }
 }
 
@@ -4488,5 +4490,735 @@ body.is-news-modal-open {
 @media (prefers-reduced-motion: reduce) {
   .topline__status i {
     animation: none;
+  }
+}
+
+
+/* =========================================================
+   MOBILE SOUND BUTTON (рядом с бургером)
+   ========================================================= */
+
+.sidebar__mobile-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mobile-sound-toggle {
+  display: none;
+}
+
+/* Показываем вместе с бургером (≤900px) */
+@media (max-width: 900px) {
+  .mobile-sound-toggle {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    color: rgba(218, 231, 232, 0.55);
+    background: rgba(5, 9, 10, 0.75);
+    border: 1px solid rgba(112, 151, 154, 0.25);
+    cursor: pointer;
+    clip-path: polygon(
+      7px 0,
+      100% 0,
+      100% calc(100% - 7px),
+      calc(100% - 7px) 100%,
+      0 100%,
+      0 7px
+    );
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .mobile-sound-toggle:hover,
+  .mobile-sound-toggle:focus-visible {
+    color: var(--cyan, #35c9d6);
+    border-color: rgba(53, 201, 214, 0.65);
+    background: rgba(53, 201, 214, 0.055);
+    outline: none;
+  }
+
+  .mobile-sound-toggle__bars {
+    height: 18px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3px;
+  }
+
+  .mobile-sound-toggle__bars i {
+    width: 2px;
+    height: 5px;
+    display: block;
+    background: currentColor;
+    transform-origin: bottom center;
+    transition: height 0.2s ease, opacity 0.2s ease;
+  }
+
+  .mobile-sound-toggle__bars i:nth-child(2) {
+    height: 10px;
+  }
+
+  .mobile-sound-toggle__bars i:nth-child(3) {
+    height: 15px;
+  }
+
+  .mobile-sound-toggle[aria-pressed="false"] .mobile-sound-toggle__bars i {
+    height: 3px;
+    opacity: 0.4;
+  }
+
+  .mobile-sound-toggle[aria-pressed="true"] {
+    color: var(--cyan, #35c9d6);
+    border-color: rgba(53, 201, 214, 0.48);
+    box-shadow:
+      inset 0 0 14px rgba(53, 201, 214, 0.035),
+      0 0 12px rgba(53, 201, 214, 0.07);
+  }
+
+  .mobile-sound-toggle[aria-pressed="true"] .mobile-sound-toggle__bars i {
+    animation: mobile-audio-bar 0.75s ease-in-out infinite alternate;
+  }
+
+  .mobile-sound-toggle[aria-pressed="true"] .mobile-sound-toggle__bars i:nth-child(2) {
+    animation-delay: 0.16s;
+  }
+
+  .mobile-sound-toggle[aria-pressed="true"] .mobile-sound-toggle__bars i:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  .mobile-sound-toggle__state {
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+    color: var(--red, #e0201f);
+    font-family: "Courier New", monospace;
+    font-size: 5px;
+    line-height: 1;
+    letter-spacing: 0.04em;
+  }
+
+  .mobile-sound-toggle[aria-pressed="true"] .mobile-sound-toggle__state {
+    color: var(--cyan, #35c9d6);
+  }
+}
+
+@keyframes mobile-audio-bar {
+  from { transform: scaleY(0.45); }
+  to { transform: scaleY(1); }
+}
+
+@media (max-width: 390px) {
+  .sidebar__mobile-actions {
+    gap: 7px;
+  }
+
+  .mobile-sound-toggle {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-sound-toggle__bars i {
+    animation: none !important;
+  }
+}
+
+/* =========================================================
+   TABLET MENU LAYOUT
+   Только в «мобильной оболочке» (≤900px) и только когда меню ОТКРЫТО.
+   Раньше max-width:1100 ломал десктопный сайдбар, а стили без .is-open
+   раздували закрытую панель (min-height > max-height).
+   ========================================================= */
+
+@media (min-width: 681px) and (max-width: 900px) {
+
+  .sidebar__panel.is-open {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1.65fr)
+      minmax(260px, 0.75fr);
+
+    grid-template-areas: "navigation controls";
+
+    align-items: start;
+    align-content: start;
+    gap: clamp(36px, 6vw, 76px);
+
+    width: 100%;
+    min-height: calc(100svh - 86px);
+    max-height: none;
+
+    padding:
+      clamp(42px, 6vw, 72px)
+      clamp(38px, 6vw, 76px);
+
+    overflow-y: auto;
+  }
+
+  .sidebar__panel .sidebar__head {
+    display: none;
+  }
+
+  .sidebar__panel.is-open .nav {
+    grid-area: navigation;
+
+    display: grid;
+    align-content: start;
+    gap: 10px;
+
+    width: 100%;
+    margin: 0;
+  }
+
+  .sidebar__panel.is-open .nav__item {
+    width: 100%;
+    min-height: 64px;
+    min-width: 0;
+
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    align-items: center;
+
+    padding: 0 22px;
+
+    font-size: clamp(18px, 2.1vw, 25px);
+  }
+
+  .sidebar__panel.is-open .nav__item > span {
+    font-size: 10px;
+  }
+
+  .sidebar__panel.is-open .nav__item--active {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(224, 32, 31, 0.14),
+        rgba(224, 32, 31, 0.025) 62%,
+        transparent
+      );
+  }
+
+  .sidebar__panel.is-open .sidebar__foot {
+    grid-area: controls;
+    align-self: start;
+
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 22px;
+
+    margin: 0;
+    padding: 0;
+
+    border: 0;
+  }
+
+  .sidebar__panel.is-open .sound-toggle {
+    width: 100%;
+    min-height: 78px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 18px;
+
+    padding: 16px 18px;
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(53, 201, 214, 0.045),
+        rgba(5, 9, 10, 0.78)
+      );
+
+    border: 1px solid rgba(112, 151, 154, 0.24);
+  }
+
+  .sidebar__panel.is-open .sound-toggle__indicator {
+    flex: 0 0 auto;
+  }
+
+  .sidebar__panel.is-open .sound-toggle__text {
+    min-width: 0;
+  }
+
+  .sidebar__panel.is-open .social {
+    display: grid;
+    grid-template-columns: repeat(4, 48px);
+    justify-content: start;
+    gap: 10px;
+
+    width: 100%;
+  }
+
+  .sidebar__panel.is-open .social__icon {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* =========================================================
+   SMALL TABLET (внутри той же мобильной оболочки)
+   ========================================================= */
+
+@media (min-width: 681px) and (max-width: 820px) {
+
+  .sidebar__panel.is-open {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "navigation"
+      "controls";
+
+    gap: 28px;
+
+    padding:
+      32px
+      clamp(24px, 6vw, 46px)
+      42px;
+  }
+
+  .sidebar__panel.is-open .nav__item {
+    min-height: 58px;
+
+    grid-template-columns: 42px minmax(0, 1fr);
+
+    font-size: 19px;
+  }
+
+  .sidebar__panel.is-open .sidebar__foot {
+    display: grid;
+    grid-template-columns: minmax(230px, 1fr) auto;
+    align-items: center;
+    gap: 18px;
+
+    padding-top: 22px;
+
+    border-top: 1px solid rgba(112, 151, 154, 0.18);
+  }
+
+  .sidebar__panel.is-open .sound-toggle {
+    min-height: 62px;
+  }
+
+  .sidebar__panel.is-open .social {
+    grid-template-columns: repeat(4, 43px);
+  }
+
+  .sidebar__panel.is-open .social__icon {
+    width: 43px;
+    height: 43px;
+  }
+}
+
+/* Сектор: // это текст, не статус-точка (.topline i) */
+.topline__sector > span {
+  color: rgba(229, 237, 238, 0.76);
+}
+
+.topline__sector > i {
+  display: inline;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  animation: none;
+  color: var(--red, #e0201f);
+  font: inherit;
+  font-style: normal;
+}
+
+/* Мобильная кнопка звука скрыта на десктопе */
+
+.topline__sound {
+  display: none;
+}
+
+
+/* =========================================================
+   MOBILE HEADER — TWO ROWS
+   ========================================================= */
+
+@media (max-width: 680px) {
+
+  /* Первая строка: название + меню */
+
+  .sidebar__bar {
+    position: relative;
+    z-index: 50;
+
+    width: 100%;
+    min-height: 88px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 0 24px;
+
+    background: #050708;
+    border-bottom: 1px solid rgba(224, 32, 31, 0.5);
+  }
+
+  .sidebar__logo {
+    min-width: 0;
+
+    overflow: hidden;
+
+    color: rgba(245, 248, 248, 0.96);
+
+    font-family: var(--font-interface, "Arial Narrow", sans-serif);
+    font-size: clamp(21px, 6vw, 28px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.075em;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .burger {
+    flex: 0 0 auto;
+  }
+
+
+  /* Вторая строка: точка статуса + сектор + музыка */
+
+  .content > .topline {
+    position: relative;
+    z-index: 20;
+
+    display: grid;
+    grid-template-columns: 8px minmax(0, 1fr) 72px;
+    grid-template-areas: "status sector sound";
+
+    align-items: center;
+    gap: 11px 16px;
+
+    width: 100%;
+    min-height: 68px;
+
+    /* правый отступ больше — плеер чуть левее бургера */
+    padding: 0 42px 0 24px;
+
+    color: rgba(218, 229, 230, 0.68);
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(53, 201, 214, 0.025),
+        rgba(5, 9, 10, 0.98) 28%,
+        rgba(5, 9, 10, 0.98)
+      );
+
+    border-top: 0;
+    border-bottom: 1px solid rgba(112, 151, 154, 0.25);
+
+    font-family: "Courier New", monospace;
+    font-size: 9px;
+    line-height: 1;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+
+  /* Часы и текст «СИСТЕМА В СЕТИ» скрыты — остаётся только голубая точка */
+
+  .topline__clock {
+    display: none;
+  }
+
+  .topline__status {
+    grid-area: status;
+    justify-self: start;
+    align-self: center;
+
+    display: block;
+    width: auto;
+    height: auto;
+    min-width: 0;
+    padding: 0;
+
+    background: transparent;
+    border: 0;
+  }
+
+  .topline__status > span {
+    display: none;
+  }
+
+  .topline__status i {
+    width: 6px;
+    height: 6px;
+    display: block;
+    margin: 0;
+    border-radius: 50%;
+    background: var(--cyan, #35c9d6);
+    box-shadow:
+      0 0 6px rgba(53, 201, 214, 0.9),
+      0 0 13px rgba(53, 201, 214, 0.4);
+    animation: topline-status-pulse 2.2s ease-in-out infinite;
+  }
+
+
+  /* Название текущего раздела */
+
+  .topline__sector {
+    grid-area: sector;
+    justify-self: start;
+
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+  }
+
+  .topline__sector > span {
+    color: rgba(211, 224, 225, 0.65);
+  }
+
+  .topline__sector > i {
+    display: inline;
+    width: auto;
+    height: auto;
+    margin: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    animation: none;
+    color: var(--red, #e0201f);
+
+    font: inherit;
+    font-style: normal;
+  }
+
+  .topline__sector > strong {
+    overflow: hidden;
+
+    color: rgba(246, 249, 249, 0.94);
+
+    font: inherit;
+    font-weight: 700;
+
+    text-overflow: ellipsis;
+  }
+
+
+  /* Кнопка музыки */
+
+  .topline__sound {
+    grid-area: sound;
+    justify-self: end;
+
+    position: relative;
+
+    width: 68px;
+    height: 30px;
+
+    display: grid;
+    place-items: center;
+
+    margin: 0;
+    padding: 0;
+
+    color: rgba(182, 204, 206, 0.48);
+    background: transparent;
+    border: 0;
+
+    cursor: pointer;
+
+    clip-path: none;
+
+    transition:
+      color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .topline__sound:hover,
+  .topline__sound:focus-visible {
+    color: var(--cyan, #35c9d6);
+    background: transparent;
+    border-color: transparent;
+
+    outline: none;
+  }
+
+
+  /* Полоски эквалайзера */
+
+  .topline__sound-bars {
+    height: 18px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .topline__sound-bars i {
+    width: 3px;
+    height: 5px;
+
+    display: block;
+
+    background: currentColor;
+
+    transform-origin: center bottom;
+  }
+
+  .topline__sound-bars i:nth-child(2) {
+    height: 9px;
+  }
+
+  .topline__sound-bars i:nth-child(3) {
+    height: 14px;
+  }
+
+  .topline__sound-bars i:nth-child(4) {
+    height: 18px;
+  }
+
+
+  /* Музыка выключена */
+
+  .topline__sound[aria-pressed="false"]
+  .topline__sound-bars i {
+    height: 3px;
+    opacity: 0.38;
+  }
+
+
+  /* Музыка включена */
+
+  .topline__sound[aria-pressed="true"] {
+    color: var(--cyan, #35c9d6);
+
+    background: transparent;
+
+    border-color: transparent;
+
+    box-shadow: none;
+  }
+
+  .topline__sound[aria-pressed="true"]
+  .topline__sound-bars i {
+    animation: topline-audio-bar 0.72s ease-in-out infinite alternate;
+  }
+
+  .topline__sound[aria-pressed="true"]
+  .topline__sound-bars i:nth-child(2) {
+    animation-delay: 0.12s;
+  }
+
+  .topline__sound[aria-pressed="true"]
+  .topline__sound-bars i:nth-child(3) {
+    animation-delay: 0.24s;
+  }
+
+  .topline__sound[aria-pressed="true"]
+  .topline__sound-bars i:nth-child(4) {
+    animation-delay: 0.36s;
+  }
+
+
+  /* Маленький статус ON/OFF */
+
+  .topline__sound-state {
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+
+    color: var(--red, #e0201f);
+
+    font-family: "Courier New", monospace;
+    font-size: 5px;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  .topline__sound[aria-pressed="true"]
+  .topline__sound-state {
+    color: var(--cyan, #35c9d6);
+  }
+}
+
+
+@keyframes topline-audio-bar {
+  from {
+    transform: scaleY(0.35);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
+
+/* Совсем узкие телефоны */
+
+@media (max-width: 390px) {
+  .sidebar__bar {
+    min-height: 78px;
+    padding-right: 17px;
+    padding-left: 17px;
+  }
+
+  .sidebar__logo {
+    font-size: 20px;
+  }
+
+  .content > .topline {
+    grid-template-columns: 7px minmax(0, 1fr) 64px;
+
+    min-height: 60px;
+
+    padding-right: 36px;
+    padding-left: 17px;
+
+    font-size: 8px;
+    letter-spacing: 0.1em;
+  }
+
+  .topline__sector {
+    gap: 6px;
+  }
+
+  .topline__status i {
+    width: 5px;
+    height: 5px;
+  }
+
+  .topline__sound {
+    width: 60px;
+    height: 28px;
+  }
+
+  .topline__sound-bars {
+    transform: none;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .topline__sound-bars i {
+    animation: none !important;
   }
 }

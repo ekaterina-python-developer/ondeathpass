@@ -131,15 +131,13 @@
 // Трек берётся из audio/track.json или из файла с привычным именем.
 (() => {
   const music = document.querySelector('#background-music');
-  const soundButton = document.querySelector('#sound-toggle');
-  if (!music || !soundButton) return;
+  const soundButtons = Array.from(document.querySelectorAll('[data-sound-toggle]'));
+  if (!music || !soundButtons.length) return;
 
-  const soundValue = soundButton.querySelector('.sound-toggle__value');
-  const soundStatus = soundButton.querySelector('.sound-toggle__status');
   const STORAGE_KEY = 'death-pass-sound';
   const POSITION_KEY = 'death-pass-sound-time';
   const TRACK_KEY = 'death-pass-sound-track';
-  const targetVolume = 0.14;
+  const targetVolume = 0.08;
   let fadeTimer = null;
   let soundEnabled = localStorage.getItem(STORAGE_KEY) === 'on';
   // Пользователь сам выключил SOUND — не включаем автоматически.
@@ -194,12 +192,12 @@
     }
 
     const fallbacks = [
+      'audio/death-pass-ambient.mp3',
       'audio/bgm.mp3',
       'audio/bgm.ogg',
       'audio/ambient.mp3',
       'audio/ambient.ogg',
-      'audio/music.mp3',
-      'audio/death-pass-ambient.mp3'
+      'audio/music.mp3'
     ];
 
     for (const src of fallbacks) {
@@ -238,14 +236,30 @@
   };
 
   const updateButton = (isPlaying) => {
-    soundButton.setAttribute('aria-pressed', String(isPlaying));
-    soundButton.classList.toggle('is-playing', isPlaying);
-    soundValue.textContent = isPlaying ? 'ЗВУК // ВКЛ' : 'ЗВУК // ВЫКЛ';
-    soundStatus.textContent = isPlaying ? 'АУДИОКАНАЛ АКТИВЕН' : 'АУДИОКАНАЛ';
-    soundButton.setAttribute(
-      'aria-label',
-      isPlaying ? 'Выключить фоновую музыку' : 'Включить фоновую музыку'
-    );
+    soundButtons.forEach((button) => {
+      button.setAttribute('aria-pressed', String(isPlaying));
+      button.classList.toggle('is-playing', isPlaying);
+      button.setAttribute(
+        'aria-label',
+        isPlaying ? 'Выключить фоновую музыку' : 'Включить фоновую музыку'
+      );
+
+      const desktopValue = button.querySelector('.sound-toggle__value');
+      const desktopStatus = button.querySelector('.sound-toggle__status');
+      const mobileState = button.querySelector(
+        '.topline__sound-state, .mobile-sound-toggle__state'
+      );
+
+      if (desktopValue) {
+        desktopValue.textContent = isPlaying ? 'ЗВУК // ВКЛ' : 'ЗВУК // ВЫКЛ';
+      }
+      if (desktopStatus) {
+        desktopStatus.textContent = isPlaying ? 'АУДИОКАНАЛ АКТИВЕН' : 'АУДИОКАНАЛ';
+      }
+      if (mobileState) {
+        mobileState.textContent = isPlaying ? 'ON' : 'OFF';
+      }
+    });
   };
 
   const fadeTo = (target, duration = 600, onComplete) => {
@@ -313,7 +327,7 @@
       music.addEventListener('error', onError, { once: true });
     });
 
-  const enableSound = async ({ restore = true, fadeMs = 1400 } = {}) => {
+  const enableSound = async ({ restore = true, fadeMs = 2200 } = {}) => {
     if (toggling) return false;
     toggling = true;
 
@@ -350,7 +364,7 @@
   // или не нажмёт клавишу (как «снять замок» с колонок).
   const unlockMusic = async (event) => {
     // Кнопку SOUND не трогаем — у неё свой обработчик.
-    if (event?.target?.closest?.('#sound-toggle')) return;
+    if (event?.target?.closest?.('[data-sound-toggle]')) return;
 
     const started = await enableSound({ restore: soundEnabled });
     if (started) removeUnlockListeners();
@@ -375,17 +389,19 @@
     });
   };
 
-  soundButton.addEventListener('click', async (event) => {
-    event.stopPropagation();
+  soundButtons.forEach((button) => {
+    button.addEventListener('click', async (event) => {
+      event.stopPropagation();
 
-    // Включено и реально играет — выключаем. Иначе пробуем включить.
-    if (soundEnabled && !music.paused) {
-      disableSound();
-      return;
-    }
+      // Включено и реально играет — выключаем. Иначе пробуем включить.
+      if (soundEnabled && !music.paused) {
+        disableSound();
+        return;
+      }
 
-    const started = await enableSound();
-    if (started) removeUnlockListeners();
+      const started = await enableSound();
+      if (started) removeUnlockListeners();
+    });
   });
 
   // Перед уходом на другую страницу сохраняем позицию трека.
@@ -405,7 +421,7 @@
       .then(() => music.play())
       .then(() => {
         updateButton(true);
-        if (music.volume < targetVolume) fadeTo(targetVolume);
+        if (music.volume < targetVolume) fadeTo(targetVolume, 2200);
       })
       .catch(() => {
         updateButton(false);
