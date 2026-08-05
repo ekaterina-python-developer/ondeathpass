@@ -103,6 +103,20 @@ select {
   pointer-events: none;
 }
 
+/* На текстовых страницах с аккордеоном выключаем тяжёлый фон —
+   иначе анимации + длинный DOM дают лаги при скролле и меню */
+body:has(.accordion) .ambient__grid {
+  animation: none;
+  transform: none;
+  opacity: 0.1;
+}
+
+body:has(.accordion) .ambient__glow,
+body:has(.accordion) .ambient__scan,
+body:has(.accordion) .ambient__scan::after {
+  display: none;
+}
+
 .ambient__grid {
   position: absolute;
   inset: -20%;
@@ -1981,6 +1995,8 @@ body.is-news-modal-open {
   font-family: var(--font-interface);
   font-size: 16px;
   font-weight: 700;
+  scroll-margin-top: 24px;
+}
   letter-spacing: 0.07em;
   text-align: left;
   text-transform: uppercase;
@@ -2026,7 +2042,8 @@ body.is-news-modal-open {
   max-height: 0;
   overflow: hidden;
   padding: 0 20px;
-  transition: max-height 0.45s ease, padding 0.35s ease;
+  /* max-height на длинном контенте (роадмап) жрёт FPS — без анимации высоты */
+  transition: none;
 }
 
 .accordion-item.is-open .accordion-body {
@@ -2469,6 +2486,11 @@ body.is-news-modal-open {
     padding: 0 22px;
   }
 
+  .accordion__summary,
+  .accordion-header {
+    scroll-margin-top: 80px;
+  }
+
   .sidebar__logo {
     color: var(--text);
     font-family: var(--font-interface);
@@ -2494,8 +2516,8 @@ body.is-news-modal-open {
     width: 100%;
     height: 1px;
     background: var(--red);
-    box-shadow: 0 0 7px rgba(255, 59, 48, 0.5);
-    transition: transform 0.25s ease, opacity 0.25s ease;
+    /* glow на каждой линии + transform = лишняя перерисовка */
+    transition: transform 0.2s ease, opacity 0.2s ease;
   }
 
   .sidebar__bar[data-open="true"] .burger span:nth-child(1) { transform: translateY(11.5px) rotate(45deg); }
@@ -2511,7 +2533,7 @@ body.is-news-modal-open {
     padding: 0 22px;
     overflow: hidden;
     border-top: 1px solid transparent;
-    transition: max-height 0.35s ease, padding 0.35s ease, border-color 0.35s ease;
+    transition: max-height 0.2s ease, padding 0.2s ease, border-color 0.2s ease;
   }
 
   .sidebar__panel.is-open {

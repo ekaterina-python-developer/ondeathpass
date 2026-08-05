@@ -168,6 +168,8 @@ function initNav() {
   const bar = burger ? burger.closest(".sidebar__bar") : null;
   if (!sidebar || !panel) return;
 
+  let fitTimer = 0;
+
   function checkFit() {
     // Если экран шире desktop-порога, компактный режим не нужен —
     // сайдбар и так вертикальный слева.
@@ -192,7 +194,10 @@ function initNav() {
   }
 
   checkFit();
-  window.addEventListener("resize", checkFit);
+  window.addEventListener("resize", () => {
+    window.clearTimeout(fitTimer);
+    fitTimer = window.setTimeout(checkFit, 120);
+  });
 
   if (burger) {
     burger.addEventListener("click", () => {
@@ -212,6 +217,12 @@ function initNav() {
 }
 
 // --- Аккордеон «О игре»: одновременно открыт только один блок ---
+function scrollAccordionIntoView(el) {
+  if (!el) return;
+  // Instant: smooth + смена высоты аккордеона = двойной лаг
+  el.scrollIntoView({ behavior: "auto", block: "start" });
+}
+
 function initAccordion() {
   const root = document.querySelector("[data-accordion]");
   if (!root) return;
@@ -222,6 +233,8 @@ function initAccordion() {
       root.querySelectorAll("details.accordion__item").forEach((other) => {
         if (other !== item) other.open = false;
       });
+      const summary = item.querySelector(".accordion__summary") || item;
+      scrollAccordionIntoView(summary);
     });
   });
 }
@@ -232,6 +245,7 @@ function initPlansAccordion() {
   if (!root) return;
 
   const items = root.querySelectorAll(".accordion-item");
+  let resizeTimer = 0;
 
   const setBodyHeight = (body, open) => {
     if (!body) return;
@@ -264,14 +278,17 @@ function initPlansAccordion() {
         item.classList.add("is-open");
         btn.setAttribute("aria-expanded", "true");
         const body = item.querySelector(".accordion-body");
-        // После padding из .is-open пересчитываем реальную высоту
-        requestAnimationFrame(() => setBodyHeight(body, true));
+        setBodyHeight(body, true);
+        scrollAccordionIntoView(btn);
       }
     });
   });
 
   syncOpenHeights();
-  window.addEventListener("resize", syncOpenHeights);
+  window.addEventListener("resize", () => {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(syncOpenHeights, 150);
+  });
 }
 
 const yearEl = document.getElementById("year");
