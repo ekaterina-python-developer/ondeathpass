@@ -7,7 +7,7 @@
 <title>Контакты — ON DEATH PASS</title>
 <meta name="description" content="Контактные данные ON DEATH PASS: почта для сотрудничества, поддержка на Boosty, Telegram-группа и YouTube-каналы разработчика.">
 <script>document.documentElement.classList.add('js');</script>
-<link rel="stylesheet" href="style.css?v=20260806o">
+<link rel="stylesheet" href="style.css?v=20260806aa">
 
 <script data-goatcounter="https://deathpass.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
@@ -40,6 +40,22 @@
       >
         ON DEATH PASS
       </a>
+
+      <button
+        class="sound-toggle sound-toggle--topline"
+        type="button"
+        data-sound-toggle
+        aria-pressed="false"
+        aria-label="Включить фоновую музыку"
+      >
+        <span class="sound-toggle__indicator" aria-hidden="true">
+          <i></i><i></i><i></i><i></i>
+        </span>
+        <span class="sound-toggle__text">
+          <span class="sound-toggle__status">АУДИОКАНАЛ</span>
+          <span class="sound-toggle__value">ЗВУК // ВЫКЛ</span>
+        </span>
+      </button>
 
       <button
         class="burger"
@@ -125,24 +141,6 @@
         00:00:00
       </time>
 
-      <button
-        class="topline__sound"
-        type="button"
-        data-sound-toggle
-        aria-pressed="false"
-        aria-label="Включить фоновую музыку"
-      >
-        <span class="topline__sound-bars" aria-hidden="true">
-          <i></i>
-          <i></i>
-          <i></i>
-          <i></i>
-        </span>
-
-        <span class="topline__sound-state" aria-hidden="true">
-          OFF
-        </span>
-      </button>
     </header>
 
     <h2 class="section-banner reveal">Контактные данные</h2>
@@ -219,6 +217,6 @@
 <audio id="background-music" loop preload="none"></audio>
 
 <script src="script.js"></script>
-<script src="interface.js?v=20260806e"></script>
+<script src="interface.js?v=20260806r"></script>
 </body>
 </html>

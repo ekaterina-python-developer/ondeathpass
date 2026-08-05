@@ -4370,7 +4370,12 @@ body.is-news-modal-open {
   }
 }
 
-@media (max-width: 1000px) and (min-width: 681px) {
+/* По умолчанию скрыт; показывают медиазапросы ниже (планшет / телефон) */
+.sound-toggle--topline {
+  display: none;
+}
+
+@media (max-width: 900px) and (min-width: 681px) {
   .content > .topline {
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
@@ -4395,6 +4400,37 @@ body.is-news-modal-open {
     justify-self: end;
     padding-right: 8px;
     margin-right: 12px;
+  }
+
+  /* Полный плеер перед бургером */
+  .sidebar__bar {
+    gap: 16px;
+  }
+
+  .sound-toggle--topline {
+    display: flex;
+    flex: 0 0 auto;
+    order: 2;
+    width: auto;
+    max-width: min(220px, 40vw);
+    margin: 0;
+    margin-left: auto;
+    margin-right: 14px;
+    padding: 0;
+    gap: 12px;
+  }
+
+  .sidebar__bar .burger {
+    order: 3;
+  }
+
+  .sound-toggle--topline .sound-toggle__status {
+    margin-bottom: 3px;
+    font-size: 8px;
+  }
+
+  .sound-toggle--topline .sound-toggle__value {
+    font-size: 10px;
   }
 }
 
@@ -4723,33 +4759,10 @@ body.is-news-modal-open {
     border: 0;
   }
 
+  /* Плеер на 681–900 в шапке — в меню не показываем */
+  .sidebar__panel .sound-toggle,
   .sidebar__panel.is-open .sound-toggle {
-    width: 100%;
-    min-height: 78px;
-
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 18px;
-
-    padding: 16px 18px;
-
-    background:
-      linear-gradient(
-        90deg,
-        rgba(53, 201, 214, 0.045),
-        rgba(5, 9, 10, 0.78)
-      );
-
-    border: 1px solid rgba(112, 151, 154, 0.24);
-  }
-
-  .sidebar__panel.is-open .sound-toggle__indicator {
-    flex: 0 0 auto;
-  }
-
-  .sidebar__panel.is-open .sound-toggle__text {
-    min-width: 0;
+    display: none !important;
   }
 
   .sidebar__panel.is-open .social {
@@ -4796,18 +4809,15 @@ body.is-news-modal-open {
   }
 
   .sidebar__panel.is-open .sidebar__foot {
-    display: grid;
-    grid-template-columns: minmax(230px, 1fr) auto;
+    display: flex;
+    flex-direction: row;
     align-items: center;
+    justify-content: flex-start;
     gap: 18px;
 
     padding-top: 22px;
 
     border-top: 1px solid rgba(112, 151, 154, 0.18);
-  }
-
-  .sidebar__panel.is-open .sound-toggle {
-    min-height: 62px;
   }
 
   .sidebar__panel.is-open .social {
@@ -4840,10 +4850,12 @@ body.is-news-modal-open {
   font-style: normal;
 }
 
-/* Мобильная кнопка звука скрыта на десктопе */
-
-.topline__sound {
-  display: none;
+/* В бургер-меню звук не дублируем (≤900) */
+@media (max-width: 900px) {
+  .sidebar__panel .sound-toggle,
+  .sidebar__panel.is-open .sound-toggle {
+    display: none !important;
+  }
 }
 
 
@@ -4895,15 +4907,15 @@ body.is-news-modal-open {
   }
 
 
-  /* Вторая строка: точка статуса + сектор + музыка */
+  /* Вторая строка: точка статуса + сектор (плеер — у бургера) */
 
   .content > .topline {
     position: relative;
     z-index: 20;
 
     display: grid;
-    grid-template-columns: 8px minmax(0, 1fr) 72px;
-    grid-template-areas: "status sector sound";
+    grid-template-columns: 8px minmax(0, 1fr);
+    grid-template-areas: "status sector";
 
     align-items: center;
     gap: 11px 16px;
@@ -4911,8 +4923,7 @@ body.is-news-modal-open {
     width: 100%;
     min-height: 68px;
 
-    /* правый отступ больше — плеер чуть левее бургера */
-    padding: 0 42px 0 24px;
+    padding: 0 24px;
 
     color: rgba(218, 229, 230, 0.68);
 
@@ -5022,152 +5033,81 @@ body.is-news-modal-open {
   }
 
 
-  /* Кнопка музыки */
-
-  .topline__sound {
-    grid-area: sound;
-    justify-self: end;
-
-    position: relative;
-
-    width: 68px;
-    height: 30px;
-
-    display: grid;
-    place-items: center;
-
+  /* Плеер перед бургером: на телефоне только полоски */
+  .sound-toggle--topline {
+    display: inline-flex;
+    flex: 0 0 auto;
+    order: 2;
+    align-items: center;
+    width: auto;
+    max-width: none;
+    min-height: 0;
     margin: 0;
+    margin-left: auto;
+    margin-right: 12px;
     padding: 0;
+    gap: 0;
 
-    color: rgba(182, 204, 206, 0.48);
+    color: #758185;
     background: transparent;
     border: 0;
-
-    cursor: pointer;
-
-    clip-path: none;
-
-    transition:
-      color 0.2s ease,
-      background 0.2s ease;
   }
 
-  .topline__sound:hover,
-  .topline__sound:focus-visible {
-    color: var(--cyan, #35c9d6);
-    background: transparent;
-    border-color: transparent;
+  .sidebar__bar .burger {
+    order: 3;
+  }
 
+  .sound-toggle--topline .sound-toggle__text {
+    display: none;
+  }
+
+  .sound-toggle--topline:hover,
+  .sound-toggle--topline:focus-visible {
+    color: var(--text-soft, #d6dfe0);
     outline: none;
   }
 
-
-  /* Полоски эквалайзера */
-
-  .topline__sound-bars {
+  /* Размер полосок как после «чуть увеличила» */
+  .sound-toggle--topline .sound-toggle__indicator {
     height: 18px;
-
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
     gap: 4px;
   }
 
-  .topline__sound-bars i {
+  .sound-toggle--topline .sound-toggle__indicator i {
     width: 3px;
     height: 5px;
-
-    display: block;
-
-    background: currentColor;
-
-    transform-origin: center bottom;
   }
 
-  .topline__sound-bars i:nth-child(2) {
+  .sound-toggle--topline .sound-toggle__indicator i:nth-child(2) {
     height: 9px;
   }
 
-  .topline__sound-bars i:nth-child(3) {
+  .sound-toggle--topline .sound-toggle__indicator i:nth-child(3) {
     height: 14px;
   }
 
-  .topline__sound-bars i:nth-child(4) {
+  .sound-toggle--topline .sound-toggle__indicator i:nth-child(4) {
     height: 18px;
   }
 
-
-  /* Музыка выключена */
-
-  .topline__sound[aria-pressed="false"]
-  .topline__sound-bars i {
-    height: 3px;
-    opacity: 0.38;
-  }
-
-
-  /* Музыка включена */
-
-  .topline__sound[aria-pressed="true"] {
-    color: var(--cyan, #35c9d6);
-
-    background: transparent;
-
-    border-color: transparent;
-
+  /* Выключено — без свечения */
+  .sound-toggle--topline[aria-pressed="false"] .sound-toggle__indicator i,
+  .sound-toggle--topline:not(.is-playing) .sound-toggle__indicator i {
+    background: rgba(117, 129, 133, 0.35);
     box-shadow: none;
+    opacity: 0.55;
   }
 
-  .topline__sound[aria-pressed="true"]
-  .topline__sound-bars i {
-    animation: topline-audio-bar 0.72s ease-in-out infinite alternate;
-  }
-
-  .topline__sound[aria-pressed="true"]
-  .topline__sound-bars i:nth-child(2) {
-    animation-delay: 0.12s;
-  }
-
-  .topline__sound[aria-pressed="true"]
-  .topline__sound-bars i:nth-child(3) {
-    animation-delay: 0.24s;
-  }
-
-  .topline__sound[aria-pressed="true"]
-  .topline__sound-bars i:nth-child(4) {
-    animation-delay: 0.36s;
-  }
-
-
-  /* Маленький статус ON/OFF */
-
-  .topline__sound-state {
-    position: absolute;
-    right: 3px;
-    bottom: 3px;
-
-    color: var(--red, #e0201f);
-
-    font-family: "Courier New", monospace;
-    font-size: 5px;
-    line-height: 1;
-    letter-spacing: 0;
-  }
-
-  .topline__sound[aria-pressed="true"]
-  .topline__sound-state {
+  .sound-toggle--topline.is-playing,
+  .sound-toggle--topline[aria-pressed="true"] {
     color: var(--cyan, #35c9d6);
   }
-}
 
-
-@keyframes topline-audio-bar {
-  from {
-    transform: scaleY(0.35);
-  }
-
-  to {
-    transform: scaleY(1);
+  .sound-toggle--topline.is-playing .sound-toggle__indicator i,
+  .sound-toggle--topline[aria-pressed="true"] .sound-toggle__indicator i {
+    background: var(--cyan, #35c9d6);
+    box-shadow: 0 0 8px rgba(53, 201, 214, 0.65);
+    opacity: 1;
   }
 }
 
@@ -5186,11 +5126,11 @@ body.is-news-modal-open {
   }
 
   .content > .topline {
-    grid-template-columns: 7px minmax(0, 1fr) 64px;
+    grid-template-columns: 7px minmax(0, 1fr);
 
     min-height: 60px;
 
-    padding-right: 36px;
+    padding-right: 17px;
     padding-left: 17px;
 
     font-size: 8px;
@@ -5206,19 +5146,14 @@ body.is-news-modal-open {
     height: 5px;
   }
 
-  .topline__sound {
-    width: 60px;
-    height: 28px;
-  }
-
-  .topline__sound-bars {
-    transform: none;
+  .sound-toggle--topline {
+    margin-right: 10px;
   }
 }
 
 
 @media (prefers-reduced-motion: reduce) {
-  .topline__sound-bars i {
+  .sound-toggle--topline .sound-toggle__indicator i {
     animation: none !important;
   }
 }

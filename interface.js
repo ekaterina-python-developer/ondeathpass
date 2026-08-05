@@ -246,6 +246,7 @@
 
       const desktopValue = button.querySelector('.sound-toggle__value');
       const desktopStatus = button.querySelector('.sound-toggle__status');
+      const toplineState = button.querySelector('.sound-toggle__state');
       const mobileState = button.querySelector(
         '.topline__sound-state, .mobile-sound-toggle__state'
       );
@@ -255,6 +256,9 @@
       }
       if (desktopStatus) {
         desktopStatus.textContent = isPlaying ? 'АУДИОКАНАЛ АКТИВЕН' : 'АУДИОКАНАЛ';
+      }
+      if (toplineState) {
+        toplineState.textContent = isPlaying ? 'ВКЛ' : 'ВЫКЛ';
       }
       if (mobileState) {
         mobileState.textContent = isPlaying ? 'ON' : 'OFF';
