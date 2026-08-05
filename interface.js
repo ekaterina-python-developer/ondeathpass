@@ -67,15 +67,16 @@
     });
   });
 
-  // Adds a short signal disturbance at irregular intervals.
+  // Короткий глитч заголовка через случайные промежутки.
   const title = document.querySelector('.hero__title');
   if (title && !reducedMotion) {
     const triggerGlitch = () => {
       title.classList.add('is-glitching');
       window.setTimeout(() => title.classList.remove('is-glitching'), 420);
-      window.setTimeout(triggerGlitch, 4800 + Math.random() * 5200);
+      // Раньше: 4.8–10 с. Теперь чаще: 2–4.5 с.
+      window.setTimeout(triggerGlitch, 2000 + Math.random() * 2500);
     };
-    window.setTimeout(triggerGlitch, 3200);
+    window.setTimeout(triggerGlitch, 1400);
   }
 
   // CSS can use this for fine progressive enhancement.

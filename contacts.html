@@ -7,7 +7,7 @@
 <title>Контакты — ON DEATH PASS</title>
 <meta name="description" content="Контактные данные ON DEATH PASS: почта для сотрудничества, поддержка на Boosty, Telegram-группа и YouTube-каналы разработчика.">
 <script>document.documentElement.classList.add('js');</script>
-<link rel="stylesheet" href="style.css?v=20260801d">
+<link rel="stylesheet" href="style.css?v=20260805h">
 
 <script data-goatcounter="https://deathpass.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
@@ -55,7 +55,7 @@
 
       <nav class="nav" aria-label="Основная навигация">
         <a href="index.html" class="nav__item"><span>01</span>Главная</a>
-        <a href="about.html" class="nav__item"><span>02</span>О игре</a>
+        <a href="about.html" class="nav__item"><span>02</span>Об игре</a>
         <a href="plans.html" class="nav__item"><span>03</span>Планы</a>
         <a href="contacts.html" class="nav__item nav__item--active" aria-current="page"><span>04</span>Контакты</a>
       </nav>
@@ -90,9 +90,18 @@
   <main class="content" id="main">
 
     <header class="topline" aria-label="Системный статус">
-      <span><i></i> СИСТЕМА В СЕТИ</span>
-      <span class="topline__center">СЕКТОР 04 // КОНТАКТЫ</span>
-      <span id="system-clock">00:00:00</span>
+      <span class="topline__status" aria-label="Система в сети">
+        <i aria-hidden="true"></i>
+        <span class="topline__status-text">СИСТЕМА В СЕТИ</span>
+      </span>
+
+      <span class="topline__sector">
+        <span class="topline__sector-code">СЕКТОР 04</span>
+        <span class="topline__sector-divider" aria-hidden="true">//</span>
+        <strong>КОНТАКТЫ</strong>
+      </span>
+
+      <time class="topline__clock" id="system-clock" datetime="">00:00:00</time>
     </header>
 
     <h2 class="section-banner reveal">Контактные данные</h2>

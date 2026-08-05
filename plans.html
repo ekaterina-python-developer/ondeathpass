@@ -7,7 +7,7 @@
 <title>Планы — ON DEATH PASS</title>
 <meta name="description" content="Текущее состояние разработки ON DEATH PASS, чего ждать от игры, роадмап и возможный дополнительный контент.">
 <script>document.documentElement.classList.add('js');</script>
-<link rel="stylesheet" href="style.css?v=20260801d">
+<link rel="stylesheet" href="style.css?v=20260805h">
 
 <script data-goatcounter="https://deathpass.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
@@ -55,7 +55,7 @@
 
       <nav class="nav" aria-label="Основная навигация">
         <a href="index.html" class="nav__item"><span>01</span>Главная</a>
-        <a href="about.html" class="nav__item"><span>02</span>О игре</a>
+        <a href="about.html" class="nav__item"><span>02</span>Об игре</a>
         <a href="plans.html" class="nav__item nav__item--active" aria-current="page"><span>03</span>Планы</a>
         <a href="contacts.html" class="nav__item"><span>04</span>Контакты</a>
       </nav>
@@ -90,9 +90,18 @@
   <main class="content" id="main">
 
     <header class="topline" aria-label="Системный статус">
-      <span><i></i> СИСТЕМА В СЕТИ</span>
-      <span class="topline__center">СЕКТОР 03 // ПЛАНЫ</span>
-      <span id="system-clock">00:00:00</span>
+      <span class="topline__status" aria-label="Система в сети">
+        <i aria-hidden="true"></i>
+        <span class="topline__status-text">СИСТЕМА В СЕТИ</span>
+      </span>
+
+      <span class="topline__sector">
+        <span class="topline__sector-code">СЕКТОР 03</span>
+        <span class="topline__sector-divider" aria-hidden="true">//</span>
+        <strong>ПЛАНЫ</strong>
+      </span>
+
+      <time class="topline__clock" id="system-clock" datetime="">00:00:00</time>
     </header>
 
     <h1 class="about-hero__title reveal">ON DEATH PASS</h1>
@@ -105,17 +114,16 @@
           <span class="accordion-icon" aria-hidden="true"></span>
         </button>
         <div class="accordion-body">
-          <p>На данный момент игра представлена в виде техно демо версии.</p>
+          <p>На данный момент игра представлена в виде технодемо-версии.</p>
           <ul>
             <li>Заявлены основные механики,</li>
-            <li>Введение в основы геймплея,</li>
-            <li>Завязка истории.</li>
+            <li>введение в основы геймплея,</li>
+            <li>завязка истории.</li>
           </ul>
           <p>Визуал соответствует возможному на 70%.<br>
              Отсутствует озвучка.<br>
              Музыка подобрана из открытых источников.</p>
-          <p><strong>Версия 0.1</strong></p>
-          <p class="accordion-note">Проведена проверка собственных сил и возможностей, что подтвердила возможность реализовать задумки для игры.</p>
+          <p>Версия 0.1</p>
         </div>
       </div>
 
@@ -125,7 +133,14 @@
           <span class="accordion-icon" aria-hidden="true"></span>
         </button>
         <div class="accordion-body">
-          <p><!-- TODO: добавьте текст о том, чего игроки могут ожидать от полной версии --></p>
+          <ul>
+            <li>Истории, в которой вам предстоит решать судьбу переживших ядерную войну жителей. Именно вам как игроку выпадут ситуации, принятие решений в которых повлекут последствия глобального характера.</li>
+            <li>Вживания в роль неспешного, но эффективного агента, что проник в комплекс враждебной организации, но из-за сложившихся обстоятельств которому предстоит вновь познать себя и принять не последнюю роль в жизни общества, пережившего ядерную войну.</li>
+            <li>Ситуаций, что не решаются с наскока, а требуют анализа окружения и возможностей.</li>
+            <li>Головоломок как привычного формата для сюжетно ориентированных игр, так и уникальных.</li>
+            <li>Катсцен, не прерывающих геймплей, наряду с отдельными анимированными в игровом движке.</li>
+            <li>Завязку для истории галактического масштаба.</li>
+          </ul>
         </div>
       </div>
 
@@ -135,7 +150,198 @@
           <span class="accordion-icon" aria-hidden="true"></span>
         </button>
         <div class="accordion-body">
-          <p><!-- TODO: добавьте этапы разработки и примерные сроки --></p>
+          <div class="roadmap" aria-label="План разработки ON DEATH PASS">
+
+            <header class="roadmap__head">
+              <span class="roadmap__head-code">ODP // МАРШРУТ РАЗРАБОТКИ</span>
+              <h2 class="roadmap__head-title">РОАДМАП</h2>
+            </header>
+
+            <section class="roadmap__phase">
+              <div class="roadmap__phase-title">
+                <span class="roadmap__phase-number">00</span>
+                <span>Начало пути</span>
+                <i aria-hidden="true"></i>
+              </div>
+
+              <article class="roadmap__step">
+                <span class="roadmap__node roadmap__node--red" aria-hidden="true">ДЕМО</span>
+                <div class="roadmap__content">
+                  <span class="roadmap__code">ПУБЛИКАЦИЯ // ДЕМО</span>
+                  <h3>Появление демоверсии</h3>
+                  <p>Появление демоверсии на itch.io.</p>
+                </div>
+              </article>
+
+              <article class="roadmap__step">
+                <span class="roadmap__node roadmap__node--cyan" aria-hidden="true">▶</span>
+                <div class="roadmap__content">
+                  <span class="roadmap__code">МЕДИА // ЗАПУСК</span>
+                  <h3>Запуск сайта и YouTube-канала</h3>
+                  <p>Запуск сайта и YouTube-канала для привлечения аудитории через сторонние игры.</p>
+                </div>
+              </article>
+
+              <article class="roadmap__step">
+                <span class="roadmap__node roadmap__node--yellow" aria-hidden="true">◉</span>
+                <div class="roadmap__content">
+                  <span class="roadmap__code">ФИНАНСИРОВАНИЕ // СТАРТ</span>
+                  <h3>Начало сбора средств</h3>
+                  <p>Начало сборов средств на разработку игры.</p>
+                  <p class="roadmap__note">Параллельно будет проводиться поиск издателя.</p>
+                </div>
+              </article>
+            </section>
+
+            <section class="roadmap__phase">
+              <div class="roadmap__phase-title">
+                <span class="roadmap__phase-number">01</span>
+                <span>Через 3–6 месяцев</span>
+                <i aria-hidden="true"></i>
+              </div>
+
+              <article class="roadmap__step">
+                <span class="roadmap__node roadmap__node--red" aria-hidden="true">∿</span>
+                <div class="roadmap__content">
+                  <span class="roadmap__code">СЦЕНАРИЙ // МИНИМАЛЬНЫЙ СБОР</span>
+                  <h3>Разработка по отдельным главам</h3>
+                  <p>При минимальном сборе средств игра будет развиваться и выходить по отдельным главам.</p>
+                  <ul class="roadmap__list">
+                    <li>Разработка главы истории займёт 6 месяцев.</li>
+                    <li>Разработка будет проводиться одним человеком.</li>
+                    <li>Параллельно будет написано 1–2 книги о предшествующих событиях.</li>
+                    <li>Озвучка реплик будет сделана лишь начальными фразами.</li>
+                    <li>Катсцены будут преимущественно на игровом движке.</li>
+                    <li>Проведение закрытого бета-тестирования (ЗБТ) за месяц до релиза.</li>
+                    <li>Музыка для игры будет создана своими силами.</li>
+                    <li>Регулярный отчёт о ходе работы.</li>
+                  </ul>
+                </div>
+              </article>
+
+              <article class="roadmap__step roadmap__step--branch">
+                <span class="roadmap__node roadmap__node--green" aria-hidden="true">↗</span>
+                <div class="roadmap__content">
+                  <span class="roadmap__code">СЦЕНАРИЙ // ПОЛНЫЙ СБОР</span>
+                  <h3>Разработка игры целиком</h3>
+                  <p>При сборе полной суммы игра будет разрабатываться целиком.</p>
+                  <ul class="roadmap__list">
+                    <li>Разработка займёт полтора года, в изоляции от иной деятельности.</li>
+                    <li>К разработке будут привлечены дополнительные художники, музыканты, актёры озвучивания и т. п.</li>
+                    <li>Параллельно будет написано 2 книги о предшествующих событиях.</li>
+                    <li>Параллельно будет нарисована манга о предыстории главной героини (ваншот, 3–4 главы).</li>
+                    <li>По возможности большинство катсцен будет анимировано, а не на движке игры.</li>
+                    <li>К созданию музыки будет привлечён более опытный человек.</li>
+                    <li>Будут созданы индивидуальные награды для поддержавших разработку.</li>
+                    <li>Запуск отдельных закрытых бета-тестов (ЗБТ) под сегменты игры.</li>
+                    <li>Организация арт-конкурса.</li>
+                    <li>Регулярный отчёт о ходе работы.</li>
+                  </ul>
+                </div>
+              </article>
+
+              <article class="roadmap__step">
+                <span class="roadmap__node roadmap__node--yellow" aria-hidden="true">!</span>
+                <div class="roadmap__content">
+                  <span class="roadmap__code">ИЗДАТЕЛЬ // ПОИСК</span>
+                  <h3>Сотрудничество с издателем</h3>
+                  <p>При нахождении издателя, согласного спонсировать разработку, игра будет запущена в разработку досрочно.</p>
+                </div>
+              </article>
+
+              <article class="roadmap__step">
+                <span class="roadmap__node roadmap__node--red" aria-hidden="true">×</span>
+                <div class="roadmap__content">
+                  <span class="roadmap__code">НЕДОБОР // ЗАМОРОЗКА</span>
+                  <h3>Недостаточный сбор средств</h3>
+                  <p>При недоборе средств они будут возвращены инвесторам, а игра будет находиться в заморозке до момента нахождения инвестиций на разработку.</p>
+                </div>
+              </article>
+            </section>
+
+            <section class="roadmap__phase">
+              <div class="roadmap__phase-title">
+                <span class="roadmap__phase-number">02</span>
+                <span>Через 6–18 месяцев разработки</span>
+                <i aria-hidden="true"></i>
+              </div>
+
+              <article class="roadmap__step">
+                <span class="roadmap__node roadmap__node--cyan" aria-hidden="true">СТ</span>
+                <div class="roadmap__content">
+                  <span class="roadmap__code">РЕЛИЗ // STEAM</span>
+                  <h3>Релиз игры</h3>
+                  <p>Релиз игры в Steam.</p>
+                </div>
+              </article>
+
+              <article class="roadmap__step">
+                <span class="roadmap__node roadmap__node--cyan" aria-hidden="true">↻</span>
+                <div class="roadmap__content">
+                  <span class="roadmap__code">ОБРАТНАЯ СВЯЗЬ // АКТИВНА</span>
+                  <h3>Поддержка после релиза</h3>
+                  <p>Сбор обратной информации от игроков и подготовка возможных правок и фиксов.</p>
+                </div>
+              </article>
+
+              <article class="roadmap__step">
+                <span class="roadmap__node roadmap__node--green" aria-hidden="true">+</span>
+                <div class="roadmap__content">
+                  <span class="roadmap__code">ДОПОЛНЕНИЕ // ПЛАН</span>
+                  <h3>Дополнение или продолжение</h3>
+                  <p>Разработка плана возможного дополнения и сюжетного продолжения с сохранением жанра или его сменой, исходя из реакции игроков.</p>
+                  <p>Потенциально новая игра будет экшен-стелсом с добавлением РПГ-элементов. Также рассматривается вариант создания MMORPG.</p>
+                </div>
+              </article>
+            </section>
+
+            <section class="roadmap__phase">
+              <div class="roadmap__phase-title">
+                <span class="roadmap__phase-number">03</span>
+                <span>Через 3–N месяцев после релиза</span>
+                <i aria-hidden="true"></i>
+              </div>
+
+              <article class="roadmap__step">
+                <span class="roadmap__node roadmap__node--red" aria-hidden="true">···</span>
+                <div class="roadmap__content">
+                  <span class="roadmap__code">АНАЛИЗ ПРОДАЖ // ОЖИДАНИЕ</span>
+                  <h3>Определение дальнейшего пути</h3>
+                  <p>Исходя из результатов продаж игры в первые месяцы года релиза:</p>
+                  <ul class="roadmap__list">
+                    <li>Если игра приносит сумму, равную или больше той, что была в сборе на разработку, будет запущено объявление о начале разработки продолжения игры.</li>
+                    <li>Если игра приносит сумму меньшую, чем итоговый сбор на её разработку, будет запущен новый сбор средств и поиск издателя, если такового не было найдено.</li>
+                  </ul>
+                </div>
+              </article>
+
+              <article class="roadmap__step">
+                <span class="roadmap__node roadmap__node--cyan" aria-hidden="true">◆</span>
+                <div class="roadmap__content">
+                  <span class="roadmap__code">МЕРЧ // ВОЗМОЖНО</span>
+                  <h3>Дополнительные материалы</h3>
+                  <p>Возможна разработка мерча с маскотом игры и её элементами (помимо книг и манги).</p>
+                </div>
+              </article>
+
+              <article class="roadmap__step">
+                <span class="roadmap__node roadmap__node--green" aria-hidden="true">∞</span>
+                <div class="roadmap__content">
+                  <span class="roadmap__code">РАСШИРЕНИЕ ВСЕЛЕННОЙ</span>
+                  <h3>Развитие мира ON DEATH PASS</h3>
+                  <p>Лором уже заявлено наличие трёх башен, в одной из которых протекают события игры. Две другие заготовлены под потенциальное расширение как в рамках дополнения, так и отдельных сюжетно связанных игр того же или иного жанра.</p>
+                  <p>Более того, в разработку игры уже заложен выход за рамки истории в реалиях одной планеты.</p>
+                </div>
+              </article>
+            </section>
+
+            <footer class="roadmap__footer" aria-hidden="true">
+              <span>КОНЕЦ ТЕКУЩЕГО МАРШРУТА</span>
+              <i></i>
+              <strong>ПРОДОЛЖЕНИЕ // НЕИЗВЕСТНО</strong>
+            </footer>
+
+          </div>
         </div>
       </div>
 
@@ -145,7 +351,41 @@
           <span class="accordion-icon" aria-hidden="true"></span>
         </button>
         <div class="accordion-body">
-          <p><!-- TODO: добавьте описание возможного дополнительного контента --></p>
+          <p>Благодаря тому, что я (разработчик игры) являюсь фрилансером, опробовавшим себя в различных видах искусства, а также имею в наличии знакомства с другими творческими личностями, у меня есть возможность применить как свои, так и навыки других людей для предоставления следующих видов дополнительного контента:</p>
+
+          <div class="accordion__section">
+            <h3 class="accordion__label">Книги</h3>
+            <p>Уже запланировано написание 1–2 историй среднего или полного объёма.</p>
+            <ul class="roadmap__list">
+              <li>Первая книга будет раскрывать лучше мир, который частично будет потерян с наступлением событий игры. Она позволит лучше понять причины произошедшего и как делались попытки избежания этого. Главным героем будет молодой парень, что с трудом нашёл себя в мире благодаря своим навыкам работы с программами, в простонародье «хакингу». Именно благодаря им на него выйдет таинственная личность, что предложит содействовать в неких действиях за щедрое вознаграждение.</li>
+              <li>Вторая книга будет повествовать о напарнике главной героини, об агенте с кодовым именем Нефелим. Благодаря этой истории мы сможем взглянуть на образование конфликта, приводящего к событиям игры, а также к первым странностям, замеченным в их мире. Странные находки из прошлого, не вписывающиеся в известную историю. Подозрительные действия глав сверхкорпораций. Признаки грядущего апокалипсиса и тропа, выводящая к свету в грядущей тьме.</li>
+              <li>Потенциальна возможность написания истории главной героини, раскрытие которой рассчитано на манга-версию.</li>
+            </ul>
+            <p>Книги будут писаться параллельно разработке игры для разбавления рутинных процессов и в целом для предотвращения выгорания от возможной однообразной деятельности.</p>
+          </div>
+
+          <div class="accordion__section">
+            <h3 class="accordion__label">Манга</h3>
+            <p>По примеру игр Mass Effect и MGS есть возможность придать больше визуальных примеров того, как всё выглядит в более детальном виде и кем является главная героиня истории до принятия участия в событиях игры.</p>
+            <p>Через, возможно, короткую историю в рамках одного томика (от 4 глав) игроки смогут лучше понять героиню и те потери, на которые она пошла, взявшись за это задание. Её статус как наёмного агента среди сверхкорпораций и её отношение к ним.</p>
+            <p>Манга создаётся дольше, чем книги, но благодаря опыту регулярного рисования еженедельного проекта, при создании умеренного графика и его соблюдения возможно всё.</p>
+            <p>Более взрослая версия в рамках манги будет рассмотрена только в рамках крупной инвестиции в разработку игры.</p>
+          </div>
+
+          <div class="accordion__section">
+            <h3 class="accordion__label">Настольные игры</h3>
+            <p>В рамках физического дополнения к компьютерной игре есть возможность разработать настольную игру в реалиях заявленного в игре мира.</p>
+            <p>В упрощённом виде карточной игры это может быть битва искусственных интеллектов за контроль над центральным процессором башни. В варианте большего количества элементов возможно смоделировать попытки для игроков выжить в реалиях потери контроля над башней.</p>
+            <p>Хоть физические копии подобного будут потенциально стоить дороже релизнутой компьютерной игры, но в рамках дополнительного материала и при успешном запуске серии игр подобные расходы могут быть нивелированы.</p>
+          </div>
+
+          <div class="accordion__section">
+            <h3 class="accordion__label">Мерч</h3>
+            <p>Первое, что приходит на ум при мыслях о создании мерча к игре, — это создание мягких игрушек в виде паучка, маскота данной игры.</p>
+            <p>Кто не захочет иметь в наличии миленького и лохматенького многолапого паучка? =)</p>
+            <p>При имеющейся в игре аниме-стилистике в катсценах и не только мы имеем возможность воссоздать присутствующих в ней персонажей в виде аниме-фигурок.</p>
+            <p>Также рассматриваются брелки и не только в виде кубиков Некодов. Пусть эти спутники будут с вами не только в игре.</p>
+          </div>
         </div>
       </div>
 
@@ -162,7 +402,7 @@
 
 <audio id="background-music" loop preload="none"></audio>
 
-<script src="script.js"></script>
+<script src="script.js?v=20260805g"></script>
 <script src="interface.js"></script>
 </body>
 </html>

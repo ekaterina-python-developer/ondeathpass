@@ -231,24 +231,47 @@ function initPlansAccordion() {
   const root = document.getElementById("plans-accordion");
   if (!root) return;
 
-  root.querySelectorAll(".accordion-header").forEach((btn) => {
+  const items = root.querySelectorAll(".accordion-item");
+
+  const setBodyHeight = (body, open) => {
+    if (!body) return;
+    body.style.maxHeight = open ? `${body.scrollHeight}px` : "0px";
+  };
+
+  const syncOpenHeights = () => {
+    items.forEach((item) => {
+      const body = item.querySelector(".accordion-body");
+      setBodyHeight(body, item.classList.contains("is-open"));
+    });
+  };
+
+  items.forEach((item) => {
+    const btn = item.querySelector(".accordion-header");
+    if (!btn) return;
+
     btn.addEventListener("click", () => {
-      const item = btn.closest(".accordion-item");
-      if (!item) return;
       const willOpen = !item.classList.contains("is-open");
 
-      root.querySelectorAll(".accordion-item").forEach((other) => {
+      items.forEach((other) => {
         other.classList.remove("is-open");
         const header = other.querySelector(".accordion-header");
+        const body = other.querySelector(".accordion-body");
         if (header) header.setAttribute("aria-expanded", "false");
+        setBodyHeight(body, false);
       });
 
       if (willOpen) {
         item.classList.add("is-open");
         btn.setAttribute("aria-expanded", "true");
+        const body = item.querySelector(".accordion-body");
+        // После padding из .is-open пересчитываем реальную высоту
+        requestAnimationFrame(() => setBodyHeight(body, true));
       }
     });
   });
+
+  syncOpenHeights();
+  window.addEventListener("resize", syncOpenHeights);
 }
 
 const yearEl = document.getElementById("year");
