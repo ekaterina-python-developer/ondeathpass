@@ -4398,55 +4398,79 @@ body.is-news-modal-open {
 
 @media (max-width: 680px) {
   .content > .topline {
-    grid-template-columns: minmax(0, 1fr) 34px;
-    grid-template-areas: "sector status";
-    gap: 12px;
-    min-height: 54px;
+    grid-template-columns: 8px minmax(0, 1fr);
+    grid-template-areas: "status sector";
+    align-items: center;
+    gap: 11px;
+    min-height: 58px;
     margin-top: 8px;
     margin-bottom: 14px;
-    padding: 0 16px;
+    padding: 0 20px;
     border-top: 0;
+    border-bottom: 1px solid rgba(112, 151, 154, 0.24);
     font-size: 9px;
     letter-spacing: 0.12em;
   }
 
   .topline__sector {
+    grid-area: sector;
     justify-self: start;
+    display: flex;
+    align-items: center;
     justify-content: flex-start;
     gap: 8px;
     min-width: 0;
+    white-space: nowrap;
   }
 
-  .topline__sector-code,
+  .topline__sector-code {
+    color: rgba(220, 230, 231, 0.68);
+  }
+
+  .topline__sector-divider {
+    color: var(--red, #e0201f);
+  }
+
   .topline__sector strong {
-    overflow: hidden;
-    text-overflow: ellipsis;
+    color: rgba(245, 248, 248, 0.92);
   }
 
   .topline__status {
-    justify-self: end;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border: 1px solid rgba(53, 201, 214, 0.2);
-    background: rgba(53, 201, 214, 0.025);
+    grid-area: status;
+    justify-self: start;
+    width: auto;
+    height: auto;
+    min-width: 0;
+    display: block;
+    padding: 0;
+    background: transparent;
+    border: 0;
+  }
+
+  .topline__status i {
+    width: 6px;
+    height: 6px;
+    display: block;
+    margin: 0;
+    background: var(--cyan, #35c9d6);
+    border-radius: 50%;
+    box-shadow:
+      0 0 6px rgba(53, 201, 214, 0.9),
+      0 0 13px rgba(53, 201, 214, 0.4);
   }
 
   .topline__status-text,
   .topline__clock {
     display: none;
   }
-
-  .topline__status i {
-    margin: 0;
-  }
 }
 
 @media (max-width: 390px) {
   .content > .topline {
-    min-height: 50px;
-    padding-right: 12px;
-    padding-left: 12px;
+    min-height: 52px;
+    gap: 9px;
+    padding-right: 15px;
+    padding-left: 15px;
     font-size: 8px;
     letter-spacing: 0.09em;
   }
@@ -4455,9 +4479,9 @@ body.is-news-modal-open {
     gap: 6px;
   }
 
-  .topline__status {
-    width: 29px;
-    height: 29px;
+  .topline__status i {
+    width: 5px;
+    height: 5px;
   }
 }
 
