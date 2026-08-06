@@ -1,8 +1,18 @@
 // --- Галерея: список скриншотов для миниатюр ---
-// Замените пути на реальные экспортированные картинки из PSD.
+// Порядок = порядок миниатюр. Первая картинка показывается крупно.
 const GALLERY = [
-  "images/gallery/screen-1.png",
-  "images/gallery/screen-2.png"
+  {
+    src: "images/gallery/01-shore.png",
+    alt: "Агент у берега с голографическими экранами"
+  },
+  {
+    src: "images/gallery/04-mission.png",
+    alt: "Миссия: проникновение на объект"
+  },
+  {
+    src: "images/gallery/02-facility.png",
+    alt: "Закрытый объект: дверь нельзя открыть"
+  },
 ];
 
 function renderGallery() {
@@ -10,14 +20,42 @@ function renderGallery() {
   const mainImg = document.getElementById("gallery-main-img");
   if (!thumbsEl || !mainImg) return;
 
+  const setMain = (item, activeThumb) => {
+    mainImg.hidden = false;
+    mainImg.src = item.src;
+    mainImg.alt = item.alt;
+    thumbsEl.querySelectorAll("img").forEach((img) => {
+      img.classList.toggle("is-active", img === activeThumb);
+    });
+  };
+
   thumbsEl.innerHTML = GALLERY.map(
-    (src) => `<img src="${src}" alt="Скриншот геймплея" loading="lazy">`
+    (item, index) =>
+      `<img src="${item.src}" alt="${item.alt}" loading="lazy" data-gallery-index="${index}">`
   ).join("");
 
-  thumbsEl.querySelectorAll("img").forEach((thumb) => {
+  const thumbs = Array.from(thumbsEl.querySelectorAll("img"));
+
+  thumbs.forEach((thumb) => {
     thumb.addEventListener("click", () => {
-      mainImg.src = thumb.src;
+      const index = Number(thumb.dataset.galleryIndex);
+      const item = GALLERY[index];
+      if (!item) return;
+      setMain(item, thumb);
     });
+
+    thumb.addEventListener("error", () => {
+      thumb.remove();
+    });
+  });
+
+  // Крупное фото = первая рабочая миниатюра
+  if (GALLERY[0]) {
+    setMain(GALLERY[0], thumbs[0] || null);
+  }
+
+  mainImg.addEventListener("error", () => {
+    mainImg.hidden = true;
   });
 }
 
