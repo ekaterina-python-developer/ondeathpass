@@ -7,7 +7,7 @@
 <title>ON DEATH PASS — стелс-хоррор про агентов в мире после катастрофы</title>
 <meta name="description" content="ON DEATH PASS — стелс-экшн с элементами хоррора. Агенты Роз и Нефелим должны проникнуть на защищённый объект. Скачайте демо-версию.">
 <script>document.documentElement.classList.add('js');</script>
-<link rel="stylesheet" href="style.css?v=20260806ac">
+<link rel="stylesheet" href="style.css?v=20260806aj">
 
 <!-- Netlify Identity: нужен на главной, чтобы принять invite из письма -->
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
@@ -127,7 +127,7 @@
   <!-- ОСНОВНОЙ КОНТЕНТ -->
   <main class="content" id="main">
 
-    <section class="spec-strip reveal" aria-label="Основные характеристики игры">
+    <section class="spec-strip" aria-label="Основные характеристики игры">
       <article class="spec-strip__item"><span>ЖАНР</span><strong>СТЕЛС / ХОРРОР</strong></article>
       <article class="spec-strip__item"><span>СЕССИЯ</span><strong>30–45 МИН</strong></article>
       <article class="spec-strip__item"><span>РЕЖИМ</span><strong>ОДИНОЧНАЯ ИГРА</strong></article>
@@ -234,7 +234,7 @@
           <button class="hero-slider__arrow" type="button" data-hero-next aria-label="Следующая сцена">→</button>
           <button class="hero-slider__pause" type="button" data-hero-pause
                   aria-label="Остановить автоматическую смену" aria-pressed="false">
-            <span aria-hidden="true">Ⅱ</span>
+            <span aria-hidden="true">■</span>
           </button>
         </div>
       </div>
@@ -268,11 +268,13 @@
             <span class="cta__index">[01]</span>
             <span class="cta__label">Скачать игру</span>
             <span class="cta__arrow cta__arrow--download" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
-                <path d="M12 3V15" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/>
-                <path d="M7.5 11L12 15.5L16.5 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter"/>
-                <path d="M4 18V21H20V18" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/>
-              </svg>
+              <img
+                class="cta__windows"
+                src="images/icons/windows.png"
+                alt=""
+                width="22"
+                height="22"
+              >
             </span>
           </a>
           <a href="https://boosty.to/goondeathpass"
@@ -388,7 +390,7 @@
 <audio id="background-music" loop preload="none"></audio>
 
 <script src="script.js?v=20260801f"></script>
-<script src="interface.js?v=20260806ac"></script>
+<script src="interface.js?v=20260806ah"></script>
 <script>
   if (window.netlifyIdentity) {
     window.netlifyIdentity.on("init", (user) => {

@@ -40,6 +40,17 @@
     revealItems.forEach((item) => item.classList.add('is-visible'));
   }
 
+  // На время скролла ставим флаг — CSS ставит animation-play-state: paused
+  // у тяжёлых анимаций (дрифт hero), чтобы не дёргать GPU.
+  let scrollingTimer = 0;
+  window.addEventListener('scroll', () => {
+    root.classList.add('is-scrolling');
+    window.clearTimeout(scrollingTimer);
+    scrollingTimer = window.setTimeout(() => {
+      root.classList.remove('is-scrolling');
+    }, 140);
+  }, { passive: true });
+
   // Subtle HUD parallax, not page movement.
   // Только мышь: на тачскрине pointermove во время скролла дёргает кадр.
   const canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -590,7 +601,7 @@
       userPaused ? 'Возобновить автоматическую смену' : 'Остановить автоматическую смену'
     );
     const icon = pause.querySelector('span');
-    if (icon) icon.textContent = userPaused ? '▶' : 'Ⅱ';
+    if (icon) icon.textContent = userPaused ? '▶' : '■';
   };
 
   prev?.addEventListener('click', () => setSlide(index - 1));

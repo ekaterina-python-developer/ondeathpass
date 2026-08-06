@@ -49,9 +49,11 @@ body {
   overflow-x: hidden;
   scrollbar-width: none;
   background:
-    radial-gradient(circle at 72% 18%, rgba(85, 246, 255, 0.055), transparent 30rem),
-    radial-gradient(circle at 88% 72%, rgba(255, 59, 48, 0.07), transparent 34rem),
-    var(--bg);
+    radial-gradient(circle at 72% 18%, rgba(85, 246, 255, 0.1), transparent 28rem),
+    radial-gradient(circle at 12% 40%, rgba(85, 246, 255, 0.04), transparent 22rem),
+    radial-gradient(circle at 88% 72%, rgba(255, 59, 48, 0.11), transparent 30rem),
+    radial-gradient(circle at 40% 100%, rgba(255, 59, 48, 0.05), transparent 24rem),
+    linear-gradient(180deg, #070b0d 0%, var(--bg) 40%, #06090b 100%);
   color: var(--text);
   font-family: var(--font-mono);
   letter-spacing: 0.015em;
@@ -103,78 +105,78 @@ select {
   pointer-events: none;
 }
 
-/* На текстовых страницах с аккордеоном выключаем тяжёлый фон —
-   иначе анимации + длинный DOM дают лаги при скролле и меню */
-body:has(.accordion) .ambient__grid {
-  animation: none;
-  transform: none;
-  opacity: 0.1;
-}
-
-body:has(.accordion) .ambient__glow,
-body:has(.accordion) .ambient__scan,
-body:has(.accordion) .ambient__scan::after {
-  display: none;
-}
-
+/*
+ * Ambient без blur/анимаций (они лагали при скролле):
+ * мягкие пятна через radial-gradient + сетка + лёгкий скан.
+ */
 .ambient__grid {
   position: absolute;
-  inset: -20%;
-  opacity: 0.24;
+  inset: 0;
+  opacity: 0.2;
   background-image:
-    linear-gradient(rgba(105, 143, 147, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(105, 143, 147, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(105, 143, 147, 0.11) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(105, 143, 147, 0.11) 1px, transparent 1px);
   background-size: 48px 48px;
-  transform: perspective(900px) rotateX(67deg) translateY(20%);
-  transform-origin: center bottom;
-  animation: grid-drift 18s linear infinite;
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 32%, #000 100%);
+  transform: none;
+  animation: none;
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 100%);
 }
 
 .ambient__glow {
   position: absolute;
-  width: 34rem;
+  width: 42rem;
   aspect-ratio: 1;
   border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.08;
+  /* вместо filter:blur — большой мягкий градиент, дешевле для GPU */
+  filter: none;
+  opacity: 1;
+  animation: none;
+  background: radial-gradient(
+    circle,
+    rgba(255, 59, 48, 0.16) 0%,
+    rgba(255, 59, 48, 0.05) 42%,
+    transparent 70%
+  );
 }
 
 .ambient__glow--red {
-  right: -12rem;
-  top: 15%;
-  background: var(--red);
-  animation: glow-float 11s ease-in-out infinite alternate;
+  right: -14rem;
+  top: 8%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 59, 48, 0.18) 0%,
+    rgba(255, 59, 48, 0.06) 40%,
+    transparent 68%
+  );
 }
 
 .ambient__glow--cyan {
-  left: 18%;
-  bottom: -20rem;
-  background: var(--cyan);
-  animation: glow-float 14s ease-in-out -4s infinite alternate-reverse;
+  left: 10%;
+  bottom: -18rem;
+  background: radial-gradient(
+    circle,
+    rgba(85, 246, 255, 0.14) 0%,
+    rgba(85, 246, 255, 0.045) 42%,
+    transparent 70%
+  );
 }
 
 .ambient__scan {
   position: absolute;
   inset: 0;
-  opacity: 0.14;
+  opacity: 0.08;
+  mix-blend-mode: normal;
+  animation: none;
   background: repeating-linear-gradient(
     to bottom,
     transparent 0,
     transparent 3px,
-    rgba(255, 255, 255, 0.035) 4px
+    rgba(255, 255, 255, 0.03) 4px
   );
-  mix-blend-mode: overlay;
 }
 
 .ambient__scan::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 16rem;
-  background: linear-gradient(to bottom, transparent, rgba(85, 246, 255, 0.035), transparent);
-  animation: global-scan 9s linear infinite;
+  display: none;
 }
 
 /* -------------------- BOOT -------------------- */
@@ -248,9 +250,10 @@ body:has(.accordion) .ambient__scan::after {
   border-right: none;
   background:
     linear-gradient(180deg, rgba(255, 59, 48, 0.055), transparent 20%),
-    rgba(4, 7, 8, 0.92);
+    rgba(4, 7, 8, 0.97);
   box-shadow: 22px 0 70px rgba(0, 0, 0, 0.34);
-  backdrop-filter: blur(18px);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 /* Одна линия одинаковой толщины на всю высоту */
@@ -638,7 +641,7 @@ body:has(.accordion) .ambient__scan::after {
   border: 1px solid var(--line-strong);
   background: var(--panel-solid);
   box-shadow: 0 28px 80px rgba(0, 0, 0, 0.35), var(--shadow-red);
-  clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 28px 100%, 0 calc(100% - 28px));
+  clip-path: none;
 }
 
 .hero::before {
@@ -1055,10 +1058,17 @@ body:has(.accordion) .ambient__scan::after {
   transform: none;
 }
 
-.cta--download .cta__arrow svg {
+.cta--download .cta__arrow svg,
+.cta--download .cta__windows {
   display: block;
   width: 22px;
   height: 22px;
+}
+
+.cta--download .cta__windows {
+  /* чёрный фон иконки становится прозрачным на красной кнопке */
+  mix-blend-mode: screen;
+  object-fit: contain;
 }
 
 .cta--download:hover,
@@ -1084,7 +1094,9 @@ body:has(.accordion) .ambient__scan::after {
 }
 
 .cta--download:hover .cta__arrow svg,
-.cta--download:focus-visible .cta__arrow svg {
+.cta--download:focus-visible .cta__arrow svg,
+.cta--download:hover .cta__windows,
+.cta--download:focus-visible .cta__windows {
   animation: download-icon-move 0.7s ease;
 }
 
@@ -1135,25 +1147,6 @@ body:has(.accordion) .ambient__scan::after {
 
 .spec-strip__item:last-child {
   border-right: 0;
-}
-
-.spec-strip__item::after {
-  content: "";
-  position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: 10px;
-  height: 1px;
-  background: linear-gradient(90deg, var(--cyan), transparent);
-  opacity: 0;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: opacity 0.25s ease, transform 0.35s ease;
-}
-
-.spec-strip__item:hover::after {
-  opacity: 1;
-  transform: scaleX(1);
 }
 
 .spec-strip__item span,
@@ -2694,7 +2687,7 @@ body.is-news-modal-open {
   }
 
   .hero {
-    clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+    clip-path: none;
   }
 
   .hero__art {
@@ -2874,6 +2867,12 @@ body.is-news-modal-open {
   animation: hero-choice-drift 8.8s ease-out both;
 }
 
+/* Во время скролла не гоняем дрифт картинки — меньше работы GPU */
+html.is-scrolling .hero-slide.is-active .hero-slide__img,
+html.is-scrolling .hero-slide--choice.is-active .hero-slide__img {
+  animation-play-state: paused !important;
+}
+
 .hero-slide::before,
 .hero-slide::after {
   content: "";
@@ -2890,16 +2889,9 @@ body.is-news-modal-open {
     radial-gradient(circle at var(--target-x) var(--target-y), transparent 0 11%, rgba(5, 7, 8, 0.12) 38%, rgba(5, 7, 8, 0.34) 100%);
 }
 
+/* mix-blend сканлайны дорого пересчитываются при скролле */
 .hero-slide::after {
-  z-index: 2;
-  opacity: 0.2;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 4px,
-    rgba(255, 255, 255, 0.028) 5px
-  );
-  mix-blend-mode: screen;
+  display: none;
 }
 
 .hero-slide__stamp {
@@ -2985,10 +2977,11 @@ body.is-news-modal-open {
   inset: 8px 0 0;
   z-index: -1;
   border: 1px solid rgba(164, 199, 202, 0.25);
-  background: rgba(4, 8, 10, 0.78);
+  background: rgba(4, 8, 10, 0.92);
   box-shadow: 0 18px 38px rgba(0, 0, 0, 0.28);
-  backdrop-filter: blur(14px);
-  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  clip-path: none;
 }
 
 .hero-slider__progress {
@@ -3035,17 +3028,33 @@ body.is-news-modal-open {
 }
 
 .hero-slider__arrow:hover,
-.hero-slider__arrow:focus-visible,
-.hero-slider__pause:hover,
-.hero-slider__pause:focus-visible {
+.hero-slider__arrow:focus-visible {
   background: rgba(85, 246, 255, 0.1);
   color: var(--cyan);
   box-shadow: inset 0 -1px 0 var(--cyan);
 }
 
+.hero-slider__pause:hover,
+.hero-slider__pause:focus-visible {
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+  color: inherit;
+}
+
+.hero-slider__pause:hover > span,
+.hero-slider__pause:focus-visible > span {
+  color: var(--cyan);
+}
+
 .hero-slider__pause[aria-pressed="true"] {
   color: var(--red-bright);
-  box-shadow: inset 0 -1px 0 var(--red);
+  background: transparent;
+  box-shadow: none;
+}
+
+.hero-slider__pause[aria-pressed="true"] > span {
+  color: var(--red-bright);
 }
 
 .hero-slider__tabs {
@@ -5098,13 +5107,23 @@ body.is-news-modal-open {
   }
 
   .hero-slider__arrow:hover,
-  .hero-slider__arrow:focus-visible,
-  .hero-slider__pause:hover,
-  .hero-slider__pause:focus-visible {
+  .hero-slider__arrow:focus-visible {
     color: var(--cyan, #35c9d6);
     background: rgba(53, 201, 214, 0.05);
 
     outline: none;
+  }
+
+  .hero-slider__pause:hover,
+  .hero-slider__pause:focus-visible {
+    color: inherit;
+    background: transparent;
+    outline: none;
+  }
+
+  .hero-slider__pause:hover > span,
+  .hero-slider__pause:focus-visible > span {
+    color: var(--cyan, #35c9d6);
   }
 
   /* Счётчик по центру */
