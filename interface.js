@@ -47,19 +47,31 @@
     const layers = area.querySelectorAll('[data-parallax-layer]');
     if (!layers.length || reducedMotion || !canHover.matches) return;
 
+    let frame = 0;
+    let nextX = 0;
+    let nextY = 0;
+
     area.addEventListener('pointermove', (event) => {
       const rect = area.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / rect.width - 0.5;
-      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      nextX = (event.clientX - rect.left) / rect.width - 0.5;
+      nextY = (event.clientY - rect.top) / rect.height - 0.5;
 
-      layers.forEach((layer) => {
-        const depth = Number(layer.dataset.parallaxLayer || 10);
-        layer.style.setProperty('--parallax-x', `${x * depth}px`);
-        layer.style.setProperty('--parallax-y', `${y * depth}px`);
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        layers.forEach((layer) => {
+          const depth = Number(layer.dataset.parallaxLayer || 10);
+          layer.style.setProperty('--parallax-x', `${nextX * depth}px`);
+          layer.style.setProperty('--parallax-y', `${nextY * depth}px`);
+        });
       });
     });
 
     area.addEventListener('pointerleave', () => {
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+        frame = 0;
+      }
       layers.forEach((layer) => {
         layer.style.setProperty('--parallax-x', '0px');
         layer.style.setProperty('--parallax-y', '0px');

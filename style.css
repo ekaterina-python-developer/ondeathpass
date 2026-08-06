@@ -3698,14 +3698,10 @@ body.is-news-modal-open {
   }
 }
 
-/* Узкие экраны: свой кадр у «Выбора», зум как у остальных */
+/* Узкие экраны: свой кадр у «Выбора» */
 @media (max-width: 680px) {
   .hero-slide--choice .hero-slide__img {
     object-position: 72% 18%;
-  }
-
-  .hero-slide--choice.is-active .hero-slide__img {
-    animation: hero-cinematic-drift 8.8s ease-out both;
   }
 }
 
@@ -4948,5 +4944,268 @@ body.is-news-modal-open {
 @media (prefers-reduced-motion: reduce) {
   .sound-toggle--topline .sound-toggle__indicator i {
     animation: none !important;
+  }
+}
+
+/* =========================================================
+   COMPACT SLIDER CONTROLS — TABLET / MOBILE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  /* Меньше нагрузки на GPU: без дрифта картинки, сканлайнов и blur-фона */
+  .ambient__glow,
+  .ambient__scan,
+  .ambient__scan::after {
+    display: none !important;
+  }
+
+  .ambient__grid {
+    animation: none !important;
+    opacity: 0.08;
+    filter: none;
+  }
+
+  .hero-slide.is-active .hero-slide__img,
+  .hero-slide--choice.is-active .hero-slide__img {
+    animation: none !important;
+    transform: scale(1.06);
+  }
+
+  .hero-slide__img {
+    transition: none;
+    filter: brightness(0.72) contrast(1.08);
+  }
+
+  .hero-slide::after {
+    display: none;
+  }
+
+  .hero__fog,
+  .hero__fog--one,
+  .hero__fog--two {
+    animation: none !important;
+    filter: none;
+    opacity: 0.2;
+  }
+
+  /*
+   * Убираем лишние расстояния между:
+   * кнопкой → управлением слайдером → информационной панелью.
+   */
+
+  .hero__actions {
+    margin-bottom: 0;
+  }
+
+  .hero-slider__controls {
+    position: absolute;
+    z-index: 12;
+    inset: auto 0 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 100%;
+    min-height: 56px;
+    height: 56px;
+
+    display: grid;
+    grid-template-columns:
+      54px
+      minmax(0, 1fr)
+      54px
+      54px;
+
+    align-items: stretch;
+    gap: 0;
+
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(224, 32, 31, 0.025),
+        rgba(5, 9, 10, 0.92) 24%,
+        rgba(5, 9, 10, 0.92) 76%,
+        rgba(53, 201, 214, 0.025)
+      );
+
+    border-top: 1px solid rgba(112, 151, 154, 0.22);
+    border-bottom: 1px solid rgba(112, 151, 154, 0.22);
+  }
+
+  .hero-slider__controls::before {
+    display: none;
+  }
+
+  /* Вкладки на компактной панели скрыты — остаётся счётчик */
+  .hero-slider__tabs {
+    display: none !important;
+  }
+
+  .hero[data-hero-slider] .hero__interface {
+    padding-bottom: 64px;
+  }
+
+  /*
+   * Если у старого элемента были absolute-position,
+   * bottom или left — сбрасываем их.
+   */
+
+  .hero-slider__controls > *:not(.hero-slider__progress) {
+    position: relative;
+    inset: auto;
+
+    margin: 0;
+  }
+
+  /* Стрелки и пауза */
+
+  .hero-slider__arrow,
+  .hero-slider__pause {
+    width: 54px;
+    height: 56px;
+    min-width: 0;
+
+    display: grid;
+    place-items: center;
+
+    padding: 0;
+
+    color: rgba(217, 230, 231, 0.55);
+    background: transparent;
+    border: 0;
+    border-right: 1px solid rgba(112, 151, 154, 0.14);
+
+    font-family: "Courier New", monospace;
+    font-size: 20px;
+
+    opacity: 1;
+    cursor: pointer;
+
+    transition:
+      color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .hero-slider__pause {
+    border-right: 0;
+    border-left: 1px solid rgba(112, 151, 154, 0.14);
+  }
+
+  .hero-slider__arrow:hover,
+  .hero-slider__arrow:focus-visible,
+  .hero-slider__pause:hover,
+  .hero-slider__pause:focus-visible {
+    color: var(--cyan, #35c9d6);
+    background: rgba(53, 201, 214, 0.05);
+
+    outline: none;
+  }
+
+  /* Счётчик по центру */
+
+  .hero-slider__counter {
+    min-width: 0;
+    height: 56px;
+
+    display: grid;
+    place-items: center;
+
+    padding: 0;
+
+    color: rgba(53, 201, 214, 0.72);
+    background: transparent;
+    border: 0;
+
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 0.18em;
+
+    opacity: 1;
+  }
+
+  /*
+   * Информационная панель начинается сразу
+   * после управления слайдером.
+   */
+
+  .spec-strip {
+    margin-top: 0;
+  }
+
+  .hero-slider__progress {
+    position: absolute !important;
+    z-index: 3;
+
+    top: 0;
+    right: 0;
+    left: 0;
+
+    width: 100%;
+    height: 1px;
+
+    display: block;
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    pointer-events: none;
+  }
+
+  .hero-slider__progress span {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(
+      90deg,
+      var(--red, #e0201f),
+      var(--cyan, #35c9d6)
+    );
+
+    transform-origin: left center;
+  }
+}
+
+@media (max-width: 680px) {
+  .hero-slider__controls {
+    grid-template-columns:
+      46px
+      minmax(0, 1fr)
+      46px
+      46px;
+
+    min-height: 48px;
+    height: 48px;
+
+    margin-top: 0;
+  }
+
+  .hero[data-hero-slider] .hero__interface {
+    padding-bottom: 56px;
+  }
+
+  .hero-slider__arrow,
+  .hero-slider__pause,
+  .hero-slider__counter {
+    height: 48px;
+  }
+
+  .hero-slider__arrow,
+  .hero-slider__pause {
+    width: 46px;
+    font-size: 18px;
+  }
+
+  .hero-slider__counter {
+    font-size: 9px;
+    margin-top: 0;
   }
 }
