@@ -7,10 +7,7 @@
 <title>ON DEATH PASS — стелс-хоррор про агентов в мире после катастрофы</title>
 <meta name="description" content="ON DEATH PASS — стелс-экшн с элементами хоррора. Агенты Роз и Нефелим должны проникнуть на защищённый объект. Скачайте демо-версию.">
 <script>document.documentElement.classList.add('js');</script>
-<link rel="stylesheet" href="style.css?v=20260806ak">
-
-<!-- Netlify Identity: нужен на главной, чтобы принять invite из письма -->
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<link rel="stylesheet" href="style.css?v=20260806am">
 
 <!-- GoatCounter analytics: без cookies, без сбора личных данных -->
 <script data-goatcounter="https://deathpass.goatcounter.com/count"
@@ -391,16 +388,5 @@
 
 <script src="script.js?v=20260806ak"></script>
 <script src="interface.js?v=20260806ah"></script>
-<script>
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", (user) => {
-      if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/";
-        });
-      }
-    });
-  }
-</script>
 </body>
 </html>

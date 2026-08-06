@@ -4386,6 +4386,7 @@ html.is-scrolling .hero-slide--choice.is-active .hero-slide__img {
   display: none;
 }
 
+/* Планшет: сектор сверху, статус + часы снизу (на главной полоски нет в HTML) */
 @media (max-width: 900px) and (min-width: 681px) {
   .content > .topline {
     grid-template-columns: minmax(0, 1fr) auto;
@@ -4445,9 +4446,74 @@ html.is-scrolling .hero-slide--choice.is-active .hero-slide__img {
   }
 }
 
+/* Телефон: только ● СЕКТОР … // … */
 @media (max-width: 680px) {
-  /* Полоска «СЕКТОР …» на телефоне скрыта */
   .content > .topline {
+    grid-template-columns: 8px minmax(0, 1fr);
+    grid-template-areas: "status sector";
+    align-items: center;
+    gap: 11px;
+    min-height: 58px;
+    margin-top: 8px;
+    margin-bottom: 14px;
+    padding: 0 20px;
+    border-top: 0;
+    border-bottom: 1px solid rgba(112, 151, 154, 0.24);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+  }
+
+  .topline__sector {
+    grid-area: sector;
+    justify-self: start;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    min-width: 0;
+    padding-bottom: 0;
+    border-bottom: 0;
+    white-space: nowrap;
+  }
+
+  .topline__sector-code {
+    color: rgba(220, 230, 231, 0.68);
+  }
+
+  .topline__sector-divider {
+    color: var(--red, #e0201f);
+  }
+
+  .topline__sector strong {
+    color: rgba(245, 248, 248, 0.92);
+  }
+
+  .topline__status {
+    grid-area: status;
+    justify-self: start;
+    width: auto;
+    height: auto;
+    min-width: 0;
+    display: block;
+    padding: 0;
+    background: transparent;
+    border: 0;
+  }
+
+  .topline__status i {
+    width: 6px;
+    height: 6px;
+    display: block;
+    margin: 0;
+    background: var(--cyan, #35c9d6);
+    border-radius: 50%;
+    box-shadow:
+      0 0 6px rgba(53, 201, 214, 0.9),
+      0 0 13px rgba(53, 201, 214, 0.4);
+  }
+
+  .topline__status-text,
+  .topline__clock {
     display: none;
   }
 }
@@ -4775,21 +4841,13 @@ html.is-scrolling .hero-slide--choice.is-active .hero-slide__img {
   }
 }
 
-/* Сектор: // это текст, не статус-точка (.topline i) */
-.topline__sector > span {
+/* Сектор: код / разделитель / название */
+.topline__sector-code {
   color: rgba(229, 237, 238, 0.76);
 }
 
-.topline__sector > i {
+.topline__sector-divider {
   display: inline;
-  width: auto;
-  height: auto;
-  margin: 0;
-  padding: 0;
-  border-radius: 0;
-  background: none;
-  box-shadow: none;
-  animation: none;
   color: var(--red, #e0201f);
   font: inherit;
   font-style: normal;
@@ -4849,12 +4907,6 @@ html.is-scrolling .hero-slide--choice.is-active .hero-slide__img {
 
   .burger {
     flex: 0 0 auto;
-  }
-
-
-  /* Полоска «СЕКТОР …» на телефоне скрыта */
-  .content > .topline {
-    display: none !important;
   }
 
 
